@@ -21,10 +21,21 @@ const sora = Sora({
   display: "swap",
 });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://afrotrading.com";
+const DEFAULT_SITE_URL = "https://afrotrading.com";
+
+function resolveSiteUrl(value: string | undefined): URL {
+  try {
+    return new URL(value || DEFAULT_SITE_URL);
+  } catch {
+    return new URL(DEFAULT_SITE_URL);
+  }
+}
+
+const siteUrl = resolveSiteUrl(process.env.NEXT_PUBLIC_SITE_URL);
+const SITE_URL = siteUrl.origin;
 
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
+  metadataBase: siteUrl,
   title: {
     default: "AfroTrading — Premium Gold (XAUUSD) Trading Signals",
     template: "%s | AfroTrading",
