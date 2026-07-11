@@ -7,6 +7,7 @@ import { prisma } from "@/lib/prisma";
 import { requireAuth, requireRole, AuthRequest } from "@/middleware/auth";
 import { validate } from "@/middleware/validate";
 import { logAudit } from "@/utils/audit";
+import { sendEmail, accountApprovedEmailTemplate } from "@/utils/email";
 
 const router = Router();
 
@@ -261,6 +262,8 @@ router.patch(
         body: "Your account has been verified and activated by our team. You now have full access to your dashboard.",
       },
     });
+    const dashboardUrl = `${process.env.FRONTEND_URL}/dashboard`;
+    await sendEmail(user.email, "Your AfroTrading account is approved", accountApprovedEmailTemplate(user.fullName, dashboardUrl));
     await logAudit(req.user!.id, "ACTIVATE_USER", "User", user.id);
     res.json({ message: "User activated" });
   })

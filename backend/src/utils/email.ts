@@ -35,6 +35,17 @@ export function verificationEmailTemplate(name: string, verifyUrl: string) {
   `;
 }
 
+export function accountApprovedEmailTemplate(name: string, dashboardUrl: string) {
+  return `
+    <div style="font-family: sans-serif; background:#0b0f19; color:#f4f4f5; padding:32px;">
+      <h1 style="color:#D4AF37;">You're verified, ${name}!</h1>
+      <p>Your AfroTrading account has been reviewed and approved by our team. You now have full access to your dashboard, signals, and education content.</p>
+      <a href="${dashboardUrl}" style="display:inline-block; background:#D4AF37; color:#0b0f19; padding:12px 24px; border-radius:8px; text-decoration:none; font-weight:bold;">Go to Dashboard</a>
+      <p style="margin-top:24px; font-size:12px; color:#888;">If you weren't expecting this, please contact our support team.</p>
+    </div>
+  `;
+}
+
 export function passwordResetEmailTemplate(name: string, resetUrl: string) {
   return `
     <div style="font-family: sans-serif; background:#0b0f19; color:#f4f4f5; padding:32px;">
