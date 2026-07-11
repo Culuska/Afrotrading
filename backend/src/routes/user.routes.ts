@@ -253,6 +253,14 @@ router.patch(
       where: { id: req.params.id },
       data: { status: "ACTIVE", emailVerified: true, emailVerifyToken: null },
     });
+    await prisma.notification.create({
+      data: {
+        userId: user.id,
+        channel: "EMAIL",
+        title: "Account approved",
+        body: "Your account has been verified and activated by our team. You now have full access to your dashboard.",
+      },
+    });
     await logAudit(req.user!.id, "ACTIVATE_USER", "User", user.id);
     res.json({ message: "User activated" });
   })
