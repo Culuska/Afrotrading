@@ -127,10 +127,12 @@ export function AdminUsersTab() {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
-                    {u.status === "SUSPENDED" ? (
-                      <DropdownMenuItem onSelect={() => activateMutation.mutate(u.id)}>Activate</DropdownMenuItem>
-                    ) : (
+                    {u.status === "ACTIVE" ? (
                       <DropdownMenuItem onSelect={() => suspendMutation.mutate(u.id)}>Suspend</DropdownMenuItem>
+                    ) : (
+                      <DropdownMenuItem onSelect={() => activateMutation.mutate(u.id)}>
+                        {u.status === "PENDING_VERIFICATION" ? "Approve & Verify" : "Activate"}
+                      </DropdownMenuItem>
                     )}
                     <DropdownMenuItem onSelect={() => membershipMutation.mutate({ id: u.id, membership: "VIP_MONTHLY" })}>
                       Upgrade to VIP Monthly

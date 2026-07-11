@@ -249,7 +249,10 @@ router.patch(
   requireAuth,
   requireRole("ADMIN"),
   asyncHandler(async (req: AuthRequest, res) => {
-    const user = await prisma.user.update({ where: { id: req.params.id }, data: { status: "ACTIVE" } });
+    const user = await prisma.user.update({
+      where: { id: req.params.id },
+      data: { status: "ACTIVE", emailVerified: true, emailVerifyToken: null },
+    });
     await logAudit(req.user!.id, "ACTIVATE_USER", "User", user.id);
     res.json({ message: "User activated" });
   })
