@@ -49,9 +49,9 @@ async function main() {
       heroSubtitle: "Premium XAUUSD signals, real-time analysis, and a community of serious traders.",
       telegramGroupUrl: process.env.TELEGRAM_GROUP_URL || "https://t.me/afrotrading_community",
       telegramChannelUrl: process.env.TELEGRAM_CHANNEL_URL || "https://t.me/afrotrading_vip",
-      whatsappNumber: "+252611234567",
-      contactEmail: "support@afrotrading.com",
-      contactPhone: "+252611234567",
+      whatsappNumber: process.env.WHATSAPP_NUMBER || "+252611234567",
+      contactEmail: process.env.CONTACT_EMAIL || "support@afrotrading.com",
+      contactPhone: process.env.CONTACT_PHONE || "+252611234567",
     },
   });
 

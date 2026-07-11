@@ -12,13 +12,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { FaqAccordion } from "@/components/marketing/faq-accordion";
-import { TELEGRAM_GROUP_URL } from "@/lib/config";
+import { TELEGRAM_GROUP_URL, WHATSAPP_URL, CONTACT_PHONE_DISPLAY, CONTACT_PHONE_TEL } from "@/lib/config";
 
 const CONTACT_METHODS = [
   { icon: Send, label: "Telegram", value: `@${TELEGRAM_GROUP_URL.replace(/^https?:\/\/t\.me\//, "")}`, href: TELEGRAM_GROUP_URL },
-  { icon: MessageCircle, label: "WhatsApp", value: "+252 61 123 4567", href: "https://wa.me/252611234567" },
+  { icon: MessageCircle, label: "WhatsApp", value: CONTACT_PHONE_DISPLAY, href: WHATSAPP_URL },
   { icon: Mail, label: "Email", value: "support@afrotrading.com", href: "mailto:support@afrotrading.com" },
-  { icon: Phone, label: "Phone", value: "+252 61 123 4567", href: "tel:+252611234567" },
+  { icon: Phone, label: "Phone", value: CONTACT_PHONE_DISPLAY, href: CONTACT_PHONE_TEL },
 ];
 
 export default function ContactPage() {

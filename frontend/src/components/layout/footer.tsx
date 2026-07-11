@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { TrendingUp, Send, MessageCircle, Mail, Phone } from "lucide-react";
-import { TELEGRAM_GROUP_URL } from "@/lib/config";
+import { TELEGRAM_GROUP_URL, WHATSAPP_URL, CONTACT_PHONE_DISPLAY } from "@/lib/config";
 
 const FOOTER_LINKS = [
   {
@@ -60,7 +60,7 @@ export function Footer() {
                 <Send className="h-4 w-4" />
               </a>
               <a
-                href="https://wa.me/252611234567"
+                href={WHATSAPP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-foreground/70 transition-colors hover:border-gold-500/50 hover:text-gold-400"
@@ -99,7 +99,7 @@ export function Footer() {
             <h4 className="font-display text-sm font-semibold uppercase tracking-wider text-gold-400">Contact</h4>
             <ul className="mt-4 space-y-3 text-sm text-foreground/60">
               <li className="flex items-center gap-2">
-                <Phone className="h-4 w-4 text-gold-400" /> +252 61 123 4567
+                <Phone className="h-4 w-4 text-gold-400" /> {CONTACT_PHONE_DISPLAY}
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="h-4 w-4 text-gold-400" /> support@afrotrading.com

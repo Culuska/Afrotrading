@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { MessageCircle, Send, X, Headset } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
-import { TELEGRAM_GROUP_URL } from "@/lib/config";
+import { TELEGRAM_GROUP_URL, WHATSAPP_URL } from "@/lib/config";
 
 export function FloatingActions() {
   const [open, setOpen] = useState(false);
@@ -19,7 +19,7 @@ export function FloatingActions() {
             className="flex flex-col gap-2"
           >
             <a
-              href="https://wa.me/252611234567"
+              href={WHATSAPP_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 rounded-full bg-[#25D366] px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-black/30 transition-transform hover:scale-105"
