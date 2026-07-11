@@ -62,7 +62,7 @@ router.post(
     });
 
     const verifyUrl = `${process.env.FRONTEND_URL}/verify-email?token=${emailVerifyToken}`;
-    await sendEmail(email, "Verify your AfroTrading account", verificationEmailTemplate(fullName, verifyUrl));
+    void sendEmail(email, "Verify your AfroTrading account", verificationEmailTemplate(fullName, verifyUrl));
 
     const token = signToken({ userId: user.id, role: user.role });
     res.cookie("token", token, COOKIE_OPTIONS);
@@ -186,7 +186,7 @@ router.post(
         },
       });
       const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
-      await sendEmail(email, "Reset your AfroTrading password", passwordResetEmailTemplate(user.fullName, resetUrl));
+      void sendEmail(email, "Reset your AfroTrading password", passwordResetEmailTemplate(user.fullName, resetUrl));
     }
 
     res.json({ message: "If that email exists, a reset link has been sent." });

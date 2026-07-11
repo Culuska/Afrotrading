@@ -286,7 +286,7 @@ router.patch(
       },
     });
     const dashboardUrl = `${process.env.FRONTEND_URL}/dashboard`;
-    await sendEmail(user.email, "Your AfroTrading account is approved", accountApprovedEmailTemplate(user.fullName, dashboardUrl));
+    void sendEmail(user.email, "Your AfroTrading account is approved", accountApprovedEmailTemplate(user.fullName, dashboardUrl));
     await logAudit(req.user!.id, "ACTIVATE_USER", "User", user.id);
     res.json({ message: "User activated" });
   })
