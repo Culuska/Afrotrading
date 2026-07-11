@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { Search, Download, UserPlus, MoreVertical } from "lucide-react";
+import { Search, Download, UserPlus, MoreVertical, Pencil } from "lucide-react";
 
 import { api, API_URL, ApiError } from "@/lib/api";
 import type { User } from "@/lib/types";
@@ -26,6 +26,7 @@ import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@
 export function AdminUsersTab() {
   const [search, setSearch] = useState("");
   const [createOpen, setCreateOpen] = useState(false);
+  const [editingUser, setEditingUser] = useState<User | null>(null);
   const queryClient = useQueryClient();
 
   const { data, isLoading } = useQuery({
@@ -89,6 +90,18 @@ export function AdminUsersTab() {
         </div>
       </div>
 
+      <Dialog open={!!editingUser} onOpenChange={(open) => !open && setEditingUser(null)}>
+        {editingUser && (
+          <EditUserDialog
+            user={editingUser}
+            onSuccess={() => {
+              setEditingUser(null);
+              invalidate();
+            }}
+          />
+        )}
+      </Dialog>
+
       <Table>
         <TableHeader>
           <TableRow>
@@ -127,6 +140,9 @@ export function AdminUsersTab() {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
+                    <DropdownMenuItem onSelect={() => setEditingUser(u)}>
+                      <Pencil className="h-3.5 w-3.5" /> Edit Details
+                    </DropdownMenuItem>
                     {u.status === "ACTIVE" ? (
                       <DropdownMenuItem onSelect={() => suspendMutation.mutate(u.id)}>Suspend</DropdownMenuItem>
                     ) : (
@@ -229,6 +245,63 @@ function CreateUserDialog({ onSuccess }: { onSuccess: () => void }) {
         <DialogFooter>
           <Button type="submit" disabled={loading}>
             {loading ? "Creating..." : "Create User"}
+          </Button>
+        </DialogFooter>
+      </form>
+    </DialogContent>
+  );
+}
+
+function EditUserDialog({ user, onSuccess }: { user: User; onSuccess: () => void }) {
+  const [form, setForm] = useState({
+    fullName: user.fullName,
+    email: user.email,
+    phone: user.phone || "",
+    country: user.country || "",
+  });
+  const [loading, setLoading] = useState(false);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      await api.put(`/api/users/${user.id}`, form);
+      toast.success("User updated");
+      onSuccess();
+    } catch (err) {
+      toast.error(err instanceof ApiError ? err.message : "Failed to update user");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <DialogContent>
+      <DialogHeader>
+        <DialogTitle>Edit User</DialogTitle>
+      </DialogHeader>
+      <form className="space-y-4" onSubmit={handleSubmit}>
+        <div className="space-y-2">
+          <Label>Full Name</Label>
+          <Input required value={form.fullName} onChange={(e) => setForm({ ...form, fullName: e.target.value })} />
+        </div>
+        <div className="space-y-2">
+          <Label>Email</Label>
+          <Input type="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
+        </div>
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label>Country</Label>
+            <Input value={form.country} onChange={(e) => setForm({ ...form, country: e.target.value })} />
+          </div>
+          <div className="space-y-2">
+            <Label>Phone</Label>
+            <Input value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
+          </div>
+        </div>
+        <DialogFooter>
+          <Button type="submit" disabled={loading}>
+            {loading ? "Saving..." : "Save Changes"}
           </Button>
         </DialogFooter>
       </form>

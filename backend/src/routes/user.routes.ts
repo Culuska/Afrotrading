@@ -234,6 +234,29 @@ router.post(
   })
 );
 
+router.put(
+  "/:id",
+  requireAuth,
+  requireRole("ADMIN"),
+  [
+    body("fullName").optional().notEmpty(),
+    body("email").optional().isEmail(),
+    body("phone").optional(),
+    body("country").optional(),
+  ],
+  validate,
+  asyncHandler(async (req: AuthRequest, res) => {
+    const { fullName, email, phone, country } = req.body;
+    const user = await prisma.user.update({
+      where: { id: req.params.id },
+      data: { fullName, email, phone, country },
+    });
+    await logAudit(req.user!.id, "UPDATE_USER", "User", user.id);
+    const { passwordHash: _, ...safe } = user;
+    res.json({ user: safe });
+  })
+);
+
 router.patch(
   "/:id/suspend",
   requireAuth,

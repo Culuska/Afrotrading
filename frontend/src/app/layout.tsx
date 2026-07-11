@@ -4,9 +4,6 @@ import "./globals.css";
 
 import { AuthProvider } from "@/context/auth-context";
 import { QueryProvider } from "@/context/query-provider";
-import { Navbar } from "@/components/layout/navbar";
-import { Footer } from "@/components/layout/footer";
-import { FloatingActions } from "@/components/layout/floating-actions";
 import { Toaster } from "sonner";
 import { TELEGRAM_GROUP_URL } from "@/lib/config";
 
@@ -93,10 +90,7 @@ export default function RootLayout({
         />
         <QueryProvider>
           <AuthProvider>
-            <Navbar />
-            <main className="flex-1">{children}</main>
-            <Footer />
-            <FloatingActions />
+            {children}
             <Toaster theme="dark" position="top-right" richColors />
           </AuthProvider>
         </QueryProvider>
