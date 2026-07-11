@@ -12,8 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-
-const TELEGRAM_URL = process.env.NEXT_PUBLIC_TELEGRAM_GROUP_URL || "https://t.me/afrotrading_community";
+import { TELEGRAM_GROUP_URL as TELEGRAM_URL } from "@/lib/config";
 
 export default function RegisterPage() {
   const { register } = useAuth();

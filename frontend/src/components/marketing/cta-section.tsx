@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Send, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { TELEGRAM_GROUP_URL } from "@/lib/config";
 
 export function CtaSection() {
   return (
@@ -30,7 +31,7 @@ export function CtaSection() {
               </Link>
             </Button>
             <Button asChild size="lg" variant="outline" className="border-navy-950/30 text-navy-950 hover:bg-navy-950/10">
-              <a href="https://t.me/afrotrading_community" target="_blank" rel="noopener noreferrer">
+              <a href={TELEGRAM_GROUP_URL} target="_blank" rel="noopener noreferrer">
                 <Send className="h-4 w-4" /> Join Telegram
               </a>
             </Button>

@@ -7,6 +7,7 @@ import { ArrowUpRight, ArrowDownRight, Send, ShieldCheck, Users, TrendingUp } fr
 import { Button } from "@/components/ui/button";
 import { TradingViewChart } from "@/components/marketing/tradingview-chart";
 import { GoldPriceWidget } from "@/components/marketing/gold-price-widget";
+import { TELEGRAM_GROUP_URL } from "@/lib/config";
 
 export function Hero() {
   return (
@@ -36,7 +37,7 @@ export function Hero() {
                 </Link>
               </Button>
               <Button asChild variant="outline" size="lg">
-                <a href="https://t.me/afrotrading_community" target="_blank" rel="noopener noreferrer">
+                <a href={TELEGRAM_GROUP_URL} target="_blank" rel="noopener noreferrer">
                   <Send className="h-4 w-4" /> Join Telegram
                 </a>
               </Button>

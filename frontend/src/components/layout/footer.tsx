@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { TrendingUp, Send, MessageCircle, Mail, Phone } from "lucide-react";
+import { TELEGRAM_GROUP_URL } from "@/lib/config";
 
 const FOOTER_LINKS = [
   {
@@ -50,7 +51,7 @@ export function Footer() {
             </p>
             <div className="mt-6 flex gap-3">
               <a
-                href="https://t.me/afrotrading_community"
+                href={TELEGRAM_GROUP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-foreground/70 transition-colors hover:border-gold-500/50 hover:text-gold-400"

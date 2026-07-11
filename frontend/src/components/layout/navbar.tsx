@@ -16,6 +16,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
+import { TELEGRAM_GROUP_URL } from "@/lib/config";
 import { useAuth } from "@/context/auth-context";
 
 const NAV_LINKS = [
@@ -62,7 +63,7 @@ export function Navbar() {
 
         <div className="hidden items-center gap-3 lg:flex">
           <Button asChild variant="ghost" size="sm">
-            <a href="https://t.me/afrotrading_community" target="_blank" rel="noopener noreferrer">
+            <a href={TELEGRAM_GROUP_URL} target="_blank" rel="noopener noreferrer">
               <Send className="h-4 w-4" /> Telegram
             </a>
           </Button>

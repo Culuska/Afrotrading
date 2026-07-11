@@ -8,6 +8,7 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { FloatingActions } from "@/components/layout/floating-actions";
 import { Toaster } from "sonner";
+import { TELEGRAM_GROUP_URL } from "@/lib/config";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -71,7 +72,7 @@ const jsonLd = {
   url: SITE_URL,
   logo: `${SITE_URL}/icon-512.png`,
   description: "Premium gold (XAUUSD) trading signal provider offering real-time signals, market analysis, and trading education.",
-  sameAs: ["https://t.me/afrotrading_community"],
+  sameAs: [TELEGRAM_GROUP_URL],
 };
 
 export const viewport = {

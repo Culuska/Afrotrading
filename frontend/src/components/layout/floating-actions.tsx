@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { MessageCircle, Send, X, Headset } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
+import { TELEGRAM_GROUP_URL } from "@/lib/config";
 
 export function FloatingActions() {
   const [open, setOpen] = useState(false);
@@ -26,7 +27,7 @@ export function FloatingActions() {
               <MessageCircle className="h-4 w-4" /> WhatsApp
             </a>
             <a
-              href="https://t.me/afrotrading_community"
+              href={TELEGRAM_GROUP_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 rounded-full bg-[#229ED9] px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-black/30 transition-transform hover:scale-105"
