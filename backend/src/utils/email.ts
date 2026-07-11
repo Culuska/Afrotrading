@@ -8,20 +8,28 @@ const transporter = process.env.SMTP_HOST
       auth: process.env.SMTP_USER
         ? { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS }
         : undefined,
+      connectionTimeout: 10_000,
+      greetingTimeout: 10_000,
+      socketTimeout: 10_000,
     })
   : null;
 
+// Never let a slow/failing mail provider block or break the request that triggered it.
 export async function sendEmail(to: string, subject: string, html: string) {
   if (!transporter) {
     console.warn(`SMTP not configured; would have sent email to ${to}: ${subject}`);
     return;
   }
-  await transporter.sendMail({
-    from: process.env.SMTP_FROM || "AfroTrading <no-reply@afrotrading.com>",
-    to,
-    subject,
-    html,
-  });
+  try {
+    await transporter.sendMail({
+      from: process.env.SMTP_FROM || "AfroTrading <no-reply@afrotrading.com>",
+      to,
+      subject,
+      html,
+    });
+  } catch (err) {
+    console.error(`Failed to send email to ${to} (${subject}):`, err);
+  }
 }
 
 export function verificationEmailTemplate(name: string, verifyUrl: string) {
