@@ -1,6 +1,11 @@
 export const TELEGRAM_GROUP_URL =
   process.env.NEXT_PUBLIC_TELEGRAM_GROUP_URL || "https://t.me/afrotrading_community";
 
+export const INSTAGRAM_URL =
+  process.env.NEXT_PUBLIC_INSTAGRAM_URL || "https://instagram.com/afrotrading.signals";
+export const X_URL = process.env.NEXT_PUBLIC_X_URL || "https://x.com/Afrotradingfx";
+export const TIKTOK_URL = process.env.NEXT_PUBLIC_TIKTOK_URL || "https://tiktok.com/@afrotrading.fx";
+
 // Digits only (no "+" or spaces) — required format for wa.me links.
 export const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "252615901901";
 export const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}`;
