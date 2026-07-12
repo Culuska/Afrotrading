@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowUpRight, ArrowDownRight, Send, ShieldCheck, Users, TrendingUp } from "lucide-react";
@@ -12,6 +13,10 @@ import { TELEGRAM_GROUP_URL } from "@/lib/config";
 export function Hero() {
   return (
     <section className="section-glow relative overflow-hidden border-b border-white/5 pb-20 pt-16 sm:pt-24">
+      <div className="absolute inset-0 -z-10">
+        <Image src="/images/hero-banner.jpg" alt="" fill priority className="object-cover object-center opacity-40" />
+        <div className="absolute inset-0 bg-gradient-to-b from-navy-950/60 via-navy-950/85 to-navy-950" />
+      </div>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
           <motion.div
