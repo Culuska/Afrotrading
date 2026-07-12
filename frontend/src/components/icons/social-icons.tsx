@@ -26,3 +26,11 @@ export function TikTokIcon({ className }: { className?: string }) {
     </svg>
   );
 }
+
+export function FacebookIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true">
+      <path d="M13.5 21v-7.6h2.55l.38-2.96h-2.93V8.56c0-.86.24-1.44 1.47-1.44h1.57V4.48A21 21 0 0 0 14.2 4.34c-2.2 0-3.7 1.34-3.7 3.8v2.3H7.94v2.96h2.56V21z" />
+    </svg>
+  );
+}

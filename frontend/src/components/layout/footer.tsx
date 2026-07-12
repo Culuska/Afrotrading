@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { TrendingUp, Send, MessageCircle, Mail, Phone } from "lucide-react";
-import { InstagramIcon, XIcon, TikTokIcon } from "@/components/icons/social-icons";
+import { InstagramIcon, XIcon, TikTokIcon, FacebookIcon } from "@/components/icons/social-icons";
 import {
   TELEGRAM_GROUP_URL,
   WHATSAPP_URL,
@@ -8,6 +8,7 @@ import {
   INSTAGRAM_URL,
   X_URL,
   TIKTOK_URL,
+  FACEBOOK_URL,
 } from "@/lib/config";
 
 const FOOTER_LINKS = [
@@ -102,6 +103,15 @@ export function Footer() {
                 aria-label="TikTok"
               >
                 <TikTokIcon className="h-4 w-4" />
+              </a>
+              <a
+                href={FACEBOOK_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-foreground/70 transition-colors hover:border-gold-500/50 hover:text-gold-400"
+                aria-label="Facebook"
+              >
+                <FacebookIcon className="h-4 w-4" />
               </a>
               <a
                 href="mailto:support@afrotrading.com"

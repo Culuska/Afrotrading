@@ -5,6 +5,8 @@ export const INSTAGRAM_URL =
   process.env.NEXT_PUBLIC_INSTAGRAM_URL || "https://instagram.com/afrotrading.signals";
 export const X_URL = process.env.NEXT_PUBLIC_X_URL || "https://x.com/Afrotradingfx";
 export const TIKTOK_URL = process.env.NEXT_PUBLIC_TIKTOK_URL || "https://tiktok.com/@afrotrading.fx";
+export const FACEBOOK_URL =
+  process.env.NEXT_PUBLIC_FACEBOOK_URL || "https://facebook.com/profile.php?id=61591902149337";
 
 // Digits only (no "+" or spaces) — required format for wa.me links.
 export const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "252625901900";
