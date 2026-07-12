@@ -15,6 +15,7 @@ import {
   formatSignalMessage,
 } from "@/utils/telegram";
 import type { Signal } from "@prisma/client";
+import { broadcastToSocial } from "@/utils/social";
 
 const router = Router();
 
@@ -194,6 +195,7 @@ router.post(
 
     if (signal.isPublished) {
       await publishToTelegram(signal);
+      await broadcastToSocial(signal);
     }
 
     res.status(201).json({ signal });
@@ -233,6 +235,7 @@ router.put(
 
     if (isPublished && !wasPublished && !signal.telegramSent) {
       await publishToTelegram(signal);
+      await broadcastToSocial(signal);
     } else if (isPublished && wasPublished && signal.telegramSent && signal.telegramMessageId) {
       // Signal was already posted to Telegram; keep that message in sync with the edit instead of leaving it stale.
       await syncTelegramMessage(signal);
@@ -311,6 +314,7 @@ router.patch(
 
     if (!signal.telegramSent) {
       await publishToTelegram(signal);
+      await broadcastToSocial(signal);
     }
     res.json({ signal });
   })
