@@ -1,32 +1,23 @@
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
 
-const transporter = process.env.SMTP_HOST
-  ? nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: Number(process.env.SMTP_PORT) || 587,
-      secure: Number(process.env.SMTP_PORT) === 465,
-      auth: process.env.SMTP_USER
-        ? { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS }
-        : undefined,
-      connectionTimeout: 10_000,
-      greetingTimeout: 10_000,
-      socketTimeout: 10_000,
-    })
-  : null;
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 // Never let a slow/failing mail provider block or break the request that triggered it.
+// Uses Resend's HTTPS API instead of SMTP, since most hosting platforms (Railway included)
+// block outbound SMTP ports by default.
 export async function sendEmail(to: string, subject: string, html: string) {
-  if (!transporter) {
-    console.warn(`SMTP not configured; would have sent email to ${to}: ${subject}`);
+  if (!resend) {
+    console.warn(`RESEND_API_KEY not configured; would have sent email to ${to}: ${subject}`);
     return;
   }
   try {
-    await transporter.sendMail({
-      from: process.env.SMTP_FROM || "AfroTrading <no-reply@afrotrading.com>",
+    const { error } = await resend.emails.send({
+      from: process.env.EMAIL_FROM || "AfroTrading <onboarding@resend.dev>",
       to,
       subject,
       html,
     });
+    if (error) console.error(`Failed to send email to ${to} (${subject}):`, error);
   } catch (err) {
     console.error(`Failed to send email to ${to} (${subject}):`, err);
   }
