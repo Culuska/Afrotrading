@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { Plus, Pencil, Trash2 } from "lucide-react";
+import { Plus, Pencil, Trash2, Upload, Loader2 } from "lucide-react";
 
-import { api, ApiError } from "@/lib/api";
+import { api, uploadFile, ApiError } from "@/lib/api";
 import type { MarketAnalysis, AnalysisTimeframe, AnalysisType } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
@@ -46,7 +46,11 @@ export function AdminMarketAnalysisTab() {
               <Plus className="h-4 w-4" /> Add Analysis
             </Button>
           </DialogTrigger>
-          <AnalysisFormDialog analysis={editing} onSuccess={() => { setDialogOpen(false); invalidate(); }} />
+          <AnalysisFormDialog
+            key={editing?.id ?? "new"}
+            analysis={editing}
+            onSuccess={() => { setDialogOpen(false); invalidate(); }}
+          />
         </Dialog>
       </div>
 
@@ -109,6 +113,23 @@ function AnalysisFormDialog({ analysis, onSuccess }: { analysis: MarketAnalysis 
     published: analysis?.published ?? true,
   });
   const [loading, setLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
+
+  async function handleFileSelect(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+    setUploading(true);
+    try {
+      const { asset } = await uploadFile<{ asset: { url: string } }>("/api/upload", file, "market-analysis");
+      setForm((f) => ({ ...f, chartImageUrl: asset.url }));
+      toast.success("Chart image uploaded");
+    } catch (err) {
+      toast.error(err instanceof ApiError ? err.message : "Failed to upload image");
+    } finally {
+      setUploading(false);
+    }
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -167,8 +188,25 @@ function AnalysisFormDialog({ analysis, onSuccess }: { analysis: MarketAnalysis 
           </div>
         </div>
         <div className="space-y-2">
-          <Label>Chart Image URL</Label>
-          <Input value={form.chartImageUrl} onChange={(e) => setForm({ ...form, chartImageUrl: e.target.value })} />
+          <Label>Chart Image</Label>
+          <div className="flex gap-2">
+            <Input
+              placeholder="https://res.cloudinary.com/..."
+              value={form.chartImageUrl}
+              onChange={(e) => setForm({ ...form, chartImageUrl: e.target.value })}
+            />
+            <Button type="button" variant="outline" disabled={uploading} asChild>
+              <label className="cursor-pointer">
+                {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
+                Upload
+                <input type="file" accept="image/*" className="hidden" onChange={handleFileSelect} disabled={uploading} />
+              </label>
+            </Button>
+          </div>
+          {form.chartImageUrl && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={form.chartImageUrl} alt="Chart preview" className="mt-2 max-h-40 rounded-lg border border-white/10" />
+          )}
         </div>
         <div className="space-y-2">
           <Label>Full Analysis</Label>
