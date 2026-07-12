@@ -32,13 +32,19 @@ router.get(
 router.get(
   "/:slug",
   optionalAuth,
-  asyncHandler(async (req, res) => {
+  asyncHandler(async (req: AuthRequest, res) => {
     const content = await prisma.educationContent.findUnique({ where: { slug: req.params.slug } });
     if (!content || !content.published) {
       res.status(404).json({ message: "Content not found" });
       return;
     }
-    res.json({ content });
+    const isVip = req.user?.role === "VIP" || req.user?.role === "ADMIN";
+    if (content.vipOnly && !isVip) {
+      const { body, videoUrl, youtubeUrl, fileUrl, imageUrl, ...preview } = content;
+      res.json({ content: preview, locked: true });
+      return;
+    }
+    res.json({ content, locked: false });
   })
 );
 
@@ -56,7 +62,7 @@ router.post(
   "/",
   requireAuth,
   requireRole("ADMIN"),
-  [body("title").notEmpty(), body("type").isIn(["VIDEO", "PDF", "IMAGE", "ARTICLE"]), body("category").notEmpty()],
+  [body("title").notEmpty(), body("type").isIn(["VIDEO", "AUDIO", "PDF", "IMAGE", "ARTICLE"]), body("category").notEmpty()],
   validate,
   asyncHandler(async (req: AuthRequest, res) => {
     const { title, description, type, category, videoUrl, youtubeUrl, fileUrl, imageUrl, body: contentBody, featured, vipOnly, published } = req.body;

@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { PlayCircle, FileText, Image as ImageIcon, BookOpen, Lock } from "lucide-react";
+import Link from "next/link";
+import { PlayCircle, FileText, Image as ImageIcon, BookOpen, Headphones, Lock } from "lucide-react";
 
 import { api } from "@/lib/api";
 import type { EducationContent, EducationCategory } from "@/lib/types";
@@ -25,6 +26,7 @@ const CATEGORIES: { value: EducationCategory | "all"; label: string }[] = [
 
 const TYPE_ICON = {
   VIDEO: PlayCircle,
+  AUDIO: Headphones,
   PDF: FileText,
   IMAGE: ImageIcon,
   ARTICLE: BookOpen,
@@ -73,28 +75,30 @@ export default function EducationPage() {
         {data?.content.map((item) => {
           const Icon = TYPE_ICON[item.type] || BookOpen;
           return (
-            <Card key={item.id} className="group transition-transform hover:-translate-y-1">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-gold-500/10 text-gold-400">
-                    <Icon className="h-5 w-5" />
-                  </span>
-                  <div className="flex gap-2">
-                    {item.featured && <Badge variant="warning">Featured</Badge>}
-                    {item.vipOnly && (
-                      <Badge>
-                        <Lock className="h-3 w-3" /> VIP
-                      </Badge>
-                    )}
+            <Link key={item.id} href={`/education/${item.slug}`}>
+              <Card className="group h-full transition-transform hover:-translate-y-1">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-gold-500/10 text-gold-400">
+                      <Icon className="h-5 w-5" />
+                    </span>
+                    <div className="flex gap-2">
+                      {item.featured && <Badge variant="warning">Featured</Badge>}
+                      {item.vipOnly && (
+                        <Badge>
+                          <Lock className="h-3 w-3" /> VIP
+                        </Badge>
+                      )}
+                    </div>
                   </div>
-                </div>
-                <h3 className="mt-4 font-display text-lg font-semibold group-hover:text-gold-400">{item.title}</h3>
-                <p className="mt-2 line-clamp-3 text-sm text-foreground/60">{item.description}</p>
-                <Badge variant="neutral" className="mt-4">
-                  {item.category.replace(/_/g, " ")}
-                </Badge>
-              </CardContent>
-            </Card>
+                  <h3 className="mt-4 font-display text-lg font-semibold group-hover:text-gold-400">{item.title}</h3>
+                  <p className="mt-2 line-clamp-3 text-sm text-foreground/60">{item.description}</p>
+                  <Badge variant="neutral" className="mt-4">
+                    {item.category.replace(/_/g, " ")}
+                  </Badge>
+                </CardContent>
+              </Card>
+            </Link>
           );
         })}
         {data?.content.length === 0 && (

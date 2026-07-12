@@ -11,7 +11,12 @@ const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 25 * 1024 * 1024 },
   fileFilter: (_req, file, cb) => {
-    const allowed = ["image/jpeg", "image/png", "image/webp", "image/gif", "video/mp4", "application/pdf"];
+    const allowed = [
+      "image/jpeg", "image/png", "image/webp", "image/gif",
+      "video/mp4", "video/webm", "video/quicktime",
+      "audio/mpeg", "audio/mp3", "audio/wav", "audio/ogg", "audio/mp4", "audio/x-m4a",
+      "application/pdf",
+    ];
     if (!allowed.includes(file.mimetype)) {
       cb(new Error("Unsupported file type"));
       return;
@@ -22,13 +27,15 @@ const upload = multer({
 
 function resourceTypeFor(mimetype: string): "image" | "video" | "raw" {
   if (mimetype.startsWith("image/")) return "image";
-  if (mimetype.startsWith("video/")) return "video";
+  // Cloudinary handles audio under its "video" resource type.
+  if (mimetype.startsWith("video/") || mimetype.startsWith("audio/")) return "video";
   return "raw";
 }
 
-function mediaTypeFor(mimetype: string): "IMAGE" | "VIDEO" | "PDF" {
+function mediaTypeFor(mimetype: string): "IMAGE" | "VIDEO" | "AUDIO" | "PDF" {
   if (mimetype.startsWith("image/")) return "IMAGE";
   if (mimetype.startsWith("video/")) return "VIDEO";
+  if (mimetype.startsWith("audio/")) return "AUDIO";
   return "PDF";
 }
 

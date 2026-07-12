@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
-import { ArrowRight, PlayCircle, FileText, Image as ImageIcon, BookOpen } from "lucide-react";
+import { ArrowRight, PlayCircle, FileText, Image as ImageIcon, BookOpen, Headphones } from "lucide-react";
 import { api } from "@/lib/api";
 import type { EducationContent } from "@/lib/types";
 import { SectionHeading } from "@/components/marketing/section-heading";
@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge";
 
 const TYPE_ICON = {
   VIDEO: PlayCircle,
+  AUDIO: Headphones,
   PDF: FileText,
   IMAGE: ImageIcon,
   ARTICLE: BookOpen,

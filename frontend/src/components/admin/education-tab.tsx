@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { Plus, Pencil, Trash2 } from "lucide-react";
+import { Plus, Pencil, Trash2, Upload, Loader2 } from "lucide-react";
 
-import { api, ApiError } from "@/lib/api";
+import { api, uploadFile, ApiError } from "@/lib/api";
 import type { EducationContent, EducationType, EducationCategory } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
@@ -17,7 +17,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 
-const TYPES: EducationType[] = ["VIDEO", "PDF", "IMAGE", "ARTICLE"];
+const TYPES: EducationType[] = ["ARTICLE", "IMAGE", "VIDEO", "AUDIO", "PDF"];
 const CATEGORIES: EducationCategory[] = [
   "MARKET_ANALYSIS", "TRADING_PSYCHOLOGY", "RISK_MANAGEMENT", "GOLD_ANALYSIS",
   "FOREX_EDUCATION", "VIDEO_LESSONS", "ARTICLES", "WEEKLY_ANALYSIS", "TRADING_JOURNAL",
@@ -52,7 +52,11 @@ export function AdminEducationTab() {
               <Plus className="h-4 w-4" /> Add Content
             </Button>
           </DialogTrigger>
-          <EducationFormDialog content={editing} onSuccess={() => { setDialogOpen(false); invalidate(); }} />
+          <EducationFormDialog
+            key={editing?.id ?? "new"}
+            content={editing}
+            onSuccess={() => { setDialogOpen(false); invalidate(); }}
+          />
         </Dialog>
       </div>
 
@@ -107,6 +111,7 @@ function EducationFormDialog({ content, onSuccess }: { content: EducationContent
     description: content?.description || "",
     type: content?.type || "ARTICLE",
     category: content?.category || "GOLD_ANALYSIS",
+    videoUrl: content?.videoUrl || "",
     youtubeUrl: content?.youtubeUrl || "",
     fileUrl: content?.fileUrl || "",
     imageUrl: content?.imageUrl || "",
@@ -116,6 +121,23 @@ function EducationFormDialog({ content, onSuccess }: { content: EducationContent
     published: content?.published ?? true,
   });
   const [loading, setLoading] = useState(false);
+  const [uploadingField, setUploadingField] = useState<string | null>(null);
+
+  async function handleFileSelect(field: "videoUrl" | "fileUrl" | "imageUrl", e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+    setUploadingField(field);
+    try {
+      const { asset } = await uploadFile<{ asset: { url: string } }>("/api/upload", file, "education");
+      setForm((f) => ({ ...f, [field]: asset.url }));
+      toast.success("File uploaded");
+    } catch (err) {
+      toast.error(err instanceof ApiError ? err.message : "Failed to upload file");
+    } finally {
+      setUploadingField(null);
+    }
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -171,21 +193,76 @@ function EducationFormDialog({ content, onSuccess }: { content: EducationContent
           </div>
         </div>
         {form.type === "VIDEO" && (
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label>YouTube URL</Label>
+              <Input
+                placeholder="https://youtube.com/watch?v=..."
+                value={form.youtubeUrl}
+                onChange={(e) => setForm({ ...form, youtubeUrl: e.target.value })}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Or Upload a Video File</Label>
+              <div className="flex gap-2">
+                <Input
+                  placeholder="https://res.cloudinary.com/..."
+                  value={form.videoUrl}
+                  onChange={(e) => setForm({ ...form, videoUrl: e.target.value })}
+                />
+                <UploadButton field="videoUrl" accept="video/*" uploadingField={uploadingField} onSelect={handleFileSelect} />
+              </div>
+              {form.videoUrl && <video src={form.videoUrl} controls className="mt-2 max-h-48 rounded-lg border border-white/10" />}
+            </div>
+          </div>
+        )}
+        {form.type === "AUDIO" && (
           <div className="space-y-2">
-            <Label>YouTube URL</Label>
-            <Input value={form.youtubeUrl} onChange={(e) => setForm({ ...form, youtubeUrl: e.target.value })} />
+            <Label>Audio File</Label>
+            <div className="flex gap-2">
+              <Input
+                placeholder="https://res.cloudinary.com/..."
+                value={form.fileUrl}
+                onChange={(e) => setForm({ ...form, fileUrl: e.target.value })}
+              />
+              <UploadButton field="fileUrl" accept="audio/*" uploadingField={uploadingField} onSelect={handleFileSelect} />
+            </div>
+            {form.fileUrl && <audio src={form.fileUrl} controls className="mt-2 w-full" />}
           </div>
         )}
         {form.type === "PDF" && (
           <div className="space-y-2">
-            <Label>PDF File URL</Label>
-            <Input value={form.fileUrl} onChange={(e) => setForm({ ...form, fileUrl: e.target.value })} />
+            <Label>PDF File</Label>
+            <div className="flex gap-2">
+              <Input
+                placeholder="https://res.cloudinary.com/..."
+                value={form.fileUrl}
+                onChange={(e) => setForm({ ...form, fileUrl: e.target.value })}
+              />
+              <UploadButton field="fileUrl" accept="application/pdf" uploadingField={uploadingField} onSelect={handleFileSelect} />
+            </div>
+            {form.fileUrl && (
+              <a href={form.fileUrl} target="_blank" rel="noopener noreferrer" className="text-sm text-gold-400 underline">
+                View uploaded PDF
+              </a>
+            )}
           </div>
         )}
         {form.type === "IMAGE" && (
           <div className="space-y-2">
-            <Label>Image URL</Label>
-            <Input value={form.imageUrl} onChange={(e) => setForm({ ...form, imageUrl: e.target.value })} />
+            <Label>Image</Label>
+            <div className="flex gap-2">
+              <Input
+                placeholder="https://res.cloudinary.com/..."
+                value={form.imageUrl}
+                onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
+              />
+              <UploadButton field="imageUrl" accept="image/*" uploadingField={uploadingField} onSelect={handleFileSelect} />
+            </div>
+            {form.imageUrl && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={form.imageUrl} alt="Preview" className="mt-2 max-h-40 rounded-lg border border-white/10" />
+            )}
           </div>
         )}
         {form.type === "ARTICLE" && (
@@ -210,5 +287,28 @@ function EducationFormDialog({ content, onSuccess }: { content: EducationContent
         </DialogFooter>
       </form>
     </DialogContent>
+  );
+}
+
+function UploadButton({
+  field,
+  accept,
+  uploadingField,
+  onSelect,
+}: {
+  field: "videoUrl" | "fileUrl" | "imageUrl";
+  accept: string;
+  uploadingField: string | null;
+  onSelect: (field: "videoUrl" | "fileUrl" | "imageUrl", e: React.ChangeEvent<HTMLInputElement>) => void;
+}) {
+  const uploading = uploadingField === field;
+  return (
+    <Button type="button" variant="outline" disabled={uploading} asChild>
+      <label className="cursor-pointer">
+        {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
+        Upload
+        <input type="file" accept={accept} className="hidden" onChange={(e) => onSelect(field, e)} disabled={uploading} />
+      </label>
+    </Button>
   );
 }

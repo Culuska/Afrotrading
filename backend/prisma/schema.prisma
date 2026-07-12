@@ -50,6 +50,7 @@ enum SignalStatus {
 
 enum EducationType {
   VIDEO
+  AUDIO
   PDF
   IMAGE
   ARTICLE
@@ -81,6 +82,7 @@ enum AnalysisType {
 enum MediaType {
   IMAGE
   VIDEO
+  AUDIO
   PDF
 }
 

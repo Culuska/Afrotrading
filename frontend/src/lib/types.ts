@@ -58,7 +58,7 @@ export interface Signal {
   closedAt?: string | null;
 }
 
-export type EducationType = "VIDEO" | "PDF" | "IMAGE" | "ARTICLE";
+export type EducationType = "VIDEO" | "AUDIO" | "PDF" | "IMAGE" | "ARTICLE";
 export type EducationCategory =
   | "MARKET_ANALYSIS"
   | "TRADING_PSYCHOLOGY"
