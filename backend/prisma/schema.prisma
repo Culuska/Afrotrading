@@ -169,6 +169,7 @@ model Signal {
 
   telegramSent      Boolean     @default(false)
   telegramMessageId Int?
+  telegramIsPhoto   Boolean     @default(false)
 
   savedBy       SavedSignal[]
 

@@ -47,6 +47,24 @@ export async function editTelegramMessage(text: string, messageId: number, chatI
   });
 }
 
+export async function sendTelegramPhoto(photoUrl: string, caption: string, chatId?: string) {
+  return callTelegramApi("sendPhoto", {
+    chat_id: chatId || CHANNEL_CHAT_ID,
+    photo: photoUrl,
+    caption,
+    parse_mode: "HTML",
+  });
+}
+
+export async function editTelegramCaption(caption: string, messageId: number, chatId?: string) {
+  return callTelegramApi("editMessageCaption", {
+    chat_id: chatId || CHANNEL_CHAT_ID,
+    message_id: messageId,
+    caption,
+    parse_mode: "HTML",
+  });
+}
+
 export function formatSignalMessage(signal: {
   signalNumber: number;
   pair: string;

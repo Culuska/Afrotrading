@@ -7,7 +7,14 @@ import { prisma } from "@/lib/prisma";
 import { requireAuth, requireRole, optionalAuth, AuthRequest } from "@/middleware/auth";
 import { validate } from "@/middleware/validate";
 import { logAudit } from "@/utils/audit";
-import { sendTelegramMessage, editTelegramMessage, formatSignalMessage } from "@/utils/telegram";
+import {
+  sendTelegramMessage,
+  editTelegramMessage,
+  sendTelegramPhoto,
+  editTelegramCaption,
+  formatSignalMessage,
+} from "@/utils/telegram";
+import type { Signal } from "@prisma/client";
 
 const router = Router();
 
@@ -19,6 +26,31 @@ function toDecimalOrNull(value: unknown): string | number | null | undefined {
   if (value === undefined) return undefined;
   if (value === null || value === "") return null;
   return value as string | number;
+}
+
+/** Sends a signal to Telegram as a photo (if it has a chart image) or plain text, and records how it was sent. */
+async function publishToTelegram(signal: Signal) {
+  const text = formatSignalMessage(signal);
+  const sent = signal.chartImageUrl
+    ? await sendTelegramPhoto(signal.chartImageUrl, text)
+    : await sendTelegramMessage(text);
+  const messageId = sent?.result?.message_id;
+  if (!messageId) return;
+  await prisma.signal.update({
+    where: { id: signal.id },
+    data: { telegramSent: true, telegramMessageId: messageId, telegramIsPhoto: !!signal.chartImageUrl },
+  });
+}
+
+/** Keeps an already-sent Telegram message in sync with edits to its signal. */
+async function syncTelegramMessage(signal: Signal) {
+  if (!signal.telegramMessageId) return;
+  const text = formatSignalMessage(signal);
+  if (signal.telegramIsPhoto) {
+    await editTelegramCaption(text, signal.telegramMessageId);
+  } else {
+    await editTelegramMessage(text, signal.telegramMessageId);
+  }
 }
 
 // ---------- Public / user-facing ----------
@@ -161,9 +193,7 @@ router.post(
     await logAudit(req.user!.id, "CREATE_SIGNAL", "Signal", signal.id, { pair: signal.pair, direction });
 
     if (signal.isPublished) {
-      const sent = await sendTelegramMessage(formatSignalMessage(signal));
-      const messageId = sent?.result?.message_id;
-      if (messageId) await prisma.signal.update({ where: { id: signal.id }, data: { telegramSent: true, telegramMessageId: messageId } });
+      await publishToTelegram(signal);
     }
 
     res.status(201).json({ signal });
@@ -202,12 +232,10 @@ router.put(
     await logAudit(req.user!.id, "UPDATE_SIGNAL", "Signal", signal.id);
 
     if (isPublished && !wasPublished && !signal.telegramSent) {
-      const sent = await sendTelegramMessage(formatSignalMessage(signal));
-      const messageId = sent?.result?.message_id;
-      if (messageId) await prisma.signal.update({ where: { id: signal.id }, data: { telegramSent: true, telegramMessageId: messageId } });
+      await publishToTelegram(signal);
     } else if (isPublished && wasPublished && signal.telegramSent && signal.telegramMessageId) {
       // Signal was already posted to Telegram; keep that message in sync with the edit instead of leaving it stale.
-      await editTelegramMessage(formatSignalMessage(signal), signal.telegramMessageId);
+      await syncTelegramMessage(signal);
     }
 
     res.json({ signal });
@@ -282,9 +310,7 @@ router.patch(
     await logAudit(req.user!.id, "PUBLISH_SIGNAL", "Signal", signal.id);
 
     if (!signal.telegramSent) {
-      const sent = await sendTelegramMessage(formatSignalMessage(signal));
-      const messageId = sent?.result?.message_id;
-      if (messageId) await prisma.signal.update({ where: { id: signal.id }, data: { telegramSent: true, telegramMessageId: messageId } });
+      await publishToTelegram(signal);
     }
     res.json({ signal });
   })
