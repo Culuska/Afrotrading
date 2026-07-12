@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { Plus, MoreVertical, Copy, Archive, Send, Trash2 } from "lucide-react";
+import { Plus, MoreVertical, Copy, Archive, Send, Trash2, Upload, Loader2 } from "lucide-react";
 
-import { api, ApiError } from "@/lib/api";
+import { api, uploadFile, ApiError } from "@/lib/api";
 import type { Signal, SignalStatus } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
@@ -201,6 +201,23 @@ function SignalFormDialog({ signal, onSuccess }: { signal: Signal | null; onSucc
     isPublished: signal?.isPublished || false,
   });
   const [loading, setLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
+
+  async function handleFileSelect(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+    setUploading(true);
+    try {
+      const { asset } = await uploadFile<{ asset: { url: string } }>("/api/upload", file, "signals");
+      setForm((f) => ({ ...f, chartImageUrl: asset.url }));
+      toast.success("Chart image uploaded");
+    } catch (err) {
+      toast.error(err instanceof ApiError ? err.message : "Failed to upload image");
+    } finally {
+      setUploading(false);
+    }
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -277,8 +294,25 @@ function SignalFormDialog({ signal, onSuccess }: { signal: Signal | null; onSucc
         </div>
 
         <div className="space-y-2">
-          <Label>Chart Image URL</Label>
-          <Input placeholder="https://res.cloudinary.com/..." value={form.chartImageUrl} onChange={(e) => setForm({ ...form, chartImageUrl: e.target.value })} />
+          <Label>Chart Image</Label>
+          <div className="flex gap-2">
+            <Input
+              placeholder="https://res.cloudinary.com/..."
+              value={form.chartImageUrl}
+              onChange={(e) => setForm({ ...form, chartImageUrl: e.target.value })}
+            />
+            <Button type="button" variant="outline" disabled={uploading} asChild>
+              <label className="cursor-pointer">
+                {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
+                Upload
+                <input type="file" accept="image/*" className="hidden" onChange={handleFileSelect} disabled={uploading} />
+              </label>
+            </Button>
+          </div>
+          {form.chartImageUrl && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={form.chartImageUrl} alt="Chart preview" className="mt-2 max-h-40 rounded-lg border border-white/10" />
+          )}
         </div>
 
         <div className="space-y-2">

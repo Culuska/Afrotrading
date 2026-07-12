@@ -49,6 +49,29 @@ export async function apiFetch<T = unknown>(path: string, options: RequestOption
   return data as T;
 }
 
+export async function uploadFile<T = unknown>(path: string, file: File, folder?: string): Promise<T> {
+  const token = getToken();
+  const formData = new FormData();
+  formData.append("file", file);
+  if (folder) formData.append("folder", folder);
+
+  const res = await fetch(`${API_URL}${path}`, {
+    method: "POST",
+    credentials: "include",
+    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+    body: formData,
+  });
+
+  const isJson = res.headers.get("content-type")?.includes("application/json");
+  const data = isJson ? await res.json() : null;
+
+  if (!res.ok) {
+    throw new ApiError(data?.message || res.statusText, res.status, data?.errors);
+  }
+
+  return data as T;
+}
+
 export const api = {
   get: <T = unknown>(path: string, options?: RequestOptions) => apiFetch<T>(path, { ...options, method: "GET" }),
   post: <T = unknown>(path: string, body?: unknown, options?: RequestOptions) =>
