@@ -1,5 +1,6 @@
 const X_WEBHOOK_URL = process.env.ZAPIER_X_WEBHOOK_URL;
 const INSTAGRAM_WEBHOOK_URL = process.env.ZAPIER_INSTAGRAM_WEBHOOK_URL;
+const FACEBOOK_WEBHOOK_URL = process.env.ZAPIER_FACEBOOK_WEBHOOK_URL;
 
 const SITE_URL = process.env.FRONTEND_URL || "https://afrotrading-web.vercel.app";
 
@@ -56,6 +57,9 @@ export async function broadcastToSocial(signal: {
   if (INSTAGRAM_WEBHOOK_URL && signal.chartImageUrl) {
     // Instagram's API requires an image with every post, so skip signals without one.
     jobs.push(postToZapier(INSTAGRAM_WEBHOOK_URL, { caption: text, imageUrl: signal.chartImageUrl }));
+  }
+  if (FACEBOOK_WEBHOOK_URL) {
+    jobs.push(postToZapier(FACEBOOK_WEBHOOK_URL, { message: text, imageUrl: signal.chartImageUrl }));
   }
 
   await Promise.all(jobs);
