@@ -29,7 +29,9 @@ function toInstagramSafeUrl(url: string): string {
   const index = url.indexOf(marker);
   if (index === -1) return url;
   const insertAt = index + marker.length;
-  return `${url.slice(0, insertAt)}c_pad,ar_4:5,b_auto/${url.slice(insertAt)}`;
+  // Zapier's Instagram "Media" field auto-splits any value containing a literal comma into
+  // separate carousel items, so the commas Cloudinary needs here must be percent-encoded.
+  return `${url.slice(0, insertAt)}c_pad%2Car_4:5%2Cb_auto/${url.slice(insertAt)}`;
 }
 
 /** Plain-text caption (no HTML) for X and Instagram, kept short enough for X's 280-char limit. */
