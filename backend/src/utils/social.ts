@@ -19,6 +19,19 @@ async function postToZapier(url: string, payload: Record<string, unknown>) {
   }
 }
 
+/**
+ * Instagram only accepts photos between a 4:5 and 1.91:1 aspect ratio, but chart screenshots
+ * are often much wider. Cloudinary can pad (not crop) the image to fit on the fly, so nothing
+ * in the chart gets cut off.
+ */
+function toInstagramSafeUrl(url: string): string {
+  const marker = "/image/upload/";
+  const index = url.indexOf(marker);
+  if (index === -1) return url;
+  const insertAt = index + marker.length;
+  return `${url.slice(0, insertAt)}c_pad,ar_4:5,b_auto/${url.slice(insertAt)}`;
+}
+
 /** Plain-text caption (no HTML) for X and Instagram, kept short enough for X's 280-char limit. */
 export function formatSocialCaption(signal: {
   signalNumber: number;
@@ -56,7 +69,9 @@ export async function broadcastToSocial(signal: {
   }
   if (INSTAGRAM_WEBHOOK_URL && signal.chartImageUrl) {
     // Instagram's API requires an image with every post, so skip signals without one.
-    jobs.push(postToZapier(INSTAGRAM_WEBHOOK_URL, { caption: text, imageUrl: signal.chartImageUrl }));
+    jobs.push(
+      postToZapier(INSTAGRAM_WEBHOOK_URL, { caption: text, imageUrl: toInstagramSafeUrl(signal.chartImageUrl) })
+    );
   }
   if (FACEBOOK_WEBHOOK_URL) {
     jobs.push(postToZapier(FACEBOOK_WEBHOOK_URL, { message: text, imageUrl: signal.chartImageUrl }));
