@@ -3,7 +3,7 @@ const CHANNEL_CHAT_ID = process.env.TELEGRAM_CHANNEL_CHAT_ID;
 
 const API_BASE = BOT_TOKEN ? `https://api.telegram.org/bot${BOT_TOKEN}` : null;
 
-async function callTelegramApi(method: string, body: Record<string, unknown>) {
+async function callTelegramApi(method: string, body: Record<string, unknown>): Promise<any> {
   if (!API_BASE) {
     console.warn("TELEGRAM_BOT_TOKEN is not set; skipping Telegram API call. Set it in Railway → Variables.");
     return null;
@@ -33,6 +33,15 @@ async function callTelegramApi(method: string, body: Record<string, unknown>) {
 export async function sendTelegramMessage(text: string, chatId?: string) {
   return callTelegramApi("sendMessage", {
     chat_id: chatId || CHANNEL_CHAT_ID,
+    text,
+    parse_mode: "HTML",
+  });
+}
+
+export async function editTelegramMessage(text: string, messageId: number, chatId?: string) {
+  return callTelegramApi("editMessageText", {
+    chat_id: chatId || CHANNEL_CHAT_ID,
+    message_id: messageId,
     text,
     parse_mode: "HTML",
   });

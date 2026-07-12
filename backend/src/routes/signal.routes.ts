@@ -7,7 +7,7 @@ import { prisma } from "@/lib/prisma";
 import { requireAuth, requireRole, optionalAuth, AuthRequest } from "@/middleware/auth";
 import { validate } from "@/middleware/validate";
 import { logAudit } from "@/utils/audit";
-import { sendTelegramMessage, formatSignalMessage } from "@/utils/telegram";
+import { sendTelegramMessage, editTelegramMessage, formatSignalMessage } from "@/utils/telegram";
 
 const router = Router();
 
@@ -162,7 +162,8 @@ router.post(
 
     if (signal.isPublished) {
       const sent = await sendTelegramMessage(formatSignalMessage(signal));
-      if (sent) await prisma.signal.update({ where: { id: signal.id }, data: { telegramSent: true } });
+      const messageId = sent?.result?.message_id;
+      if (messageId) await prisma.signal.update({ where: { id: signal.id }, data: { telegramSent: true, telegramMessageId: messageId } });
     }
 
     res.status(201).json({ signal });
@@ -174,7 +175,8 @@ router.put(
   requireAuth,
   requireRole("ADMIN"),
   asyncHandler(async (req: AuthRequest, res) => {
-    const wasPublished = (await prisma.signal.findUnique({ where: { id: req.params.id } }))?.isPublished;
+    const existing = await prisma.signal.findUnique({ where: { id: req.params.id } });
+    const wasPublished = existing?.isPublished;
 
     const {
       pair, direction, entryPrice, stopLoss, takeProfit1, takeProfit2, takeProfit3,
@@ -201,7 +203,11 @@ router.put(
 
     if (isPublished && !wasPublished && !signal.telegramSent) {
       const sent = await sendTelegramMessage(formatSignalMessage(signal));
-      if (sent) await prisma.signal.update({ where: { id: signal.id }, data: { telegramSent: true } });
+      const messageId = sent?.result?.message_id;
+      if (messageId) await prisma.signal.update({ where: { id: signal.id }, data: { telegramSent: true, telegramMessageId: messageId } });
+    } else if (isPublished && wasPublished && signal.telegramSent && signal.telegramMessageId) {
+      // Signal was already posted to Telegram; keep that message in sync with the edit instead of leaving it stale.
+      await editTelegramMessage(formatSignalMessage(signal), signal.telegramMessageId);
     }
 
     res.json({ signal });
@@ -277,7 +283,8 @@ router.patch(
 
     if (!signal.telegramSent) {
       const sent = await sendTelegramMessage(formatSignalMessage(signal));
-      if (sent) await prisma.signal.update({ where: { id: signal.id }, data: { telegramSent: true } });
+      const messageId = sent?.result?.message_id;
+      if (messageId) await prisma.signal.update({ where: { id: signal.id }, data: { telegramSent: true, telegramMessageId: messageId } });
     }
     res.json({ signal });
   })

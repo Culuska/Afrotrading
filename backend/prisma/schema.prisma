@@ -167,7 +167,8 @@ model Signal {
 
   vipOnly       Boolean         @default(false)
 
-  telegramSent  Boolean         @default(false)
+  telegramSent      Boolean     @default(false)
+  telegramMessageId Int?
 
   savedBy       SavedSignal[]
 
