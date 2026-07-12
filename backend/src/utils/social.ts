@@ -2,7 +2,7 @@ const X_WEBHOOK_URL = process.env.ZAPIER_X_WEBHOOK_URL;
 const INSTAGRAM_WEBHOOK_URL = process.env.ZAPIER_INSTAGRAM_WEBHOOK_URL;
 const FACEBOOK_WEBHOOK_URL = process.env.ZAPIER_FACEBOOK_WEBHOOK_URL;
 
-const SITE_URL = process.env.FRONTEND_URL || "https://afrotrading-web.vercel.app";
+const SITE_URL = process.env.FRONTEND_URL || "https://www.theafrotrading.com";
 
 async function postToZapier(url: string, payload: Record<string, unknown>) {
   try {
