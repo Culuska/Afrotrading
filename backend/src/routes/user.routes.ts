@@ -7,7 +7,12 @@ import { prisma } from "@/lib/prisma";
 import { requireAuth, requireRole, AuthRequest } from "@/middleware/auth";
 import { validate } from "@/middleware/validate";
 import { logAudit } from "@/utils/audit";
-import { sendEmail, accountApprovedEmailTemplate } from "@/utils/email";
+import {
+  sendEmail,
+  accountApprovedEmailTemplate,
+  accountSuspendedEmailTemplate,
+  membershipChangedEmailTemplate,
+} from "@/utils/email";
 
 const router = Router();
 
@@ -263,6 +268,15 @@ router.patch(
   requireRole("ADMIN"),
   asyncHandler(async (req: AuthRequest, res) => {
     const user = await prisma.user.update({ where: { id: req.params.id }, data: { status: "SUSPENDED" } });
+    await prisma.notification.create({
+      data: {
+        userId: user.id,
+        channel: "EMAIL",
+        title: "Account suspended",
+        body: "Your account has been suspended by our team.",
+      },
+    });
+    void sendEmail(user.email, "Your AfroTrading account has been suspended", accountSuspendedEmailTemplate(user.fullName));
     await logAudit(req.user!.id, "SUSPEND_USER", "User", user.id);
     res.json({ message: "User suspended" });
   })
@@ -309,6 +323,16 @@ router.patch(
         membershipExpiresAt: expiresAt ? new Date(expiresAt) : membership === "VIP_LIFETIME" ? null : undefined,
       },
     });
+    await prisma.notification.create({
+      data: {
+        userId: user.id,
+        channel: "EMAIL",
+        title: "Membership updated",
+        body: `Your membership has been changed to ${membership}.`,
+      },
+    });
+    const dashboardUrl = `${process.env.FRONTEND_URL}/dashboard`;
+    void sendEmail(user.email, "Your AfroTrading membership has changed", membershipChangedEmailTemplate(user.fullName, membership, dashboardUrl));
     await logAudit(req.user!.id, "CHANGE_MEMBERSHIP", "User", user.id, { membership });
     res.json({ message: "Membership updated", user: { id: user.id, membership: user.membership, role: user.role } });
   })

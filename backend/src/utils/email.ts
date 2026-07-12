@@ -45,6 +45,34 @@ export function accountApprovedEmailTemplate(name: string, dashboardUrl: string)
   `;
 }
 
+export function accountSuspendedEmailTemplate(name: string) {
+  return `
+    <div style="font-family: sans-serif; background:#0b0f19; color:#f4f4f5; padding:32px;">
+      <h1 style="color:#D4AF37;">Account Suspended</h1>
+      <p>Hi ${name}, your AfroTrading account has been suspended by our team and you no longer have access to your dashboard, signals, or education content.</p>
+      <p style="margin-top:24px; font-size:12px; color:#888;">If you believe this is a mistake, please contact our support team.</p>
+    </div>
+  `;
+}
+
+const MEMBERSHIP_LABELS: Record<string, string> = {
+  FREE: "Free",
+  VIP_MONTHLY: "VIP Monthly",
+  VIP_LIFETIME: "VIP Lifetime",
+};
+
+export function membershipChangedEmailTemplate(name: string, membership: string, dashboardUrl: string) {
+  const label = MEMBERSHIP_LABELS[membership] || membership;
+  return `
+    <div style="font-family: sans-serif; background:#0b0f19; color:#f4f4f5; padding:32px;">
+      <h1 style="color:#D4AF37;">Your Membership Has Changed</h1>
+      <p>Hi ${name}, your AfroTrading membership has been updated to <b>${label}</b> by our team.</p>
+      <a href="${dashboardUrl}" style="display:inline-block; background:#D4AF37; color:#0b0f19; padding:12px 24px; border-radius:8px; text-decoration:none; font-weight:bold;">Go to Dashboard</a>
+      <p style="margin-top:24px; font-size:12px; color:#888;">If you weren't expecting this, please contact our support team.</p>
+    </div>
+  `;
+}
+
 export function passwordResetEmailTemplate(name: string, resetUrl: string) {
   return `
     <div style="font-family: sans-serif; background:#0b0f19; color:#f4f4f5; padding:32px;">

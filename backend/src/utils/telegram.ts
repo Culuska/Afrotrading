@@ -5,20 +5,29 @@ const API_BASE = BOT_TOKEN ? `https://api.telegram.org/bot${BOT_TOKEN}` : null;
 
 async function callTelegramApi(method: string, body: Record<string, unknown>) {
   if (!API_BASE) {
-    console.warn("Telegram bot token not configured; skipping Telegram API call.");
+    console.warn("TELEGRAM_BOT_TOKEN is not set; skipping Telegram API call. Set it in Railway → Variables.");
     return null;
   }
-  const res = await fetch(`${API_BASE}/${method}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-  });
-  if (!res.ok) {
-    const text = await res.text();
-    console.error(`Telegram API error (${method}):`, text);
+  if (!body.chat_id) {
+    console.warn("TELEGRAM_CHANNEL_CHAT_ID is not set; skipping Telegram API call. Set it in Railway → Variables.");
     return null;
   }
-  return res.json();
+  try {
+    const res = await fetch(`${API_BASE}/${method}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      console.error(`Telegram API error (${method}):`, data);
+      return null;
+    }
+    return data;
+  } catch (err) {
+    console.error(`Telegram API request failed (${method}):`, err);
+    return null;
+  }
 }
 
 export async function sendTelegramMessage(text: string, chatId?: string) {
