@@ -31,13 +31,19 @@ router.get(
 router.get(
   "/:slug",
   optionalAuth,
-  asyncHandler(async (req, res) => {
+  asyncHandler(async (req: AuthRequest, res) => {
     const analysis = await prisma.marketAnalysis.findUnique({ where: { slug: req.params.slug } });
     if (!analysis || !analysis.published) {
       res.status(404).json({ message: "Analysis not found" });
       return;
     }
-    res.json({ analysis });
+    const isVip = req.user?.role === "VIP" || req.user?.role === "ADMIN";
+    if (analysis.vipOnly && !isVip) {
+      const { body, videoUrl, chartImageUrl, ...preview } = analysis;
+      res.json({ analysis: preview, locked: true });
+      return;
+    }
+    res.json({ analysis, locked: false });
   })
 );
 

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import Link from "next/link";
 
 import { api } from "@/lib/api";
 import type { MarketAnalysis } from "@/lib/types";
@@ -63,18 +64,20 @@ export default function MarketAnalysisPage() {
             <div key={i} className="h-48 animate-pulse rounded-2xl border border-white/5 bg-navy-800/50" />
           ))}
         {data?.analysis.map((item) => (
-          <Card key={item.id} className="transition-transform hover:-translate-y-1">
-            <CardContent className="p-6">
-              <div className="flex items-center gap-2">
-                <Badge variant="neutral">{item.timeframe}</Badge>
-                <Badge variant="outline">{item.type}</Badge>
-                {item.vipOnly && <Badge>VIP</Badge>}
-              </div>
-              <h3 className="mt-4 font-display text-lg font-semibold">{item.title}</h3>
-              <p className="mt-2 line-clamp-3 text-sm text-foreground/60">{item.summary}</p>
-              <p className="mt-4 text-xs text-foreground/30">{formatDate(item.createdAt)}</p>
-            </CardContent>
-          </Card>
+          <Link key={item.id} href={`/market-analysis/${item.slug}`}>
+            <Card className="h-full transition-transform hover:-translate-y-1">
+              <CardContent className="p-6">
+                <div className="flex items-center gap-2">
+                  <Badge variant="neutral">{item.timeframe}</Badge>
+                  <Badge variant="outline">{item.type}</Badge>
+                  {item.vipOnly && <Badge>VIP</Badge>}
+                </div>
+                <h3 className="mt-4 font-display text-lg font-semibold">{item.title}</h3>
+                <p className="mt-2 line-clamp-3 text-sm text-foreground/60">{item.summary}</p>
+                <p className="mt-4 text-xs text-foreground/30">{formatDate(item.createdAt)}</p>
+              </CardContent>
+            </Card>
+          </Link>
         ))}
         {data?.analysis.length === 0 && (
           <p className="col-span-full py-12 text-center text-foreground/50">No analysis published in this timeframe yet.</p>
