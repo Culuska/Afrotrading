@@ -23,7 +23,7 @@ export default function SignalHistoryPage() {
 
   const { data: historyData, isLoading } = useQuery({
     queryKey: ["signals", "history", range],
-    queryFn: () => api.get<{ signals: Signal[] }>(`/api/signals/history?range=${range}`, { auth: false }),
+    queryFn: () => api.get<{ signals: Signal[] }>(`/api/signals/history?range=${range}`),
   });
 
   const { data: stats } = useQuery({

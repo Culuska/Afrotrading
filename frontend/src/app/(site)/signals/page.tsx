@@ -30,8 +30,7 @@ export default function SignalsPage() {
           ...(filter !== "all" ? { filter } : {}),
           ...(search ? { search } : {}),
           limit: "50",
-        })}`,
-        { auth: false }
+        })}`
       ),
   });
 

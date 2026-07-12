@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 export function LatestSignalsSection() {
   const { data, isLoading } = useQuery({
     queryKey: ["signals", "latest"],
-    queryFn: () => api.get<{ signals: Signal[] }>("/api/signals?limit=4", { auth: false }),
+    queryFn: () => api.get<{ signals: Signal[] }>("/api/signals?limit=4"),
   });
 
   return (
