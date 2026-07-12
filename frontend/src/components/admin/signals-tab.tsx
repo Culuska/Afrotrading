@@ -85,6 +85,7 @@ export function AdminSignalsTab() {
             </Button>
           </DialogTrigger>
           <SignalFormDialog
+            key={editingSignal?.id ?? "new"}
             signal={editingSignal}
             onSuccess={() => {
               setDialogOpen(false);
