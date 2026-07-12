@@ -69,6 +69,7 @@ export function formatSignalMessage(signal: {
     signal.takeProfit2 ? `TP2: <b>${signal.takeProfit2}</b>` : null,
     signal.takeProfit3 ? `TP3: <b>${signal.takeProfit3}</b>` : null,
     signal.notes ? `\nNotes: ${signal.notes}` : null,
+    `\n⚠️ Manage your risk: don't risk more than 1-2%. Always protect your capital.`,
     `\n⚠️ Trade at your own risk. Not financial advice.`,
   ].filter(Boolean);
   return lines.join("\n");
