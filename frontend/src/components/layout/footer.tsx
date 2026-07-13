@@ -114,7 +114,7 @@ export function Footer() {
                 <FacebookIcon className="h-4 w-4" />
               </a>
               <a
-                href="mailto:support@afrotrading.com"
+                href="mailto:support@theafrotrading.com"
                 className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-foreground/70 transition-colors hover:border-gold-500/50 hover:text-gold-400"
                 aria-label="Email"
               >
@@ -147,7 +147,7 @@ export function Footer() {
                 <Phone className="h-4 w-4 text-gold-400" /> {CONTACT_PHONE_DISPLAY}
               </li>
               <li className="flex items-center gap-2">
-                <Mail className="h-4 w-4 text-gold-400" /> support@afrotrading.com
+                <Mail className="h-4 w-4 text-gold-400" /> support@theafrotrading.com
               </li>
             </ul>
           </div>

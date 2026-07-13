@@ -17,7 +17,7 @@ import { TELEGRAM_GROUP_URL, WHATSAPP_URL, CONTACT_PHONE_DISPLAY, CONTACT_PHONE_
 const CONTACT_METHODS = [
   { icon: Send, label: "Telegram", value: `@${TELEGRAM_GROUP_URL.replace(/^https?:\/\/t\.me\//, "")}`, href: TELEGRAM_GROUP_URL },
   { icon: MessageCircle, label: "WhatsApp", value: CONTACT_PHONE_DISPLAY, href: WHATSAPP_URL },
-  { icon: Mail, label: "Email", value: "support@afrotrading.com", href: "mailto:support@afrotrading.com" },
+  { icon: Mail, label: "Email", value: "support@theafrotrading.com", href: "mailto:support@theafrotrading.com" },
   { icon: Phone, label: "Phone", value: CONTACT_PHONE_DISPLAY, href: CONTACT_PHONE_TEL },
 ];
 
