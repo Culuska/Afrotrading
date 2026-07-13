@@ -42,7 +42,6 @@ function mediaTypeFor(mimetype: string): "IMAGE" | "VIDEO" | "AUDIO" | "PDF" {
 router.post(
   "/",
   requireAuth,
-  requireRole("ADMIN"),
   upload.single("file"),
   asyncHandler(async (req: AuthRequest, res) => {
     if (!req.file) {
