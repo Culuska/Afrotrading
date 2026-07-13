@@ -20,6 +20,11 @@ const SLIDES = [
     alt: "Laptop showing gold price chart analysis with an AI market assistant chat panel",
     caption: "AI-powered market analysis, 24/7",
   },
+  {
+    src: "/images/hero/slide-4.jpg",
+    alt: "AfroTrading analyst reviewing live gold charts across a multi-monitor trading desk",
+    caption: "Our team, watching the markets for you",
+  },
 ];
 
 const SLIDE_DURATION_MS = 4500;
