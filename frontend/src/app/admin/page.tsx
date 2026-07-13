@@ -8,6 +8,7 @@ import { AdminUsersTab } from "@/components/admin/users-tab";
 import { AdminSignalsTab } from "@/components/admin/signals-tab";
 import { AdminEducationTab } from "@/components/admin/education-tab";
 import { AdminMarketAnalysisTab } from "@/components/admin/market-analysis-tab";
+import { AdminPaymentsTab } from "@/components/admin/payments-tab";
 import { AdminSupportTab } from "@/components/admin/support-tab";
 import { AdminSettingsTab } from "@/components/admin/settings-tab";
 
@@ -17,6 +18,7 @@ const SECTION_CONTENT: Record<AdminSection, React.ComponentType> = {
   users: AdminUsersTab,
   education: AdminEducationTab,
   analysis: AdminMarketAnalysisTab,
+  payments: AdminPaymentsTab,
   support: AdminSupportTab,
   settings: AdminSettingsTab,
 };

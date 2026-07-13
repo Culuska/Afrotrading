@@ -20,6 +20,7 @@ import statsRoutes from "@/routes/stats.routes";
 import telegramRoutes from "@/routes/telegram.routes";
 import uploadRoutes from "@/routes/upload.routes";
 import settingsRoutes from "@/routes/settings.routes";
+import paymentRoutes from "@/routes/payment.routes";
 
 const app = express();
 
@@ -60,6 +61,7 @@ app.use("/api/stats", statsRoutes);
 app.use("/api/telegram", telegramRoutes);
 app.use("/api/upload", uploadRoutes);
 app.use("/api/settings", settingsRoutes);
+app.use("/api/payments", paymentRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

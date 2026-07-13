@@ -1,16 +1,27 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { Check } from "lucide-react";
 import { api } from "@/lib/api";
-import type { PricingPlan } from "@/lib/types";
+import type { PricingPlan, Membership } from "@/lib/types";
+import { useAuth } from "@/context/auth-context";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { CheckoutDialog } from "@/components/marketing/checkout-dialog";
+
+const SLUG_TO_PLAN: Record<string, Extract<Membership, "VIP_MONTHLY" | "VIP_LIFETIME">> = {
+  "vip-monthly": "VIP_MONTHLY",
+  "vip-lifetime": "VIP_LIFETIME",
+};
 
 export function PricingCards() {
+  const { user } = useAuth();
+  const [checkoutPlan, setCheckoutPlan] = useState<PricingPlan | null>(null);
+
   const { data, isLoading } = useQuery({
     queryKey: ["pricing"],
     queryFn: () => api.get<{ plans: PricingPlan[] }>("/api/pricing", { auth: false }),
@@ -59,12 +70,33 @@ export function PricingCards() {
                 </li>
               ))}
             </ul>
-            <Button asChild variant={plan.isPopular ? "default" : "outline"} className="w-full">
-              <Link href="/register">{plan.price === "0.00" || Number(plan.price) === 0 ? "Start Free" : "Choose Plan"}</Link>
-            </Button>
+            {Number(plan.price) === 0 || !user ? (
+              <Button asChild variant={plan.isPopular ? "default" : "outline"} className="w-full">
+                <Link href={user ? "/dashboard" : "/register"}>
+                  {Number(plan.price) === 0 ? "Start Free" : "Sign Up to Upgrade"}
+                </Link>
+              </Button>
+            ) : (
+              <Button
+                variant={plan.isPopular ? "default" : "outline"}
+                className="w-full"
+                onClick={() => setCheckoutPlan(plan)}
+              >
+                Choose Plan
+              </Button>
+            )}
           </CardContent>
         </Card>
       ))}
+
+      {checkoutPlan && SLUG_TO_PLAN[checkoutPlan.slug] && (
+        <CheckoutDialog
+          open={!!checkoutPlan}
+          onOpenChange={(open) => !open && setCheckoutPlan(null)}
+          plan={SLUG_TO_PLAN[checkoutPlan.slug]}
+          planLabel={checkoutPlan.name}
+        />
+      )}
     </div>
   );
 }

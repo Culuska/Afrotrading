@@ -8,6 +8,7 @@ import {
   GraduationCap,
   LineChart,
   MessageSquare,
+  CreditCard,
   Settings,
   ArrowLeft,
 } from "lucide-react";
@@ -22,6 +23,7 @@ export const ADMIN_SECTIONS = [
   { id: "users", label: "Users", icon: Users },
   { id: "education", label: "Education", icon: GraduationCap },
   { id: "analysis", label: "Market Analysis", icon: LineChart },
+  { id: "payments", label: "Payments", icon: CreditCard },
   { id: "support", label: "Support Messages", icon: MessageSquare },
   { id: "settings", label: "Settings", icon: Settings },
 ] as const;

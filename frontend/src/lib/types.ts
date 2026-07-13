@@ -139,6 +139,28 @@ export interface PricingPlan {
   order: number;
 }
 
+export type PaymentProvider = "CRYPTO" | "MOBILE_MONEY";
+export type PaymentStatus = "PENDING" | "CONFIRMED" | "FAILED" | "EXPIRED" | "REJECTED";
+
+export interface Payment {
+  id: string;
+  userId: string;
+  provider: PaymentProvider;
+  plan: Membership;
+  amountUsd: string;
+  status: PaymentStatus;
+  nowPaymentsId?: string | null;
+  invoiceUrl?: string | null;
+  payCurrency?: string | null;
+  mobileNumber?: string | null;
+  transactionRef?: string | null;
+  proofImageUrl?: string | null;
+  rejectionReason?: string | null;
+  reviewedAt?: string | null;
+  createdAt: string;
+  user?: { fullName: string; email: string };
+}
+
 export interface PerformanceStats {
   totalSignals: number;
   winningSignals: number;

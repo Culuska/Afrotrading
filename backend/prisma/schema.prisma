@@ -26,6 +26,19 @@ enum MembershipPlan {
   VIP_LIFETIME
 }
 
+enum PaymentProvider {
+  CRYPTO
+  MOBILE_MONEY
+}
+
+enum PaymentStatus {
+  PENDING
+  CONFIRMED
+  FAILED
+  EXPIRED
+  REJECTED
+}
+
 enum UserStatus {
   ACTIVE
   SUSPENDED
@@ -134,6 +147,8 @@ model User {
   auditLogs             AuditLog[]
   notifications         Notification[]
   contactMessages       ContactMessage[]
+  payments              Payment[]
+  reviewedPayments      Payment[] @relation("PaymentReviewer")
 
   createdAt             DateTime  @default(now())
   updatedAt             DateTime  @updatedAt
@@ -287,6 +302,38 @@ model PricingPlan {
   updatedAt   DateTime @updatedAt
 
   @@map("pricing_plans")
+}
+
+model Payment {
+  id            String          @id @default(cuid())
+  userId        String
+  user          User            @relation(fields: [userId], references: [id])
+  provider      PaymentProvider
+  plan          MembershipPlan
+  amountUsd     Decimal         @db.Decimal(10, 2)
+  status        PaymentStatus   @default(PENDING)
+
+  // Crypto (NowPayments)
+  nowPaymentsId String?
+  invoiceUrl    String?
+  payCurrency   String?
+
+  // Manual mobile money (EVC Plus / Zaad)
+  mobileNumber    String?
+  transactionRef  String?
+  proofImageUrl   String?
+  rejectionReason String?
+
+  reviewedById  String?
+  reviewedBy    User?           @relation("PaymentReviewer", fields: [reviewedById], references: [id])
+  reviewedAt    DateTime?
+
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  @@index([userId])
+  @@index([status])
+  @@map("payments")
 }
 
 model MediaAsset {
