@@ -107,6 +107,17 @@ export interface MarketAnalysis {
   createdAt: string;
 }
 
+export interface ContactMessage {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string | null;
+  subject?: string | null;
+  message: string;
+  resolved: boolean;
+  createdAt: string;
+}
+
 export interface Testimonial {
   id: string;
   name: string;

@@ -4,6 +4,7 @@ import { body } from "express-validator";
 import { prisma } from "@/lib/prisma";
 import { requireAuth, requireRole, optionalAuth, AuthRequest } from "@/middleware/auth";
 import { validate } from "@/middleware/validate";
+import { sendEmail, contactMessageEmailTemplate } from "@/utils/email";
 
 const router = Router();
 
@@ -17,6 +18,15 @@ router.post(
     const contact = await prisma.contactMessage.create({
       data: { name, email, phone, subject, message, userId: req.user?.id },
     });
+
+    const settings = await prisma.siteSettings.findUnique({ where: { id: "singleton" } });
+    const notifyEmail = settings?.contactEmail || "support@theafrotrading.com";
+    void sendEmail(
+      notifyEmail,
+      `New support message: ${subject || "General inquiry"}`,
+      contactMessageEmailTemplate({ name, email, phone, subject, message })
+    );
+
     res.status(201).json({ message: "Message received. We'll get back to you shortly.", id: contact.id });
   })
 );

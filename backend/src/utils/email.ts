@@ -73,6 +73,24 @@ export function membershipChangedEmailTemplate(name: string, membership: string,
   `;
 }
 
+export function contactMessageEmailTemplate(fields: {
+  name: string;
+  email: string;
+  phone?: string | null;
+  subject?: string | null;
+  message: string;
+}) {
+  return `
+    <div style="font-family: sans-serif; background:#0b0f19; color:#f4f4f5; padding:32px;">
+      <h1 style="color:#D4AF37;">New Support Message</h1>
+      <p><b>From:</b> ${fields.name} (${fields.email})</p>
+      ${fields.phone ? `<p><b>Phone:</b> ${fields.phone}</p>` : ""}
+      ${fields.subject ? `<p><b>Subject:</b> ${fields.subject}</p>` : ""}
+      <p style="margin-top:16px; white-space:pre-line;">${fields.message}</p>
+    </div>
+  `;
+}
+
 export function passwordResetEmailTemplate(name: string, resetUrl: string) {
   return `
     <div style="font-family: sans-serif; background:#0b0f19; color:#f4f4f5; padding:32px;">
