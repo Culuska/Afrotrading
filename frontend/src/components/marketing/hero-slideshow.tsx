@@ -6,17 +6,17 @@ import { AnimatePresence, motion } from "framer-motion";
 
 const SLIDES = [
   {
-    src: "/images/hero/slide-1.svg",
+    src: "/images/hero/slide-1.jpg",
     alt: "Live market overview dashboard on a mobile phone showing candlestick charts and portfolio performance",
     caption: "Real-time market overview, wherever you are",
   },
   {
-    src: "/images/hero/slide-2.svg",
+    src: "/images/hero/slide-2.jpg",
     alt: "Mobile app showing an instant buy signal alert with spread and balance details",
     caption: "Instant buy & sell signal alerts",
   },
   {
-    src: "/images/hero/slide-3.svg",
+    src: "/images/hero/slide-3.jpg",
     alt: "Laptop showing gold price chart analysis with an AI market assistant chat panel",
     caption: "AI-powered market analysis, 24/7",
   },
