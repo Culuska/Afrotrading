@@ -70,7 +70,7 @@ export default function EducationPage() {
       <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {isLoading &&
           Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="h-56 animate-pulse rounded-2xl border border-white/5 bg-navy-800/50" />
+            <div key={i} className="h-56 animate-pulse rounded-2xl border border-black/5 bg-navy-800/50" />
           ))}
         {data?.content.map((item) => {
           const Icon = TYPE_ICON[item.type] || BookOpen;

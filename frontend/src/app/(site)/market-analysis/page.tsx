@@ -61,7 +61,7 @@ export default function MarketAnalysisPage() {
       <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {isLoading &&
           Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="h-48 animate-pulse rounded-2xl border border-white/5 bg-navy-800/50" />
+            <div key={i} className="h-48 animate-pulse rounded-2xl border border-black/5 bg-navy-800/50" />
           ))}
         {data?.analysis.map((item) => (
           <Link key={item.id} href={`/market-analysis/${item.slug}`}>

@@ -23,7 +23,7 @@ export function LatestSignalsSection() {
       <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {isLoading &&
           Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="h-64 animate-pulse rounded-2xl border border-white/5 bg-navy-800/50" />
+            <div key={i} className="h-64 animate-pulse rounded-2xl border border-black/5 bg-navy-800/50" />
           ))}
         {data?.signals.map((signal, i) => <SignalCard key={signal.id} signal={signal} index={i} />)}
       </div>

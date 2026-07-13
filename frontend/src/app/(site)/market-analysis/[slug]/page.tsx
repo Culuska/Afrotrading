@@ -84,7 +84,7 @@ export default function MarketAnalysisDetailPage() {
       ) : (
         <div className="mt-8 space-y-6">
           {analysis.chartImageUrl && (
-            <div className="overflow-hidden rounded-2xl border border-white/10">
+            <div className="overflow-hidden rounded-2xl border border-black/10">
               <Image
                 src={analysis.chartImageUrl}
                 alt={analysis.title}
@@ -96,7 +96,7 @@ export default function MarketAnalysisDetailPage() {
           )}
 
           {analysis.videoUrl && (
-            <div className="aspect-video overflow-hidden rounded-2xl border border-white/10">
+            <div className="aspect-video overflow-hidden rounded-2xl border border-black/10">
               <iframe
                 src={analysis.videoUrl}
                 title={analysis.title}

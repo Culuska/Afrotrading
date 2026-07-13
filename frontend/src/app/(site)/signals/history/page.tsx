@@ -113,7 +113,7 @@ export default function SignalHistoryPage() {
                 <TableCell>{s.riskReward ?? "—"}</TableCell>
                 <TableCell>
                   {s.chartImageUrl ? (
-                    <a href={s.chartImageUrl} target="_blank" rel="noopener noreferrer" className="inline-block h-10 w-14 overflow-hidden rounded-md border border-white/10">
+                    <a href={s.chartImageUrl} target="_blank" rel="noopener noreferrer" className="inline-block h-10 w-14 overflow-hidden rounded-md border border-black/10">
                       <Image src={s.chartImageUrl} alt="Chart" width={56} height={40} className="h-full w-full object-cover" />
                     </a>
                   ) : (

@@ -35,7 +35,7 @@ export function Navbar() {
   const { user, logout } = useAuth();
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/5 bg-navy-950/80 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 border-b border-black/5 bg-navy-950/80 backdrop-blur-xl">
       <nav className="mx-auto flex h-18 max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center gap-2">
           <span className="flex h-9 w-9 items-center justify-center rounded-lg gold-gradient-bg">
@@ -52,8 +52,8 @@ export function Navbar() {
               key={link.href}
               href={link.href}
               className={cn(
-                "rounded-full px-3.5 py-2 text-sm font-medium text-foreground/70 transition-colors hover:bg-white/5 hover:text-gold-400",
-                pathname === link.href && "bg-white/5 text-gold-400"
+                "rounded-full px-3.5 py-2 text-sm font-medium text-foreground/70 transition-colors hover:bg-black/5 hover:text-gold-400",
+                pathname === link.href && "bg-black/5 text-gold-400"
               )}
             >
               {link.label}
@@ -115,7 +115,7 @@ export function Navbar() {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="overflow-hidden border-t border-white/5 bg-navy-950 lg:hidden"
+            className="overflow-hidden border-t border-black/5 bg-navy-950 lg:hidden"
           >
             <div className="flex flex-col gap-1 px-4 py-4">
               {NAV_LINKS.map((link) => (
@@ -123,12 +123,12 @@ export function Navbar() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setOpen(false)}
-                  className="rounded-lg px-3 py-2.5 text-sm font-medium text-foreground/80 hover:bg-white/5 hover:text-gold-400"
+                  className="rounded-lg px-3 py-2.5 text-sm font-medium text-foreground/80 hover:bg-black/5 hover:text-gold-400"
                 >
                   {link.label}
                 </Link>
               ))}
-              <div className="mt-3 flex flex-col gap-2 border-t border-white/5 pt-3">
+              <div className="mt-3 flex flex-col gap-2 border-t border-black/5 pt-3">
                 {user ? (
                   <>
                     <Button asChild variant="secondary">

@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#cfe6fa"/>
+      <stop offset="100%" stop-color="#eaf4fd"/>
+    </linearGradient>
+    <linearGradient id="phoneScreen2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0f2c50"/>
+      <stop offset="100%" stop-color="#0b2547"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg2)"/>
+
+  <g>
+    <rect x="60" y="150" width="150" height="150" rx="20" fill="#2f8fe0"/>
+    <circle cx="135" cy="205" r="26" fill="#ffffff"/>
+    <path d="M120 205 l10 10 l20 -22" stroke="#2f8fe0" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="135" y="255" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" font-weight="800" fill="#ffffff">BUY SIGNAL</text>
+  </g>
+
+  <g>
+    <rect x="60" y="330" width="180" height="70" rx="14" fill="#ffffff" fill-opacity="0.85"/>
+    <polyline points="72,385 95,365 118,375 141,350 164,360 187,340 210,352" fill="none" stroke="#2f8fe0" stroke-width="3"/>
+  </g>
+
+  <g>
+    <rect x="500" y="80" width="220" height="150" rx="18" fill="#ffffff" fill-opacity="0.85"/>
+    <text x="520" y="112" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0b1b33">Spread Watch</text>
+    <text x="520" y="140" font-family="Arial, sans-serif" font-size="12" fill="#0b1b33">EUR/USD</text>
+    <rect x="520" y="150" width="60" height="10" rx="5" fill="#4fd1a5"/>
+    <text x="520" y="176" font-family="Arial, sans-serif" font-size="12" fill="#0b1b33">GBP/USD</text>
+    <rect x="520" y="186" width="90" height="10" rx="5" fill="#f59e0b"/>
+    <text x="520" y="212" font-family="Arial, sans-serif" font-size="12" fill="#0b1b33">USD/JPY</text>
+    <rect x="520" y="200" width="0" height="0"/>
+  </g>
+
+  <g>
+    <rect x="290" y="90" width="220" height="440" rx="36" fill="#0b2547"/>
+    <rect x="300" y="102" width="200" height="416" rx="26" fill="url(#phoneScreen2)"/>
+
+    <text x="322" y="140" font-family="Arial, sans-serif" font-size="13" fill="#dce8fb">Adeegga Nashaad</text>
+    <rect x="322" y="155" width="160" height="26" rx="13" fill="#2f8fe0"/>
+    <text x="336" y="172" font-family="Arial, sans-serif" font-size="11" fill="#ffffff">Live signal alert</text>
+
+    <rect x="322" y="195" width="160" height="26" rx="13" fill="#ffffff" fill-opacity="0.1"/>
+    <text x="336" y="212" font-family="Arial, sans-serif" font-size="11" fill="#dce8fb">EUR/USD  1.1556</text>
+
+    <rect x="322" y="231" width="160" height="26" rx="13" fill="#ffffff" fill-opacity="0.1"/>
+    <text x="336" y="248" font-family="Arial, sans-serif" font-size="11" fill="#dce8fb">GBP/USD  1.3477</text>
+
+    <rect x="322" y="267" width="160" height="26" rx="13" fill="#ffffff" fill-opacity="0.1"/>
+    <text x="336" y="284" font-family="Arial, sans-serif" font-size="11" fill="#dce8fb">USD/JPY  113.44</text>
+
+    <g transform="translate(322,320)">
+      <rect x="0" y="40" width="7" height="24" fill="#4fd1a5"/>
+      <rect x="12" y="20" width="7" height="44" fill="#4fd1a5"/>
+      <rect x="24" y="30" width="7" height="34" fill="#ef4444"/>
+      <rect x="36" y="10" width="7" height="54" fill="#4fd1a5"/>
+      <rect x="48" y="25" width="7" height="39" fill="#4fd1a5"/>
+      <rect x="60" y="0" width="7" height="64" fill="#4fd1a5"/>
+      <rect x="72" y="18" width="7" height="46" fill="#4fd1a5"/>
+      <rect x="84" y="34" width="7" height="30" fill="#ef4444"/>
+      <rect x="96" y="8" width="7" height="56" fill="#4fd1a5"/>
+      <rect x="108" y="22" width="7" height="42" fill="#4fd1a5"/>
+      <rect x="120" y="12" width="7" height="52" fill="#4fd1a5"/>
+      <rect x="132" y="28" width="7" height="36" fill="#ef4444"/>
+    </g>
+
+    <text x="322" y="470" font-family="Arial, sans-serif" font-size="11" fill="#dce8fb">Balance</text>
+    <text x="440" y="470" text-anchor="end" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#4fd1a5">5,556.54</text>
+  </g>
+</svg>

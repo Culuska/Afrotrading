@@ -25,7 +25,7 @@ export function TradingViewTicker() {
     script.innerHTML = JSON.stringify({
       symbols: SYMBOLS,
       showSymbolLogo: true,
-      colorTheme: "dark",
+      colorTheme: "light",
       isTransparent: true,
       displayMode: "adaptive",
       locale: "en",
@@ -35,7 +35,7 @@ export function TradingViewTicker() {
   }, []);
 
   return (
-    <div className="w-full border-y border-white/5 bg-navy-950/60">
+    <div className="w-full border-y border-black/5 bg-navy-950/60">
       <div ref={container} className="tradingview-widget-container" />
     </div>
   );

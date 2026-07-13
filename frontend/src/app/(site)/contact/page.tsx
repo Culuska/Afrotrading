@@ -52,7 +52,7 @@ export default function ContactPage() {
               href={method.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-4 rounded-2xl border border-white/10 bg-navy-800/50 p-4 transition-colors hover:border-gold-500/40"
+              className="flex items-center gap-4 rounded-2xl border border-black/10 bg-navy-800/50 p-4 transition-colors hover:border-gold-500/40"
             >
               <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-gold-500/10 text-gold-400">
                 <method.icon className="h-5 w-5" />

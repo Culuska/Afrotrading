@@ -1,28 +1,31 @@
 @import "tailwindcss";
 
 :root {
-  --background: #050810;
-  --foreground: #f4f6fb;
+  --background: #ffffff;
+  --foreground: #0b1b33;
 
-  --navy-950: #030509;
-  --navy-900: #070b14;
-  --navy-800: #0c111d;
-  --navy-700: #131a2a;
-  --navy-600: #1b2438;
-  --navy-500: #263252;
+  /* "navy" scale now reads light-to-dark blue instead of dark-to-darker.
+     navy-950 = page background (white), navy-500 = strongest blue surface. */
+  --navy-950: #ffffff;
+  --navy-900: #f4f9ff;
+  --navy-800: #e8f2fd;
+  --navy-700: #d3e7fb;
+  --navy-600: #9cc5f2;
+  --navy-500: #2e8fe0;
 
-  --gold-300: #f3d98b;
-  --gold-400: #e9c669;
-  --gold-500: #d4af37;
-  --gold-600: #b6912a;
-  --gold-700: #96741f;
+  /* "gold" scale repurposed as the brand blue accent (was gold, now blue to match brand). */
+  --gold-300: #8dc7f7;
+  --gold-400: #4fa8ea;
+  --gold-500: #2f8fe0;
+  --gold-600: #1f74c2;
+  --gold-700: #185b99;
 
   --success: #22c55e;
   --danger: #ef4444;
   --warning: #f59e0b;
 
-  --border-subtle: rgba(212, 175, 55, 0.14);
-  --glass-bg: rgba(19, 26, 42, 0.55);
+  --border-subtle: rgba(15, 40, 80, 0.1);
+  --glass-bg: rgba(255, 255, 255, 0.65);
 }
 
 @theme inline {
@@ -74,10 +77,10 @@
   @keyframes pulse-gold {
     0%,
     100% {
-      box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.35);
+      box-shadow: 0 0 0 0 rgba(47, 143, 224, 0.35);
     }
     50% {
-      box-shadow: 0 0 0 10px rgba(212, 175, 55, 0);
+      box-shadow: 0 0 0 10px rgba(47, 143, 224, 0);
     }
   }
 }
@@ -91,29 +94,29 @@ html {
 }
 
 body {
-  background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(212, 175, 55, 0.08), transparent),
+  background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(47, 143, 224, 0.12), transparent),
     var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
 }
 
 ::selection {
-  background: rgba(212, 175, 55, 0.35);
-  color: #fff;
+  background: rgba(47, 143, 224, 0.25);
+  color: #0b1b33;
 }
 
 ::-webkit-scrollbar {
   width: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--navy-950);
+  background: var(--navy-900);
 }
 ::-webkit-scrollbar-thumb {
   background: var(--navy-600);
   border-radius: 999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--gold-700);
+  background: var(--gold-600);
 }
 
 .glass-card {
@@ -124,14 +127,14 @@ body {
 }
 
 .gold-gradient-text {
-  background: linear-gradient(120deg, #f3d98b, #d4af37 45%, #96741f);
+  background: linear-gradient(120deg, #8dc7f7, #2f8fe0 45%, #185b99);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
 .gold-gradient-bg {
-  background: linear-gradient(120deg, #f3d98b, #d4af37 45%, #b6912a);
+  background: linear-gradient(120deg, #4fa8ea, #2f8fe0 45%, #1f74c2);
 }
 
 .section-glow {
@@ -141,6 +144,6 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 20% 20%, rgba(212, 175, 55, 0.08), transparent 40%);
+  background: radial-gradient(circle at 20% 20%, rgba(47, 143, 224, 0.1), transparent 40%);
   pointer-events: none;
 }

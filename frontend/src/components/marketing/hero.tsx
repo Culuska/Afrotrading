@@ -1,22 +1,16 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowUpRight, ArrowDownRight, Send, ShieldCheck, Users, TrendingUp } from "lucide-react";
+import { ArrowUpRight, Send, ShieldCheck, Users, TrendingUp } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { TradingViewChart } from "@/components/marketing/tradingview-chart";
-import { GoldPriceWidget } from "@/components/marketing/gold-price-widget";
+import { HeroSlideshow } from "@/components/marketing/hero-slideshow";
 import { TELEGRAM_GROUP_URL } from "@/lib/config";
 
 export function Hero() {
   return (
-    <section className="section-glow relative overflow-hidden border-b border-white/5 pb-20 pt-16 sm:pt-24">
-      <div className="absolute inset-0 -z-10">
-        <Image src="/images/hero-banner.jpg" alt="" fill priority className="object-cover object-center opacity-40" />
-        <div className="absolute inset-0 bg-gradient-to-b from-navy-950/60 via-navy-950/85 to-navy-950" />
-      </div>
+    <section className="section-glow relative overflow-hidden border-b border-black/5 bg-gradient-to-b from-navy-800 via-navy-900 to-background pb-20 pt-16 sm:pt-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
           <motion.div
@@ -62,26 +56,11 @@ export function Hero() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7, ease: "easeOut", delay: 0.15 }}
-            className="space-y-4"
           >
-            <GoldPriceWidget />
-            <TradingViewChart height={360} />
+            <HeroSlideshow />
           </motion.div>
         </div>
       </div>
     </section>
-  );
-}
-
-export function BuySellButtons() {
-  return (
-    <div className="grid grid-cols-2 gap-3">
-      <button className="flex items-center justify-center gap-2 rounded-xl border border-danger/40 bg-danger/10 py-3 text-sm font-bold text-danger transition-colors hover:bg-danger/20">
-        <ArrowDownRight className="h-4 w-4" /> SELL
-      </button>
-      <button className="flex items-center justify-center gap-2 rounded-xl border border-success/40 bg-success/10 py-3 text-sm font-bold text-success transition-colors hover:bg-success/20">
-        <ArrowUpRight className="h-4 w-4" /> BUY
-      </button>
-    </div>
   );
 }

@@ -311,7 +311,7 @@ function SignalFormDialog({ signal, onSuccess }: { signal: Signal | null; onSucc
           </div>
           {form.chartImageUrl && (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={form.chartImageUrl} alt="Chart preview" className="mt-2 max-h-40 rounded-lg border border-white/10" />
+            <img src={form.chartImageUrl} alt="Chart preview" className="mt-2 max-h-40 rounded-lg border border-black/10" />
           )}
         </div>
 

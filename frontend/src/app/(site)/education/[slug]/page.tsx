@@ -97,13 +97,13 @@ export default function EducationDetailPage() {
           )}
 
           {content.type === "IMAGE" && content.imageUrl && (
-            <div className="overflow-hidden rounded-2xl border border-white/10">
+            <div className="overflow-hidden rounded-2xl border border-black/10">
               <Image src={content.imageUrl} alt={content.title} width={1200} height={800} className="w-full object-cover" />
             </div>
           )}
 
           {content.type === "VIDEO" && (
-            <div className="aspect-video overflow-hidden rounded-2xl border border-white/10">
+            <div className="aspect-video overflow-hidden rounded-2xl border border-black/10">
               {content.youtubeUrl ? (
                 <iframe
                   src={toYoutubeEmbedUrl(content.youtubeUrl)}
@@ -127,7 +127,7 @@ export default function EducationDetailPage() {
               href={content.fileUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-5 py-3 text-sm font-medium text-gold-400 hover:bg-white/5"
+              className="inline-flex items-center gap-2 rounded-xl border border-black/10 bg-black/[0.03] px-5 py-3 text-sm font-medium text-gold-400 hover:bg-black/5"
             >
               Open PDF
             </a>
