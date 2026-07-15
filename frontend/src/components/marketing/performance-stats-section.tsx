@@ -22,7 +22,7 @@ export function PerformanceStatsSection() {
 
   return (
     <section className="border-y border-black/5 bg-navy-900/40 py-20">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-[90rem] px-4 sm:px-6 lg:px-8">
         <SectionHeading
           eyebrow="Performance"
           title="Numbers That Speak for Themselves"

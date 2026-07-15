@@ -43,7 +43,7 @@ const FOOTER_LINKS = [
 export function Footer() {
   return (
     <footer className="border-t border-black/5 bg-navy-950">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-[90rem] px-4 py-16 sm:px-6 lg:px-8">
         <div className="grid gap-12 lg:grid-cols-5">
           <div className="lg:col-span-2">
             <Link href="/" className="flex items-center gap-2">

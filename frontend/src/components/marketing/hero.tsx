@@ -11,8 +11,8 @@ import { TELEGRAM_GROUP_URL } from "@/lib/config";
 export function Hero() {
   return (
     <section className="section-glow relative overflow-hidden border-b border-black/5 bg-gradient-to-b from-navy-800 via-navy-900 to-background pb-20 pt-16 sm:pt-24">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+      <div className="mx-auto max-w-[90rem] px-4 sm:px-6 lg:px-8">
+        <div className="grid gap-12 lg:grid-cols-[1fr_1.15fr] lg:items-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}

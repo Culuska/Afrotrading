@@ -36,7 +36,7 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-black/5 bg-navy-950/80 backdrop-blur-xl">
-      <nav className="mx-auto flex h-18 max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
+      <nav className="mx-auto flex h-18 max-w-[90rem] items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center gap-2">
           <span className="flex h-9 w-9 items-center justify-center rounded-lg gold-gradient-bg">
             <TrendingUp className="h-5 w-5 text-navy-950" strokeWidth={2.5} />

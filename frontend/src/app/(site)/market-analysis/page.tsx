@@ -32,7 +32,7 @@ export default function MarketAnalysisPage() {
   });
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-[90rem] px-4 py-16 sm:px-6 lg:px-8">
       <div className="text-center">
         <h1 className="font-display text-4xl font-bold">
           Market <span className="gold-gradient-text">Analysis</span>

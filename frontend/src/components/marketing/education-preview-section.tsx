@@ -25,7 +25,7 @@ export function EducationPreviewSection() {
   });
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+    <section className="mx-auto max-w-[90rem] px-4 py-20 sm:px-6 lg:px-8">
       <SectionHeading eyebrow="Education Center" title="Learn to Trade Gold the Right Way" description="Videos, articles, and guides covering technical analysis, risk management, and trading psychology." />
 
       <div className="mt-12 grid gap-5 md:grid-cols-3">
