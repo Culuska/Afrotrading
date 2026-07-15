@@ -19,6 +19,7 @@ interface RegisterPayload {
   password: string;
   country?: string;
   phone?: string;
+  referralCode?: string;
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);

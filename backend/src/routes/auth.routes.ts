@@ -10,6 +10,7 @@ import { validate } from "@/middleware/validate";
 import { authLimiter } from "@/middleware/rateLimit";
 import { requireAuth, AuthRequest } from "@/middleware/auth";
 import { sendEmail, verificationEmailTemplate, passwordResetEmailTemplate } from "@/utils/email";
+import { REFERRAL_REWARD_DAYS } from "@/utils/referral";
 
 const router = Router();
 
@@ -41,8 +42,9 @@ router.post(
     }
 
     let referredById: string | undefined;
+    let referrer: Awaited<ReturnType<typeof prisma.user.findUnique>> = null;
     if (referralCode) {
-      const referrer = await prisma.user.findUnique({ where: { referralCode } });
+      referrer = await prisma.user.findUnique({ where: { referralCode } });
       if (referrer) referredById = referrer.id;
     }
 
@@ -61,22 +63,31 @@ router.post(
       },
     });
 
+    if (referrer && referrer.membership !== "VIP_LIFETIME") {
+      const base =
+        referrer.membershipExpiresAt && referrer.membershipExpiresAt > new Date()
+          ? referrer.membershipExpiresAt
+          : new Date();
+      await prisma.user.update({
+        where: { id: referrer.id },
+        data: {
+          membership: referrer.membership === "FREE" ? "VIP_MONTHLY" : referrer.membership,
+          membershipExpiresAt: new Date(base.getTime() + REFERRAL_REWARD_DAYS * 24 * 60 * 60 * 1000),
+        },
+      });
+    }
+
     const verifyUrl = `${process.env.FRONTEND_URL}/verify-email?token=${emailVerifyToken}`;
     void sendEmail(email, "Verify your AfroTrading account", verificationEmailTemplate(fullName, verifyUrl));
 
     const token = signToken({ userId: user.id, role: user.role });
     res.cookie("token", token, COOKIE_OPTIONS);
 
+    const { passwordHash: _ph, emailVerifyToken: _evt, passwordResetToken: _prt, twoFactorSecret: _tfs, ...safeUser } = user;
     res.status(201).json({
       message: "Registration successful. Please check your email to verify your account.",
       token,
-      user: {
-        id: user.id,
-        fullName: user.fullName,
-        email: user.email,
-        role: user.role,
-        membership: user.membership,
-      },
+      user: safeUser,
       telegramGroupUrl: process.env.TELEGRAM_GROUP_URL,
     });
   })
@@ -113,17 +124,8 @@ router.post(
       maxAge: rememberMe ? 30 * 24 * 60 * 60 * 1000 : 24 * 60 * 60 * 1000,
     });
 
-    res.json({
-      token,
-      user: {
-        id: user.id,
-        fullName: user.fullName,
-        email: user.email,
-        role: user.role,
-        membership: user.membership,
-        telegramJoined: user.telegramJoined,
-      },
-    });
+    const { passwordHash, emailVerifyToken, passwordResetToken, twoFactorSecret, ...safeUser } = user;
+    res.json({ token, user: safeUser });
   })
 );
 

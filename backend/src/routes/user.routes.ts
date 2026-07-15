@@ -7,6 +7,7 @@ import { prisma } from "@/lib/prisma";
 import { requireAuth, requireRole, AuthRequest } from "@/middleware/auth";
 import { validate } from "@/middleware/validate";
 import { logAudit } from "@/utils/audit";
+import { REFERRAL_REWARD_DAYS } from "@/utils/referral";
 import {
   sendEmail,
   accountApprovedEmailTemplate,
@@ -31,6 +32,15 @@ router.patch(
     });
     const { passwordHash, ...safe } = user;
     res.json({ user: safe });
+  })
+);
+
+router.get(
+  "/me/referrals",
+  requireAuth,
+  asyncHandler(async (req: AuthRequest, res) => {
+    const referralCount = await prisma.user.count({ where: { referredById: req.user!.id } });
+    res.json({ referralCount, rewardDays: REFERRAL_REWARD_DAYS });
   })
 );
 

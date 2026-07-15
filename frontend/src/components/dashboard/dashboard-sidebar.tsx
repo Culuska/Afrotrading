@@ -9,6 +9,7 @@ import {
   Bell,
   ShieldCheck,
   ShieldAlert,
+  Gift,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/context/auth-context";
@@ -19,6 +20,7 @@ export const DASHBOARD_SECTIONS = [
   { id: "overview", label: "Overview", icon: LayoutDashboard },
   { id: "profile", label: "Profile", icon: User },
   { id: "saved", label: "Saved Signals", icon: Bookmark },
+  { id: "referrals", label: "Refer & Earn", icon: Gift },
   { id: "education", label: "Education Progress", icon: GraduationCap },
   { id: "notifications", label: "Notifications", icon: Bell },
   { id: "security", label: "Security", icon: ShieldCheck },

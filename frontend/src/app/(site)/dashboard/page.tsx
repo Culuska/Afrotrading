@@ -12,6 +12,7 @@ import {
 import { OverviewTab } from "@/components/dashboard/overview-tab";
 import { ProfileTab } from "@/components/dashboard/profile-tab";
 import { SavedSignalsTab } from "@/components/dashboard/saved-signals-tab";
+import { ReferralsTab } from "@/components/dashboard/referrals-tab";
 import { EducationProgressTab } from "@/components/dashboard/education-progress-tab";
 import { NotificationsTab } from "@/components/dashboard/notifications-tab";
 import { SecurityTab } from "@/components/dashboard/security-tab";
@@ -20,6 +21,7 @@ const SECTION_CONTENT: Record<DashboardSection, React.ComponentType> = {
   overview: OverviewTab,
   profile: ProfileTab,
   saved: SavedSignalsTab,
+  referrals: ReferralsTab,
   education: EducationProgressTab,
   notifications: NotificationsTab,
   security: SecurityTab,
