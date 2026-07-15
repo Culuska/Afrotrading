@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { Send, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -14,8 +15,10 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { TELEGRAM_GROUP_URL as TELEGRAM_URL } from "@/lib/config";
 
-export default function RegisterPage() {
+function RegisterForm() {
   const { register } = useAuth();
+  const searchParams = useSearchParams();
+  const referralCode = searchParams.get("ref") || undefined;
   const [form, setForm] = useState({
     fullName: "",
     country: "",
@@ -48,6 +51,7 @@ export default function RegisterPage() {
         password: form.password,
         country: form.country,
         phone: form.phone,
+        referralCode,
       });
       setSuccess(true);
     } catch (err) {
@@ -81,6 +85,11 @@ export default function RegisterPage() {
 
   return (
     <AuthCard title="Create Your Account" description="Join thousands of traders receiving premium gold signals.">
+      {referralCode && (
+        <p className="mb-5 rounded-xl border border-gold-500/20 bg-gold-500/5 px-4 py-2.5 text-center text-sm text-gold-400">
+          🎉 You were invited by a friend
+        </p>
+      )}
       <form className="space-y-5" onSubmit={handleSubmit}>
         <div className="space-y-2">
           <Label htmlFor="fullName">Full Name</Label>
@@ -163,5 +172,13 @@ export default function RegisterPage() {
         </Link>
       </p>
     </AuthCard>
+  );
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense fallback={null}>
+      <RegisterForm />
+    </Suspense>
   );
 }

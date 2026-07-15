@@ -40,7 +40,7 @@ export function AdminSidebar({
   const { user } = useAuth();
 
   return (
-    <aside className="hidden w-64 shrink-0 flex-col border-r border-white/5 bg-navy-950 lg:flex">
+    <aside className="hidden w-64 shrink-0 flex-col border-r border-black/5 bg-navy-950 lg:flex">
       <Link href="/" className="flex items-center gap-2 px-6 py-6">
         <span className="flex h-9 w-9 items-center justify-center rounded-lg gold-gradient-bg">
           <TrendingUp className="h-5 w-5 text-navy-950" strokeWidth={2.5} />
@@ -59,7 +59,7 @@ export function AdminSidebar({
               "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors",
               section === s.id
                 ? "bg-gradient-to-br from-gold-300 via-gold-500 to-gold-700 text-navy-950"
-                : "text-foreground/60 hover:bg-white/5 hover:text-foreground"
+                : "text-foreground/60 hover:bg-black/5 hover:text-foreground"
             )}
           >
             <s.icon className="h-4 w-4" />
@@ -68,10 +68,10 @@ export function AdminSidebar({
         ))}
       </nav>
 
-      <div className="border-t border-white/5 p-4">
+      <div className="border-t border-black/5 p-4">
         <Link
           href="/dashboard"
-          className="flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-medium text-foreground/60 transition-colors hover:bg-white/5 hover:text-foreground"
+          className="flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-medium text-foreground/60 transition-colors hover:bg-black/5 hover:text-foreground"
         >
           <ArrowLeft className="h-4 w-4" /> Back to site
         </Link>
@@ -99,7 +99,7 @@ export function AdminMobileNav({
   onSectionChange: (section: AdminSection) => void;
 }) {
   return (
-    <div className="border-b border-white/5 bg-navy-950 p-4 lg:hidden">
+    <div className="border-b border-black/5 bg-navy-950 p-4 lg:hidden">
       <Select value={section} onValueChange={(v) => onSectionChange(v as AdminSection)}>
         <SelectTrigger>
           <SelectValue />

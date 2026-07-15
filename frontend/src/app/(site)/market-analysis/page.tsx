@@ -32,7 +32,7 @@ export default function MarketAnalysisPage() {
   });
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-[90rem] px-4 py-16 sm:px-6 lg:px-8">
       <div className="text-center">
         <h1 className="font-display text-4xl font-bold">
           Market <span className="gold-gradient-text">Analysis</span>
@@ -61,7 +61,7 @@ export default function MarketAnalysisPage() {
       <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {isLoading &&
           Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="h-48 animate-pulse rounded-2xl border border-white/5 bg-navy-800/50" />
+            <div key={i} className="h-48 animate-pulse rounded-2xl border border-black/5 bg-navy-800/50" />
           ))}
         {data?.analysis.map((item) => (
           <Link key={item.id} href={`/market-analysis/${item.slug}`}>

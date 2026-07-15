@@ -17,13 +17,13 @@ export function LatestSignalsSection() {
   });
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+    <section className="mx-auto max-w-[90rem] px-4 py-20 sm:px-6 lg:px-8">
       <SectionHeading eyebrow="Live Signals" title="Latest Gold Signals" description="Real trade setups, published in real time with full transparency." />
 
       <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {isLoading &&
           Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="h-64 animate-pulse rounded-2xl border border-white/5 bg-navy-800/50" />
+            <div key={i} className="h-64 animate-pulse rounded-2xl border border-black/5 bg-navy-800/50" />
           ))}
         {data?.signals.map((signal, i) => <SignalCard key={signal.id} signal={signal} index={i} />)}
       </div>

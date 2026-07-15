@@ -21,14 +21,14 @@ export function TradingViewTechnical() {
       symbol: "OANDA:XAUUSD",
       showIntervalTabs: true,
       locale: "en",
-      colorTheme: "dark",
+      colorTheme: "light",
     });
 
     container.current.appendChild(script);
   }, []);
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-white/10 bg-navy-900 p-2">
+    <div className="overflow-hidden rounded-2xl border border-black/10 bg-navy-900 p-2">
       <div ref={container} className="tradingview-widget-container h-full w-full">
         <div className="tradingview-widget-container__widget" />
       </div>

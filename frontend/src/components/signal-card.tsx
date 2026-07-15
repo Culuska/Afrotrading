@@ -51,19 +51,19 @@ export function SignalCard({ signal, index = 0 }: { signal: Signal; index?: numb
           </div>
 
           <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
-            <div className="rounded-lg bg-white/[0.03] p-2.5">
+            <div className="rounded-lg bg-black/[0.03] p-2.5">
               <p className="text-xs text-foreground/40">Entry</p>
               <p className="font-semibold">{signal.entryPrice}</p>
             </div>
-            <div className="rounded-lg bg-white/[0.03] p-2.5">
+            <div className="rounded-lg bg-black/[0.03] p-2.5">
               <p className="text-xs text-foreground/40">Stop Loss</p>
               <p className="font-semibold text-danger">{signal.stopLoss}</p>
             </div>
-            <div className="rounded-lg bg-white/[0.03] p-2.5">
+            <div className="rounded-lg bg-black/[0.03] p-2.5">
               <p className="text-xs text-foreground/40">TP1</p>
               <p className="font-semibold text-success">{signal.takeProfit1}</p>
             </div>
-            <div className="rounded-lg bg-white/[0.03] p-2.5">
+            <div className="rounded-lg bg-black/[0.03] p-2.5">
               <p className="text-xs text-foreground/40">Risk</p>
               <p className="font-semibold">{signal.riskPercent ? `${signal.riskPercent}%` : "—"}</p>
             </div>

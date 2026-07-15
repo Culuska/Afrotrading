@@ -19,7 +19,7 @@ export default function Home() {
       <EducationPreviewSection />
       <MarketAnalysisPreviewSection />
 
-      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+      <section className="mx-auto max-w-[90rem] px-4 py-20 sm:px-6 lg:px-8">
         <SectionHeading
           eyebrow="Pricing"
           title="Simple, Transparent Pricing"

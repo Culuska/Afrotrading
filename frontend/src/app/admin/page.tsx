@@ -35,7 +35,7 @@ function AdminContent() {
       <div className="flex-1">
         <AdminMobileNav section={section} onSectionChange={setSection} />
 
-        <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-10">
+        <div className="mx-auto max-w-[90rem] px-4 py-10 sm:px-6 lg:px-10">
           <div className="mb-8">
             <h1 className="font-display text-3xl font-bold">
               {sectionLabel} <span className="hidden sm:inline gold-gradient-text">— Admin</span>

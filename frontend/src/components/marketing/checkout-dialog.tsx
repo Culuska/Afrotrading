@@ -98,7 +98,7 @@ export function CheckoutDialog({
           <div className="space-y-3">
             <button
               onClick={() => setMethod("crypto")}
-              className="flex w-full items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] p-4 text-left transition-colors hover:border-gold-500/50"
+              className="flex w-full items-center gap-3 rounded-xl border border-black/10 bg-black/[0.03] p-4 text-left transition-colors hover:border-gold-500/50"
             >
               <Bitcoin className="h-5 w-5 text-gold-400" />
               <div>
@@ -108,7 +108,7 @@ export function CheckoutDialog({
             </button>
             <button
               onClick={() => setMethod("mobile")}
-              className="flex w-full items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] p-4 text-left transition-colors hover:border-gold-500/50"
+              className="flex w-full items-center gap-3 rounded-xl border border-black/10 bg-black/[0.03] p-4 text-left transition-colors hover:border-gold-500/50"
             >
               <Smartphone className="h-5 w-5 text-gold-400" />
               <div>
@@ -168,7 +168,7 @@ export function CheckoutDialog({
               </Button>
               {form.proofImageUrl && (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={form.proofImageUrl} alt="Proof" className="mt-2 max-h-32 rounded-lg border border-white/10" />
+                <img src={form.proofImageUrl} alt="Proof" className="mt-2 max-h-32 rounded-lg border border-black/10" />
               )}
             </div>
             <Button type="submit" className="w-full" disabled={loading}>

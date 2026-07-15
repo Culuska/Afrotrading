@@ -10,7 +10,7 @@ const buttonVariants = cva(
       variant: {
         default: "gold-gradient-bg text-navy-950 shadow-lg shadow-gold-500/20 hover:brightness-110 hover:shadow-gold-500/30",
         outline: "border border-gold-500/50 text-gold-400 hover:bg-gold-500/10",
-        ghost: "text-foreground/80 hover:bg-white/5 hover:text-foreground",
+        ghost: "text-foreground/80 hover:bg-black/5 hover:text-foreground",
         secondary: "bg-navy-700 text-foreground hover:bg-navy-600 border border-navy-500/60",
         destructive: "bg-danger/90 text-white hover:bg-danger",
         link: "text-gold-400 underline-offset-4 hover:underline",

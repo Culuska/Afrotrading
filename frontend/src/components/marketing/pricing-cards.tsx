@@ -31,7 +31,7 @@ export function PricingCards() {
     return (
       <div className="grid gap-6 md:grid-cols-3">
         {Array.from({ length: 3 }).map((_, i) => (
-          <div key={i} className="h-96 animate-pulse rounded-2xl border border-white/5 bg-navy-800/50" />
+          <div key={i} className="h-96 animate-pulse rounded-2xl border border-black/5 bg-navy-800/50" />
         ))}
       </div>
     );

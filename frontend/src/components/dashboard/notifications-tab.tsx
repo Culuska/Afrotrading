@@ -34,7 +34,7 @@ export function NotificationsTab() {
 
   return (
     <Card>
-      <CardContent className="max-w-lg divide-y divide-white/5 p-6">
+      <CardContent className="max-w-lg divide-y divide-black/5 p-6">
         {settings.map((setting) => (
           <div key={setting.key} className="flex items-center justify-between py-4 first:pt-0 last:pb-0">
             <div>

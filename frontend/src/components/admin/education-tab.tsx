@@ -212,7 +212,7 @@ function EducationFormDialog({ content, onSuccess }: { content: EducationContent
                 />
                 <UploadButton field="videoUrl" accept="video/*" uploadingField={uploadingField} onSelect={handleFileSelect} />
               </div>
-              {form.videoUrl && <video src={form.videoUrl} controls className="mt-2 max-h-48 rounded-lg border border-white/10" />}
+              {form.videoUrl && <video src={form.videoUrl} controls className="mt-2 max-h-48 rounded-lg border border-black/10" />}
             </div>
           </div>
         )}
@@ -261,7 +261,7 @@ function EducationFormDialog({ content, onSuccess }: { content: EducationContent
             </div>
             {form.imageUrl && (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={form.imageUrl} alt="Preview" className="mt-2 max-h-40 rounded-lg border border-white/10" />
+              <img src={form.imageUrl} alt="Preview" className="mt-2 max-h-40 rounded-lg border border-black/10" />
             )}
           </div>
         )}

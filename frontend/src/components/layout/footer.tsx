@@ -42,8 +42,8 @@ const FOOTER_LINKS = [
 
 export function Footer() {
   return (
-    <footer className="border-t border-white/5 bg-navy-950">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <footer className="border-t border-black/5 bg-navy-950">
+      <div className="mx-auto max-w-[90rem] px-4 py-16 sm:px-6 lg:px-8">
         <div className="grid gap-12 lg:grid-cols-5">
           <div className="lg:col-span-2">
             <Link href="/" className="flex items-center gap-2">
@@ -63,7 +63,7 @@ export function Footer() {
                 href={TELEGRAM_GROUP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-foreground/70 transition-colors hover:border-gold-500/50 hover:text-gold-400"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-black/10 text-foreground/70 transition-colors hover:border-gold-500/50 hover:text-gold-400"
                 aria-label="Telegram"
               >
                 <Send className="h-4 w-4" />
@@ -72,7 +72,7 @@ export function Footer() {
                 href={WHATSAPP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-foreground/70 transition-colors hover:border-gold-500/50 hover:text-gold-400"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-black/10 text-foreground/70 transition-colors hover:border-gold-500/50 hover:text-gold-400"
                 aria-label="WhatsApp"
               >
                 <MessageCircle className="h-4 w-4" />
@@ -81,7 +81,7 @@ export function Footer() {
                 href={INSTAGRAM_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-foreground/70 transition-colors hover:border-gold-500/50 hover:text-gold-400"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-black/10 text-foreground/70 transition-colors hover:border-gold-500/50 hover:text-gold-400"
                 aria-label="Instagram"
               >
                 <InstagramIcon className="h-4 w-4" />
@@ -90,7 +90,7 @@ export function Footer() {
                 href={X_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-foreground/70 transition-colors hover:border-gold-500/50 hover:text-gold-400"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-black/10 text-foreground/70 transition-colors hover:border-gold-500/50 hover:text-gold-400"
                 aria-label="X (Twitter)"
               >
                 <XIcon className="h-4 w-4" />
@@ -99,7 +99,7 @@ export function Footer() {
                 href={TIKTOK_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-foreground/70 transition-colors hover:border-gold-500/50 hover:text-gold-400"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-black/10 text-foreground/70 transition-colors hover:border-gold-500/50 hover:text-gold-400"
                 aria-label="TikTok"
               >
                 <TikTokIcon className="h-4 w-4" />
@@ -108,14 +108,14 @@ export function Footer() {
                 href={FACEBOOK_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-foreground/70 transition-colors hover:border-gold-500/50 hover:text-gold-400"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-black/10 text-foreground/70 transition-colors hover:border-gold-500/50 hover:text-gold-400"
                 aria-label="Facebook"
               >
                 <FacebookIcon className="h-4 w-4" />
               </a>
               <a
                 href="mailto:support@theafrotrading.com"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-foreground/70 transition-colors hover:border-gold-500/50 hover:text-gold-400"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-black/10 text-foreground/70 transition-colors hover:border-gold-500/50 hover:text-gold-400"
                 aria-label="Email"
               >
                 <Mail className="h-4 w-4" />
@@ -164,7 +164,7 @@ export function Footer() {
           </p>
         </div>
 
-        <div className="mt-8 flex flex-col items-center justify-between gap-4 border-t border-white/5 pt-8 text-xs text-foreground/40 sm:flex-row">
+        <div className="mt-8 flex flex-col items-center justify-between gap-4 border-t border-black/5 pt-8 text-xs text-foreground/40 sm:flex-row">
           <p>&copy; {new Date().getFullYear()} AfroTrading. All rights reserved.</p>
           <p>Built for traders, by traders.</p>
         </div>
