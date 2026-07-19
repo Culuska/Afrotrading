@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { Readable } from "stream";
 import asyncHandler from "express-async-handler";
 import { body } from "express-validator";
 import slugify from "@/utils/slugify";
@@ -7,7 +8,6 @@ import { prisma } from "@/lib/prisma";
 import { requireAuth, requireRole, optionalAuth, AuthRequest } from "@/middleware/auth";
 import { validate } from "@/middleware/validate";
 import { logAudit } from "@/utils/audit";
-import { withAttachment } from "@/utils/cloudinary";
 
 const router = Router();
 
@@ -69,7 +69,20 @@ router.get(
       res.status(403).json({ message: "This file is available to VIP members only" });
       return;
     }
-    res.redirect(withAttachment(content.fileUrl, content.slug, "pdf"));
+
+    const upstream = await fetch(content.fileUrl);
+    if (!upstream.ok || !upstream.body) {
+      res.status(502).json({ message: "Could not retrieve the file. Please try again shortly." });
+      return;
+    }
+
+    const safeName = `${content.slug.replace(/[^a-zA-Z0-9-_]/g, "-").slice(0, 80)}.pdf`;
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader("Content-Disposition", `attachment; filename="${safeName}"`);
+    const contentLength = upstream.headers.get("content-length");
+    if (contentLength) res.setHeader("Content-Length", contentLength);
+
+    Readable.fromWeb(upstream.body as import("stream/web").ReadableStream).pipe(res);
   })
 );
 
