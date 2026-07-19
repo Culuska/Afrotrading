@@ -7,6 +7,7 @@ import { prisma } from "@/lib/prisma";
 import { requireAuth, requireRole, optionalAuth, AuthRequest } from "@/middleware/auth";
 import { validate } from "@/middleware/validate";
 import { logAudit } from "@/utils/audit";
+import { withAttachment } from "@/utils/cloudinary";
 
 const router = Router();
 
@@ -44,7 +45,31 @@ router.get(
       res.json({ content: preview, locked: true });
       return;
     }
+    if (content.type === "PDF") {
+      // The actual file URL is only ever handed out via the authenticated /download route.
+      const { fileUrl, ...rest } = content;
+      res.json({ content: rest, locked: false });
+      return;
+    }
     res.json({ content, locked: false });
+  })
+);
+
+router.get(
+  "/:slug/download",
+  requireAuth,
+  asyncHandler(async (req: AuthRequest, res) => {
+    const content = await prisma.educationContent.findUnique({ where: { slug: req.params.slug } });
+    if (!content || !content.published || content.type !== "PDF" || !content.fileUrl) {
+      res.status(404).json({ message: "File not found" });
+      return;
+    }
+    const isVip = req.user!.role === "VIP" || req.user!.role === "ADMIN";
+    if (content.vipOnly && !isVip) {
+      res.status(403).json({ message: "This file is available to VIP members only" });
+      return;
+    }
+    res.redirect(withAttachment(content.fileUrl, content.slug, "pdf"));
   })
 );
 

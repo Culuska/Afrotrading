@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { CountrySelect } from "@/components/ui/country-select";
 import { TELEGRAM_GROUP_URL as TELEGRAM_URL } from "@/lib/config";
 
 function RegisterForm() {
@@ -103,11 +104,7 @@ function RegisterForm() {
         <div className="grid gap-5 sm:grid-cols-2">
           <div className="space-y-2">
             <Label htmlFor="country">Country</Label>
-            <Input
-              id="country"
-              value={form.country}
-              onChange={(e) => setForm({ ...form, country: e.target.value })}
-            />
+            <CountrySelect value={form.country} onChange={(country) => setForm({ ...form, country })} />
           </div>
           <div className="space-y-2">
             <Label htmlFor="phone">Phone Number</Label>

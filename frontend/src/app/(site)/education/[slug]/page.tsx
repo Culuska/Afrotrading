@@ -1,15 +1,19 @@
 "use client";
 
 import { useParams } from "next/navigation";
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
-import { ArrowLeft, Lock } from "lucide-react";
+import { toast } from "sonner";
+import { ArrowLeft, Download, Lock } from "lucide-react";
 
-import { api, ApiError } from "@/lib/api";
+import { api, ApiError, downloadFile } from "@/lib/api";
+import { useAuth } from "@/context/auth-context";
 import type { EducationContent } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 function toYoutubeEmbedUrl(url: string): string {
   try {
@@ -27,11 +31,29 @@ function toYoutubeEmbedUrl(url: string): string {
 
 export default function EducationDetailPage() {
   const { slug } = useParams<{ slug: string }>();
+  const { user } = useAuth();
+  const [showRegisterPrompt, setShowRegisterPrompt] = useState(false);
+  const [downloading, setDownloading] = useState(false);
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["education", slug],
     queryFn: () => api.get<{ content: EducationContent; locked: boolean }>(`/api/education/${slug}`),
   });
+
+  async function handleDownload() {
+    if (!user) {
+      setShowRegisterPrompt(true);
+      return;
+    }
+    setDownloading(true);
+    try {
+      await downloadFile(`/api/education/${slug}/download`);
+    } catch (err) {
+      toast.error(err instanceof ApiError ? err.message : "Download failed");
+    } finally {
+      setDownloading(false);
+    }
+  }
 
   if (isLoading) {
     return (
@@ -122,15 +144,10 @@ export default function EducationDetailPage() {
             <audio src={content.fileUrl} controls className="w-full" />
           )}
 
-          {content.type === "PDF" && content.fileUrl && (
-            <a
-              href={content.fileUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-xl border border-black/10 bg-black/[0.03] px-5 py-3 text-sm font-medium text-gold-400 hover:bg-black/5"
-            >
-              Open PDF
-            </a>
+          {content.type === "PDF" && (
+            <Button variant="outline" onClick={handleDownload} disabled={downloading}>
+              <Download className="h-4 w-4" /> {downloading ? "Downloading…" : "Download PDF"}
+            </Button>
           )}
 
           {content.body && content.type !== "ARTICLE" && (
@@ -138,6 +155,26 @@ export default function EducationDetailPage() {
           )}
         </div>
       )}
+
+      <Dialog open={showRegisterPrompt} onOpenChange={setShowRegisterPrompt}>
+        <DialogContent className="text-center">
+          <DialogHeader>
+            <DialogTitle>Create a free account to download</DialogTitle>
+          </DialogHeader>
+          <Lock className="mx-auto h-8 w-8 text-gold-400" />
+          <p className="mt-2 text-sm text-foreground/60">
+            Downloading files is available to registered AfroTrading members. It only takes a minute — and it&apos;s free.
+          </p>
+          <div className="mt-6 flex flex-col gap-3">
+            <Button asChild>
+              <Link href="/register">Create Free Account</Link>
+            </Button>
+            <Button asChild variant="outline">
+              <Link href="/login">Already have an account? Log in</Link>
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

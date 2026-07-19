@@ -72,6 +72,34 @@ export async function uploadFile<T = unknown>(path: string, file: File, folder?:
   return data as T;
 }
 
+export async function downloadFile(path: string): Promise<void> {
+  const token = getToken();
+  const res = await fetch(`${API_URL}${path}`, {
+    credentials: "include",
+    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+  });
+
+  if (!res.ok) {
+    const isJson = res.headers.get("content-type")?.includes("application/json");
+    const data = isJson ? await res.json() : null;
+    throw new ApiError(data?.message || res.statusText, res.status, data?.errors);
+  }
+
+  const blob = await res.blob();
+  const disposition = res.headers.get("content-disposition") || "";
+  const match = disposition.match(/filename\*?=(?:UTF-8'')?"?([^";]+)"?/i);
+  const filename = match ? decodeURIComponent(match[1]) : "download";
+
+  const objectUrl = window.URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = objectUrl;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  window.URL.revokeObjectURL(objectUrl);
+}
+
 export const api = {
   get: <T = unknown>(path: string, options?: RequestOptions) => apiFetch<T>(path, { ...options, method: "GET" }),
   post: <T = unknown>(path: string, body?: unknown, options?: RequestOptions) =>
