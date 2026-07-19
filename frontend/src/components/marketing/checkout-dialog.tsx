@@ -138,7 +138,7 @@ export function CheckoutDialog({
         {method === "mobile" && !submitted && (
           <form className="space-y-4" onSubmit={submitManual}>
             <p className="text-sm text-foreground/60">
-              Send payment to our EVC Plus / Zaad number: <span className="font-semibold text-gold-400">{CONTACT_PHONE_DISPLAY}</span>.
+              Send payment to our EVC Plus / Zaad number: <span className="font-semibold text-gold-400" dir="ltr">{CONTACT_PHONE_DISPLAY}</span>.
               Then fill in the details below so we can verify it.
             </p>
             <div className="space-y-2">

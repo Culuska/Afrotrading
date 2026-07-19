@@ -12,36 +12,36 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { FaqAccordion } from "@/components/marketing/faq-accordion";
+import { useI18n } from "@/context/i18n-context";
 import { TELEGRAM_GROUP_URL, WHATSAPP_URL, CONTACT_PHONE_DISPLAY, CONTACT_PHONE_TEL } from "@/lib/config";
 
-const CONTACT_METHODS = [
-  { icon: Send, label: "Telegram", value: `@${TELEGRAM_GROUP_URL.replace(/^https?:\/\/t\.me\//, "")}`, href: TELEGRAM_GROUP_URL },
-  { icon: MessageCircle, label: "WhatsApp", value: CONTACT_PHONE_DISPLAY, href: WHATSAPP_URL },
-  { icon: Mail, label: "Email", value: "support@theafrotrading.com", href: "mailto:support@theafrotrading.com" },
-  { icon: Phone, label: "Phone", value: CONTACT_PHONE_DISPLAY, href: CONTACT_PHONE_TEL },
-];
-
 export default function ContactPage() {
+  const { dict } = useI18n();
   const [form, setForm] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
+
+  const CONTACT_METHODS = [
+    { icon: Send, label: dict.contact.telegram, value: `@${TELEGRAM_GROUP_URL.replace(/^https?:\/\/t\.me\//, "")}`, href: TELEGRAM_GROUP_URL },
+    { icon: MessageCircle, label: dict.contact.whatsapp, value: CONTACT_PHONE_DISPLAY, href: WHATSAPP_URL },
+    { icon: Mail, label: dict.contact.email, value: "support@theafrotrading.com", href: "mailto:support@theafrotrading.com" },
+    { icon: Phone, label: dict.contact.phone, value: CONTACT_PHONE_DISPLAY, href: CONTACT_PHONE_TEL },
+  ];
 
   const mutation = useMutation({
     mutationFn: () => api.post("/api/contact", form, { auth: false }),
     onSuccess: () => {
-      toast.success("Message sent! We'll get back to you shortly.");
+      toast.success(dict.contact.sentSuccess);
       setForm({ name: "", email: "", phone: "", subject: "", message: "" });
     },
-    onError: () => toast.error("Something went wrong. Please try again."),
+    onError: () => toast.error(dict.contact.sentError),
   });
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
       <div className="text-center">
         <h1 className="font-display text-4xl font-bold">
-          Get in <span className="gold-gradient-text">Touch</span>
+          {dict.contact.titleLine1} <span className="gold-gradient-text">{dict.contact.titleLine2}</span>
         </h1>
-        <p className="mx-auto mt-3 max-w-xl text-foreground/60">
-          Questions about signals, membership, or the platform? We&apos;re here to help.
-        </p>
+        <p className="mx-auto mt-3 max-w-xl text-foreground/60">{dict.contact.subtitle}</p>
       </div>
 
       <div className="mt-12 grid gap-8 lg:grid-cols-3">
@@ -59,7 +59,7 @@ export default function ContactPage() {
               </span>
               <div>
                 <p className="text-xs text-foreground/50">{method.label}</p>
-                <p className="text-sm font-semibold">{method.value}</p>
+                <p className="text-sm font-semibold" dir="ltr">{method.value}</p>
               </div>
             </a>
           ))}
@@ -76,26 +76,26 @@ export default function ContactPage() {
             >
               <div className="grid gap-5 sm:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="name">Full Name</Label>
+                  <Label htmlFor="name">{dict.contact.fullName}</Label>
                   <Input id="name" required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
+                  <Label htmlFor="email">{dict.contact.emailLabel}</Label>
                   <Input id="email" type="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
                 </div>
               </div>
               <div className="grid gap-5 sm:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="phone">Phone (optional)</Label>
+                  <Label htmlFor="phone">{dict.contact.phoneOptional}</Label>
                   <Input id="phone" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="subject">Subject</Label>
+                  <Label htmlFor="subject">{dict.contact.subject}</Label>
                   <Input id="subject" value={form.subject} onChange={(e) => setForm({ ...form, subject: e.target.value })} />
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="message">Message</Label>
+                <Label htmlFor="message">{dict.contact.message}</Label>
                 <Textarea
                   id="message"
                   required
@@ -105,18 +105,15 @@ export default function ContactPage() {
                 />
               </div>
               <Button type="submit" className="w-full" disabled={mutation.isPending}>
-                {mutation.isPending ? "Sending..." : "Send Message"}
+                {mutation.isPending ? dict.contact.sending : dict.contact.send}
               </Button>
             </form>
           </CardContent>
         </Card>
       </div>
 
-      <div className="mx-auto mt-24 max-w-3xl">
-        <h2 className="text-center font-display text-2xl font-bold">Frequently Asked Questions</h2>
-        <div className="mt-8">
-          <FaqAccordion />
-        </div>
+      <div className="mt-24">
+        <FaqAccordion title={dict.contact.faqTitle} />
       </div>
     </div>
   );

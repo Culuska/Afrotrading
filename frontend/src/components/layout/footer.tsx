@@ -1,6 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import { TrendingUp, Send, MessageCircle, Mail, Phone } from "lucide-react";
 import { InstagramIcon, XIcon, TikTokIcon, FacebookIcon } from "@/components/icons/social-icons";
+import { useI18n } from "@/context/i18n-context";
 import {
   TELEGRAM_GROUP_URL,
   WHATSAPP_URL,
@@ -11,36 +14,38 @@ import {
   FACEBOOK_URL,
 } from "@/lib/config";
 
-const FOOTER_LINKS = [
-  {
-    heading: "Platform",
-    links: [
-      { href: "/signals", label: "Live Signals" },
-      { href: "/signals/history", label: "Signal History" },
-      { href: "/market-analysis", label: "Market Analysis" },
-      { href: "/education", label: "Education Center" },
-    ],
-  },
-  {
-    heading: "Company",
-    links: [
-      { href: "/about", label: "About Us" },
-      { href: "/pricing", label: "Pricing" },
-      { href: "/contact", label: "Support" },
-      { href: "/about#risk-disclaimer", label: "Risk Disclaimer" },
-    ],
-  },
-  {
-    heading: "Account",
-    links: [
-      { href: "/register", label: "Create Account" },
-      { href: "/login", label: "Log In" },
-      { href: "/dashboard", label: "Dashboard" },
-    ],
-  },
-];
-
 export function Footer() {
+  const { dict } = useI18n();
+
+  const FOOTER_LINKS = [
+    {
+      heading: dict.footer.platformHeading,
+      links: [
+        { href: "/signals", label: dict.footer.platformLinks.liveSignals },
+        { href: "/signals/history", label: dict.footer.platformLinks.signalHistory },
+        { href: "/market-analysis", label: dict.footer.platformLinks.marketAnalysis },
+        { href: "/education", label: dict.footer.platformLinks.educationCenter },
+      ],
+    },
+    {
+      heading: dict.footer.companyHeading,
+      links: [
+        { href: "/about", label: dict.footer.companyLinks.aboutUs },
+        { href: "/pricing", label: dict.footer.companyLinks.pricing },
+        { href: "/contact", label: dict.footer.companyLinks.support },
+        { href: "/about#risk-disclaimer", label: dict.footer.companyLinks.riskDisclaimer },
+      ],
+    },
+    {
+      heading: dict.footer.accountHeading,
+      links: [
+        { href: "/register", label: dict.footer.accountLinks.createAccount },
+        { href: "/login", label: dict.footer.accountLinks.logIn },
+        { href: "/dashboard", label: dict.footer.accountLinks.dashboard },
+      ],
+    },
+  ];
+
   return (
     <footer className="border-t border-black/5 bg-navy-950">
       <div className="mx-auto max-w-[90rem] px-4 py-16 sm:px-6 lg:px-8">
@@ -54,10 +59,7 @@ export function Footer() {
                 Afro<span className="gold-gradient-text">Trading</span>
               </span>
             </Link>
-            <p className="mt-4 max-w-sm text-sm leading-6 text-foreground/60">
-              Premium XAUUSD gold signals, in-depth market analysis, and trading education for
-              serious traders across Africa and beyond.
-            </p>
+            <p className="mt-4 max-w-sm text-sm leading-6 text-foreground/60">{dict.footer.tagline}</p>
             <div className="mt-6 flex gap-3">
               <a
                 href={TELEGRAM_GROUP_URL}
@@ -141,13 +143,13 @@ export function Footer() {
           ))}
 
           <div>
-            <h4 className="font-display text-sm font-semibold uppercase tracking-wider text-gold-400">Contact</h4>
+            <h4 className="font-display text-sm font-semibold uppercase tracking-wider text-gold-400">{dict.footer.contactHeading}</h4>
             <ul className="mt-4 space-y-3 text-sm text-foreground/60">
               <li className="flex items-center gap-2">
-                <Phone className="h-4 w-4 text-gold-400" /> {CONTACT_PHONE_DISPLAY}
+                <Phone className="h-4 w-4 text-gold-400" /> <span dir="ltr">{CONTACT_PHONE_DISPLAY}</span>
               </li>
               <li className="flex items-center gap-2">
-                <Mail className="h-4 w-4 text-gold-400" /> support@theafrotrading.com
+                <Mail className="h-4 w-4 text-gold-400" /> <span dir="ltr">support@theafrotrading.com</span>
               </li>
             </ul>
           </div>
@@ -155,18 +157,13 @@ export function Footer() {
 
         <div id="risk-disclaimer" className="mt-12 rounded-2xl border border-warning/20 bg-warning/5 p-5">
           <p className="text-xs leading-6 text-foreground/50">
-            <span className="font-semibold text-warning">Risk Disclaimer:</span> Trading gold (XAUUSD), forex, and
-            other leveraged products carries a high level of risk and may not be suitable for all investors. Past
-            performance of signals is not indicative of future results. AfroTrading provides signals and analysis for
-            educational purposes only and does not constitute financial advice. You should never trade with money you
-            cannot afford to lose. Always conduct your own due diligence and consult a licensed financial advisor
-            before making trading decisions.
+            <span className="font-semibold text-warning">{dict.footer.riskDisclaimerLabel}</span> {dict.footer.riskDisclaimerText}
           </p>
         </div>
 
         <div className="mt-8 flex flex-col items-center justify-between gap-4 border-t border-black/5 pt-8 text-xs text-foreground/40 sm:flex-row">
-          <p>&copy; {new Date().getFullYear()} AfroTrading. All rights reserved.</p>
-          <p>Built for traders, by traders.</p>
+          <p>&copy; {new Date().getFullYear()} {dict.footer.copyright}</p>
+          <p>{dict.footer.tagline2}</p>
         </div>
       </div>
     </footer>

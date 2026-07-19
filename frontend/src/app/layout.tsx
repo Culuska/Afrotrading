@@ -4,6 +4,7 @@ import "./globals.css";
 
 import { AuthProvider } from "@/context/auth-context";
 import { QueryProvider } from "@/context/query-provider";
+import { I18nProvider } from "@/context/i18n-context";
 import { Toaster } from "sonner";
 import { TELEGRAM_GROUP_URL } from "@/lib/config";
 
@@ -88,12 +89,14 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <QueryProvider>
-          <AuthProvider>
-            {children}
-            <Toaster theme="dark" position="top-right" richColors />
-          </AuthProvider>
-        </QueryProvider>
+        <I18nProvider>
+          <QueryProvider>
+            <AuthProvider>
+              {children}
+              <Toaster theme="dark" position="top-right" richColors />
+            </AuthProvider>
+          </QueryProvider>
+        </I18nProvider>
       </body>
     </html>
   );

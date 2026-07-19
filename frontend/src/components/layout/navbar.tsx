@@ -18,21 +18,24 @@ import {
 import { cn } from "@/lib/utils";
 import { TELEGRAM_GROUP_URL } from "@/lib/config";
 import { useAuth } from "@/context/auth-context";
-
-const NAV_LINKS = [
-  { href: "/signals", label: "Signals" },
-  { href: "/signals/history", label: "Signal History" },
-  { href: "/education", label: "Education" },
-  { href: "/market-analysis", label: "Market Analysis" },
-  { href: "/pricing", label: "Pricing" },
-  { href: "/about", label: "About" },
-  { href: "/contact", label: "Support" },
-];
+import { useI18n } from "@/context/i18n-context";
+import { LanguageSwitcher } from "@/components/layout/language-switcher";
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const { user, logout } = useAuth();
+  const { dict } = useI18n();
+
+  const NAV_LINKS = [
+    { href: "/signals", label: dict.nav.links.signals },
+    { href: "/signals/history", label: dict.nav.links.signalHistory },
+    { href: "/education", label: dict.nav.links.education },
+    { href: "/market-analysis", label: dict.nav.links.marketAnalysis },
+    { href: "/pricing", label: dict.nav.links.pricing },
+    { href: "/about", label: dict.nav.links.about },
+    { href: "/contact", label: dict.nav.links.support },
+  ];
 
   return (
     <header className="sticky top-0 z-50 border-b border-black/5 bg-navy-950/80 backdrop-blur-xl">
@@ -64,9 +67,11 @@ export function Navbar() {
         <div className="hidden items-center gap-3 lg:flex">
           <Button asChild variant="ghost" size="sm">
             <a href={TELEGRAM_GROUP_URL} target="_blank" rel="noopener noreferrer">
-              <Send className="h-4 w-4" /> Telegram
+              <Send className="h-4 w-4" /> {dict.nav.telegram}
             </a>
           </Button>
+
+          <LanguageSwitcher />
 
           {user ? (
             <DropdownMenu>
@@ -77,24 +82,24 @@ export function Navbar() {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem asChild>
-                  <Link href="/dashboard">Dashboard</Link>
+                  <Link href="/dashboard">{dict.nav.dashboard}</Link>
                 </DropdownMenuItem>
                 {user.role === "ADMIN" && (
                   <DropdownMenuItem asChild>
-                    <Link href="/admin">Admin Panel</Link>
+                    <Link href="/admin">{dict.nav.adminPanel}</Link>
                   </DropdownMenuItem>
                 )}
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onSelect={() => logout()}>Log out</DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => logout()}>{dict.nav.logOut}</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
             <>
               <Button asChild variant="outline" size="sm">
-                <Link href="/login">Log In</Link>
+                <Link href="/login">{dict.nav.logIn}</Link>
               </Button>
               <Button asChild size="sm">
-                <Link href="/register">Get Started</Link>
+                <Link href="/register">{dict.nav.getStarted}</Link>
               </Button>
             </>
           )}
@@ -132,22 +137,25 @@ export function Navbar() {
                 {user ? (
                   <>
                     <Button asChild variant="secondary">
-                      <Link href="/dashboard">Dashboard</Link>
+                      <Link href="/dashboard">{dict.nav.dashboard}</Link>
                     </Button>
                     <Button variant="ghost" onClick={() => logout()}>
-                      Log out
+                      {dict.nav.logOut}
                     </Button>
                   </>
                 ) : (
                   <>
                     <Button asChild variant="outline">
-                      <Link href="/login">Log In</Link>
+                      <Link href="/login">{dict.nav.logIn}</Link>
                     </Button>
                     <Button asChild>
-                      <Link href="/register">Get Started</Link>
+                      <Link href="/register">{dict.nav.getStarted}</Link>
                     </Button>
                   </>
                 )}
+                <div className="pt-1">
+                  <LanguageSwitcher />
+                </div>
               </div>
             </div>
           </motion.div>

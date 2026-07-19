@@ -7,8 +7,10 @@ import type { Testimonial } from "@/lib/types";
 import { SectionHeading } from "@/components/marketing/section-heading";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { useI18n } from "@/context/i18n-context";
 
 export function TestimonialsSection() {
+  const { dict } = useI18n();
   const { data } = useQuery({
     queryKey: ["testimonials"],
     queryFn: () => api.get<{ testimonials: Testimonial[] }>("/api/testimonials", { auth: false }),
@@ -16,7 +18,7 @@ export function TestimonialsSection() {
 
   return (
     <section className="mx-auto max-w-[90rem] px-4 py-20 sm:px-6 lg:px-8">
-      <SectionHeading eyebrow="Testimonials" title="Trusted by Traders Across Africa" />
+      <SectionHeading eyebrow={dict.home.testimonials.eyebrow} title={dict.home.testimonials.title} />
 
       <div className="mt-12 grid gap-5 md:grid-cols-3">
         {data?.testimonials.map((t) => (

@@ -7,8 +7,10 @@ import { ArrowUpRight, Send, ShieldCheck, Users, TrendingUp } from "lucide-react
 import { Button } from "@/components/ui/button";
 import { HeroSlideshow } from "@/components/marketing/hero-slideshow";
 import { TELEGRAM_GROUP_URL } from "@/lib/config";
+import { useI18n } from "@/context/i18n-context";
 
 export function Hero() {
+  const { dict } = useI18n();
   return (
     <section className="section-glow relative overflow-hidden border-b border-black/5 bg-gradient-to-b from-navy-800 via-navy-900 to-background pb-20 pt-16 sm:pt-24">
       <div className="mx-auto max-w-[90rem] px-4 sm:px-6 lg:px-8">
@@ -19,35 +21,32 @@ export function Hero() {
             transition={{ duration: 0.7, ease: "easeOut" }}
           >
             <span className="mb-5 inline-flex items-center gap-2 rounded-full border border-gold-500/30 bg-gold-500/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-gold-400">
-              <TrendingUp className="h-3.5 w-3.5" /> #1 Gold Signal Provider
+              <TrendingUp className="h-3.5 w-3.5" /> {dict.hero.badge}
             </span>
             <h1 className="font-display text-4xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-5xl lg:text-6xl">
-              Trade Gold <span className="gold-gradient-text">Like a Pro</span>
+              {dict.hero.titleLine1} <span className="gold-gradient-text">{dict.hero.titleLine2}</span>
             </h1>
-            <p className="mt-6 max-w-xl text-lg leading-8 text-foreground/60">
-              Premium XAUUSD signals, real-time market analysis, and a disciplined trading
-              community. Join thousands of traders following our verified gold signals every day.
-            </p>
+            <p className="mt-6 max-w-xl text-lg leading-8 text-foreground/60">{dict.hero.subtitle}</p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Button asChild size="lg">
                 <Link href="/register">
-                  Get Started Free <ArrowUpRight className="h-4 w-4" />
+                  {dict.hero.getStartedFree} <ArrowUpRight className="h-4 w-4" />
                 </Link>
               </Button>
               <Button asChild variant="outline" size="lg">
                 <a href={TELEGRAM_GROUP_URL} target="_blank" rel="noopener noreferrer">
-                  <Send className="h-4 w-4" /> Join Telegram
+                  <Send className="h-4 w-4" /> {dict.hero.joinTelegram}
                 </a>
               </Button>
             </div>
 
             <div className="mt-10 flex flex-wrap items-center gap-6 text-sm text-foreground/50">
               <div className="flex items-center gap-2">
-                <ShieldCheck className="h-4 w-4 text-gold-400" /> Verified Track Record
+                <ShieldCheck className="h-4 w-4 text-gold-400" /> {dict.hero.verifiedTrackRecord}
               </div>
               <div className="flex items-center gap-2">
-                <Users className="h-4 w-4 text-gold-400" /> 10,000+ Traders
+                <Users className="h-4 w-4 text-gold-400" /> {dict.hero.tradersCount}
               </div>
             </div>
           </motion.div>

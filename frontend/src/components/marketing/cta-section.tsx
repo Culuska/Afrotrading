@@ -5,8 +5,10 @@ import { motion } from "framer-motion";
 import { Send, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { TELEGRAM_GROUP_URL } from "@/lib/config";
+import { useI18n } from "@/context/i18n-context";
 
 export function CtaSection() {
+  const { dict } = useI18n();
   return (
     <section className="mx-auto max-w-[90rem] px-4 py-20 sm:px-6 lg:px-8">
       <motion.div
@@ -18,21 +20,18 @@ export function CtaSection() {
       >
         <div className="relative z-10">
           <h2 className="font-display text-3xl font-bold text-navy-950 sm:text-4xl">
-            Ready to Trade Smarter?
+            {dict.home.cta.title}
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-base text-navy-900/80">
-            Join AfroTrading today and get instant access to premium gold signals, expert analysis,
-            and a community of serious traders.
-          </p>
+          <p className="mx-auto mt-4 max-w-xl text-base text-navy-900/80">{dict.home.cta.description}</p>
           <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
             <Button asChild size="lg" className="bg-navy-950 text-gold-400 hover:bg-navy-900 shadow-none">
               <Link href="/register">
-                Create Free Account <ArrowUpRight className="h-4 w-4" />
+                {dict.home.cta.createAccount} <ArrowUpRight className="h-4 w-4" />
               </Link>
             </Button>
             <Button asChild size="lg" variant="outline" className="border-navy-950/30 text-navy-950 hover:bg-navy-950/10">
               <a href={TELEGRAM_GROUP_URL} target="_blank" rel="noopener noreferrer">
-                <Send className="h-4 w-4" /> Join Telegram
+                <Send className="h-4 w-4" /> {dict.home.cta.joinTelegram}
               </a>
             </Button>
           </div>

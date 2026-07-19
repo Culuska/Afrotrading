@@ -9,8 +9,10 @@ import type { Signal } from "@/lib/types";
 import { SectionHeading } from "@/components/marketing/section-heading";
 import { SignalCard } from "@/components/signal-card";
 import { Button } from "@/components/ui/button";
+import { useI18n } from "@/context/i18n-context";
 
 export function LatestSignalsSection() {
+  const { dict } = useI18n();
   const { data, isLoading } = useQuery({
     queryKey: ["signals", "latest"],
     queryFn: () => api.get<{ signals: Signal[] }>("/api/signals?limit=4"),
@@ -18,7 +20,7 @@ export function LatestSignalsSection() {
 
   return (
     <section className="mx-auto max-w-[90rem] px-4 py-20 sm:px-6 lg:px-8">
-      <SectionHeading eyebrow="Live Signals" title="Latest Gold Signals" description="Real trade setups, published in real time with full transparency." />
+      <SectionHeading eyebrow={dict.home.signals.eyebrow} title={dict.home.signals.title} description={dict.home.signals.description} />
 
       <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {isLoading &&
@@ -31,7 +33,7 @@ export function LatestSignalsSection() {
       <div className="mt-10 flex justify-center">
         <Button asChild variant="outline">
           <Link href="/signals">
-            View All Signals <ArrowRight className="h-4 w-4" />
+            {dict.home.signals.viewAll} <ArrowRight className="h-4 w-4" />
           </Link>
         </Button>
       </div>

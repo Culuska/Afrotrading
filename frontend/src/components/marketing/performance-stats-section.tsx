@@ -6,27 +6,29 @@ import type { PerformanceStats } from "@/lib/types";
 import { SectionHeading } from "@/components/marketing/section-heading";
 import { AnimatedCounter } from "@/components/marketing/animated-counter";
 import { Card, CardContent } from "@/components/ui/card";
+import { useI18n } from "@/context/i18n-context";
 
 export function PerformanceStatsSection() {
+  const { dict } = useI18n();
   const { data } = useQuery({
     queryKey: ["stats", "performance"],
     queryFn: () => api.get<PerformanceStats>("/api/stats/performance", { auth: false }),
   });
 
   const stats = [
-    { label: "Win Rate", value: data?.winRate ?? 0, suffix: "%", decimals: 1 },
-    { label: "Total Signals", value: data?.totalSignals ?? 0, suffix: "+" },
-    { label: "Profit Factor", value: data?.profitFactor ?? 0, decimals: 2 },
-    { label: "Avg. Risk : Reward", value: data?.averageRiskReward ?? 0, decimals: 2, suffix: "R" },
+    { label: dict.home.stats.winRate, value: data?.winRate ?? 0, suffix: "%", decimals: 1 },
+    { label: dict.home.stats.totalSignals, value: data?.totalSignals ?? 0, suffix: "+" },
+    { label: dict.home.stats.profitFactor, value: data?.profitFactor ?? 0, decimals: 2 },
+    { label: dict.home.stats.avgRiskReward, value: data?.averageRiskReward ?? 0, decimals: 2, suffix: "R" },
   ];
 
   return (
     <section className="border-y border-black/5 bg-navy-900/40 py-20">
       <div className="mx-auto max-w-[90rem] px-4 sm:px-6 lg:px-8">
         <SectionHeading
-          eyebrow="Performance"
-          title="Numbers That Speak for Themselves"
-          description="Full transparency on every signal we publish — wins, losses, and everything in between."
+          eyebrow={dict.home.stats.eyebrow}
+          title={dict.home.stats.title}
+          description={dict.home.stats.description}
         />
 
         <div className="mt-12 grid grid-cols-2 gap-5 lg:grid-cols-4">

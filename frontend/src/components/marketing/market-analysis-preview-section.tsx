@@ -10,8 +10,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { formatDate } from "@/lib/utils";
+import { useI18n } from "@/context/i18n-context";
 
 export function MarketAnalysisPreviewSection() {
+  const { dict } = useI18n();
   const { data } = useQuery({
     queryKey: ["market-analysis", "latest"],
     queryFn: () => api.get<{ analysis: MarketAnalysis[] }>("/api/market-analysis?limit=3", { auth: false }),
@@ -20,7 +22,7 @@ export function MarketAnalysisPreviewSection() {
   return (
     <section className="border-y border-black/5 bg-navy-900/40 py-20">
       <div className="mx-auto max-w-[90rem] px-4 sm:px-6 lg:px-8">
-        <SectionHeading eyebrow="Market Analysis" title="Daily, Weekly & Monthly Gold Outlook" description="Stay ahead of the market with our technical and fundamental analysis." />
+        <SectionHeading eyebrow={dict.home.marketAnalysis.eyebrow} title={dict.home.marketAnalysis.title} description={dict.home.marketAnalysis.description} />
 
         <div className="mt-12 grid gap-5 md:grid-cols-3">
           {data?.analysis.slice(0, 3).map((item) => (
@@ -41,7 +43,7 @@ export function MarketAnalysisPreviewSection() {
         <div className="mt-10 flex justify-center">
           <Button asChild variant="outline">
             <Link href="/market-analysis">
-              View All Analysis <ArrowRight className="h-4 w-4" />
+              {dict.home.marketAnalysis.viewAll} <ArrowRight className="h-4 w-4" />
             </Link>
           </Button>
         </div>

@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { CheckoutDialog } from "@/components/marketing/checkout-dialog";
+import { useI18n } from "@/context/i18n-context";
 
 const SLUG_TO_PLAN: Record<string, Extract<Membership, "VIP_MONTHLY" | "VIP_LIFETIME">> = {
   "vip-monthly": "VIP_MONTHLY",
@@ -20,6 +21,7 @@ const SLUG_TO_PLAN: Record<string, Extract<Membership, "VIP_MONTHLY" | "VIP_LIFE
 
 export function PricingCards() {
   const { user } = useAuth();
+  const { dict } = useI18n();
   const [checkoutPlan, setCheckoutPlan] = useState<PricingPlan | null>(null);
 
   const { data, isLoading } = useQuery({
@@ -48,7 +50,7 @@ export function PricingCards() {
           )}
         >
           {plan.isPopular && (
-            <Badge className="absolute -top-3 left-1/2 -translate-x-1/2">Most Popular</Badge>
+            <Badge className="absolute -top-3 left-1/2 -translate-x-1/2">{dict.pricing.mostPopular}</Badge>
           )}
           <CardHeader className="text-center">
             <CardTitle className="font-display text-xl">{plan.name}</CardTitle>
@@ -59,7 +61,7 @@ export function PricingCards() {
               {plan.billingCycle !== "free" && plan.billingCycle !== "lifetime" && (
                 <span className="text-sm text-foreground/50">/{plan.billingCycle}</span>
               )}
-              {plan.billingCycle === "lifetime" && <span className="text-sm text-foreground/50"> once</span>}
+              {plan.billingCycle === "lifetime" && <span className="text-sm text-foreground/50"> {dict.pricing.once}</span>}
             </div>
           </CardHeader>
           <CardContent className="flex flex-1 flex-col gap-6">
@@ -73,7 +75,7 @@ export function PricingCards() {
             {Number(plan.price) === 0 || !user ? (
               <Button asChild variant={plan.isPopular ? "default" : "outline"} className="w-full">
                 <Link href={user ? "/dashboard" : "/register"}>
-                  {Number(plan.price) === 0 ? "Start Free" : "Sign Up to Upgrade"}
+                  {Number(plan.price) === 0 ? dict.pricing.startFree : dict.pricing.signUpToUpgrade}
                 </Link>
               </Button>
             ) : (
@@ -82,7 +84,7 @@ export function PricingCards() {
                 className="w-full"
                 onClick={() => setCheckoutPlan(plan)}
               >
-                Choose Plan
+                {dict.pricing.choosePlan}
               </Button>
             )}
           </CardContent>

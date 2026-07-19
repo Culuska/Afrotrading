@@ -9,6 +9,7 @@ import { SectionHeading } from "@/components/marketing/section-heading";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useI18n } from "@/context/i18n-context";
 
 const TYPE_ICON = {
   VIDEO: PlayCircle,
@@ -19,6 +20,7 @@ const TYPE_ICON = {
 };
 
 export function EducationPreviewSection() {
+  const { dict } = useI18n();
   const { data } = useQuery({
     queryKey: ["education", "featured"],
     queryFn: () => api.get<{ content: EducationContent[] }>("/api/education?limit=3", { auth: false }),
@@ -26,7 +28,7 @@ export function EducationPreviewSection() {
 
   return (
     <section className="mx-auto max-w-[90rem] px-4 py-20 sm:px-6 lg:px-8">
-      <SectionHeading eyebrow="Education Center" title="Learn to Trade Gold the Right Way" description="Videos, articles, and guides covering technical analysis, risk management, and trading psychology." />
+      <SectionHeading eyebrow={dict.home.education.eyebrow} title={dict.home.education.title} description={dict.home.education.description} />
 
       <div className="mt-12 grid gap-5 md:grid-cols-3">
         {data?.content.slice(0, 3).map((item) => {
@@ -51,7 +53,7 @@ export function EducationPreviewSection() {
       <div className="mt-10 flex justify-center">
         <Button asChild variant="outline">
           <Link href="/education">
-            Explore Education Center <ArrowRight className="h-4 w-4" />
+            {dict.home.education.exploreAll} <ArrowRight className="h-4 w-4" />
           </Link>
         </Button>
       </div>
