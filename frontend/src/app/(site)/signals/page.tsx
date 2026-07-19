@@ -9,18 +9,20 @@ import type { Signal } from "@/lib/types";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SignalCard } from "@/components/signal-card";
-
-const FILTERS = [
-  { value: "all", label: "All" },
-  { value: "running", label: "Running" },
-  { value: "pending", label: "Pending" },
-  { value: "winning", label: "Winning" },
-  { value: "losing", label: "Losing" },
-];
+import { useI18n } from "@/context/i18n-context";
 
 export default function SignalsPage() {
+  const { dict } = useI18n();
   const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState("");
+
+  const FILTERS = [
+    { value: "all", label: dict.signals.filters.all },
+    { value: "running", label: dict.signals.filters.running },
+    { value: "pending", label: dict.signals.filters.pending },
+    { value: "winning", label: dict.signals.filters.winning },
+    { value: "losing", label: dict.signals.filters.losing },
+  ];
 
   const { data, isLoading } = useQuery({
     queryKey: ["signals", filter, search],
@@ -38,10 +40,10 @@ export default function SignalsPage() {
     <div className="mx-auto max-w-[90rem] px-4 py-16 sm:px-6 lg:px-8">
       <div className="text-center">
         <h1 className="font-display text-4xl font-bold">
-          Live Gold <span className="gold-gradient-text">Signals</span>
+          {dict.signals.titleLine1} <span className="gold-gradient-text">{dict.signals.titleLine2}</span>
         </h1>
         <p className="mx-auto mt-3 max-w-xl text-foreground/60">
-          Every signal we publish, in real time — entries, stop loss, take profits, and results.
+          {dict.signals.subtitle}
         </p>
       </div>
 
@@ -59,7 +61,7 @@ export default function SignalsPage() {
         <div className="relative w-full sm:w-64">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-foreground/40" />
           <Input
-            placeholder="Search signals..."
+            placeholder={dict.signals.searchPlaceholder}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="pl-9"
@@ -74,7 +76,7 @@ export default function SignalsPage() {
           ))}
         {data?.signals.map((signal, i) => <SignalCard key={signal.id} signal={signal} index={i} />)}
         {data?.signals.length === 0 && (
-          <p className="col-span-full py-12 text-center text-foreground/50">No signals match your filters.</p>
+          <p className="col-span-full py-12 text-center text-foreground/50">{dict.signals.noResults}</p>
         )}
       </div>
     </div>

@@ -7,6 +7,7 @@ import { Send, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { useAuth } from "@/context/auth-context";
+import { useI18n } from "@/context/i18n-context";
 import { ApiError } from "@/lib/api";
 import { AuthCard } from "@/components/auth/auth-card";
 import { Input } from "@/components/ui/input";
@@ -18,6 +19,7 @@ import { TELEGRAM_GROUP_URL as TELEGRAM_URL } from "@/lib/config";
 
 function RegisterForm() {
   const { register } = useAuth();
+  const { dict } = useI18n();
   const searchParams = useSearchParams();
   const referralCode = searchParams.get("ref") || undefined;
   const [form, setForm] = useState({
@@ -36,11 +38,11 @@ function RegisterForm() {
     e.preventDefault();
 
     if (form.password !== form.confirmPassword) {
-      toast.error("Passwords do not match");
+      toast.error(dict.register.passwordsMismatch);
       return;
     }
     if (!form.agree) {
-      toast.error("You must agree to the Terms & Conditions");
+      toast.error(dict.register.mustAgree);
       return;
     }
 
@@ -56,7 +58,7 @@ function RegisterForm() {
       });
       setSuccess(true);
     } catch (err) {
-      toast.error(err instanceof ApiError ? err.message : "Registration failed");
+      toast.error(err instanceof ApiError ? err.message : dict.register.registrationFailed);
     } finally {
       setLoading(false);
     }
@@ -64,20 +66,19 @@ function RegisterForm() {
 
   if (success) {
     return (
-      <AuthCard title="Welcome to AfroTrading!" description="Your account has been created successfully.">
+      <AuthCard title={dict.register.successTitle} description={dict.register.successBody}>
         <div className="flex flex-col items-center gap-5 text-center">
           <CheckCircle2 className="h-14 w-14 text-success" />
           <p className="text-sm text-foreground/70">
-            We&apos;ve sent a verification link to your email. Join our Telegram community now to receive
-            signal alerts instantly.
+            {dict.register.verificationMessage}
           </p>
           <Button asChild size="lg" className="w-full">
             <a href={TELEGRAM_URL} target="_blank" rel="noopener noreferrer">
-              <Send className="h-4 w-4" /> Join our Telegram Community
+              <Send className="h-4 w-4" /> {dict.register.joinTelegram}
             </a>
           </Button>
           <Button asChild variant="outline" className="w-full">
-            <Link href="/dashboard">Go to Dashboard</Link>
+            <Link href="/dashboard">{dict.register.goToDashboard}</Link>
           </Button>
         </div>
       </AuthCard>
@@ -85,15 +86,15 @@ function RegisterForm() {
   }
 
   return (
-    <AuthCard title="Create Your Account" description="Join thousands of traders receiving premium gold signals.">
+    <AuthCard title={dict.register.formTitle} description={dict.register.formSubtitle}>
       {referralCode && (
         <p className="mb-5 rounded-xl border border-gold-500/20 bg-gold-500/5 px-4 py-2.5 text-center text-sm text-gold-400">
-          🎉 You were invited by a friend
+          {dict.register.referralBanner}
         </p>
       )}
       <form className="space-y-5" onSubmit={handleSubmit}>
         <div className="space-y-2">
-          <Label htmlFor="fullName">Full Name</Label>
+          <Label htmlFor="fullName">{dict.register.fullName}</Label>
           <Input
             id="fullName"
             required
@@ -103,16 +104,16 @@ function RegisterForm() {
         </div>
         <div className="grid gap-5 sm:grid-cols-2">
           <div className="space-y-2">
-            <Label htmlFor="country">Country</Label>
+            <Label htmlFor="country">{dict.register.country}</Label>
             <CountrySelect value={form.country} onChange={(country) => setForm({ ...form, country })} />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="phone">Phone Number</Label>
+            <Label htmlFor="phone">{dict.register.phone}</Label>
             <Input id="phone" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
           </div>
         </div>
         <div className="space-y-2">
-          <Label htmlFor="email">Email</Label>
+          <Label htmlFor="email">{dict.register.email}</Label>
           <Input
             id="email"
             type="email"
@@ -123,7 +124,7 @@ function RegisterForm() {
         </div>
         <div className="grid gap-5 sm:grid-cols-2">
           <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password">{dict.register.password}</Label>
             <Input
               id="password"
               type="password"
@@ -134,7 +135,7 @@ function RegisterForm() {
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="confirmPassword">Confirm Password</Label>
+            <Label htmlFor="confirmPassword">{dict.register.confirmPassword}</Label>
             <Input
               id="confirmPassword"
               type="password"
@@ -152,20 +153,20 @@ function RegisterForm() {
             onCheckedChange={(v) => setForm({ ...form, agree: !!v })}
           />
           <span>
-            I agree to the{" "}
+            {dict.register.agreePrefix}{" "}
             <Link href="/about#risk-disclaimer" className="text-gold-400 hover:underline">
-              Terms &amp; Risk Disclaimer
+              {dict.register.agreeLink}
             </Link>
           </span>
         </label>
         <Button type="submit" className="w-full" disabled={loading}>
-          {loading ? "Creating account..." : "Create Account"}
+          {loading ? dict.register.creatingAccount : dict.register.createAccount}
         </Button>
       </form>
       <p className="mt-6 text-center text-sm text-foreground/60">
-        Already have an account?{" "}
+        {dict.register.alreadyHaveAccount}{" "}
         <Link href="/login" className="font-semibold text-gold-400 hover:underline">
-          Log in
+          {dict.register.logIn}
         </Link>
       </p>
     </AuthCard>

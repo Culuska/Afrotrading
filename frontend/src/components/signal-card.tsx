@@ -6,9 +6,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { SignalStatusBadge } from "@/components/signal-status-badge";
 import { Badge } from "@/components/ui/badge";
 import { formatDate } from "@/lib/utils";
+import { useI18n } from "@/context/i18n-context";
 import type { Signal } from "@/lib/types";
 
 export function SignalCard({ signal, index = 0 }: { signal: Signal; index?: number }) {
+  const { dict } = useI18n();
   const isBuy = signal.direction === "BUY";
 
   return (
@@ -22,7 +24,7 @@ export function SignalCard({ signal, index = 0 }: { signal: Signal; index?: numb
         <CardContent className="p-5">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold uppercase tracking-wider text-foreground/40">
-              Signal #{signal.signalNumber}
+              {dict.signals.signalLabel} #{signal.signalNumber}
             </span>
             <SignalStatusBadge status={signal.status} />
           </div>
@@ -52,19 +54,19 @@ export function SignalCard({ signal, index = 0 }: { signal: Signal; index?: numb
 
           <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
             <div className="rounded-lg bg-black/[0.03] p-2.5">
-              <p className="text-xs text-foreground/40">Entry</p>
+              <p className="text-xs text-foreground/40">{dict.signals.entry}</p>
               <p className="font-semibold">{signal.entryPrice}</p>
             </div>
             <div className="rounded-lg bg-black/[0.03] p-2.5">
-              <p className="text-xs text-foreground/40">Stop Loss</p>
+              <p className="text-xs text-foreground/40">{dict.signals.stopLoss}</p>
               <p className="font-semibold text-danger">{signal.stopLoss}</p>
             </div>
             <div className="rounded-lg bg-black/[0.03] p-2.5">
-              <p className="text-xs text-foreground/40">TP1</p>
+              <p className="text-xs text-foreground/40">{dict.signals.tp1}</p>
               <p className="font-semibold text-success">{signal.takeProfit1}</p>
             </div>
             <div className="rounded-lg bg-black/[0.03] p-2.5">
-              <p className="text-xs text-foreground/40">Risk</p>
+              <p className="text-xs text-foreground/40">{dict.signals.risk}</p>
               <p className="font-semibold">{signal.riskPercent ? `${signal.riskPercent}%` : "—"}</p>
             </div>
           </div>

@@ -4,16 +4,18 @@ import { useEffect, useRef, useState } from "react";
 import { Check, ChevronDown, Search } from "lucide-react";
 import { COUNTRIES } from "@/lib/countries";
 import { cn } from "@/lib/utils";
+import { useI18n } from "@/context/i18n-context";
 
 export function CountrySelect({
   value,
   onChange,
-  placeholder = "Select country",
+  placeholder,
 }: {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
 }) {
+  const { dict } = useI18n();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const containerRef = useRef<HTMLDivElement>(null);
@@ -49,7 +51,7 @@ export function CountrySelect({
         onClick={toggleOpen}
         className="flex h-11 w-full items-center justify-between rounded-xl border border-black/10 bg-navy-900/80 px-4 py-2 text-sm outline-none transition-colors focus:border-gold-500/60 focus:ring-2 focus:ring-gold-500/20"
       >
-        <span className={value ? "text-foreground" : "text-foreground/40"}>{value || placeholder}</span>
+        <span className={value ? "text-foreground" : "text-foreground/40"}>{value || placeholder || dict.countrySelect.placeholder}</span>
         <ChevronDown className="h-4 w-4 shrink-0 text-foreground/40" />
       </button>
 
@@ -61,13 +63,13 @@ export function CountrySelect({
               ref={searchRef}
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search countries..."
+              placeholder={dict.countrySelect.searchPlaceholder}
               className="w-full bg-transparent text-sm outline-none placeholder:text-foreground/40"
             />
           </div>
           <ul className="max-h-56 overflow-y-auto py-1">
             {filtered.length === 0 && (
-              <li className="px-4 py-2.5 text-sm text-foreground/40">No countries found</li>
+              <li className="px-4 py-2.5 text-sm text-foreground/40">{dict.countrySelect.noResults}</li>
             )}
             {filtered.map((country) => (
               <li key={country}>

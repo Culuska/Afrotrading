@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import { useAuth } from "@/context/auth-context";
+import { useI18n } from "@/context/i18n-context";
 import { ApiError } from "@/lib/api";
 import { AuthCard } from "@/components/auth/auth-card";
 import { Input } from "@/components/ui/input";
@@ -16,6 +17,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 export default function LoginPage() {
   const router = useRouter();
   const { login } = useAuth();
+  const { dict } = useI18n();
   const [form, setForm] = useState({ email: "", password: "", rememberMe: true });
   const [loading, setLoading] = useState(false);
 
@@ -24,20 +26,20 @@ export default function LoginPage() {
     setLoading(true);
     try {
       await login(form.email, form.password, form.rememberMe);
-      toast.success("Welcome back!");
+      toast.success(dict.login.welcomeBack);
       router.push("/dashboard");
     } catch (err) {
-      toast.error(err instanceof ApiError ? err.message : "Login failed");
+      toast.error(err instanceof ApiError ? err.message : dict.login.loginFailed);
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <AuthCard title="Welcome Back" description="Log in to access your signals and dashboard.">
+    <AuthCard title={dict.login.title} description={dict.login.subtitle}>
       <form className="space-y-5" onSubmit={handleSubmit}>
         <div className="space-y-2">
-          <Label htmlFor="email">Email</Label>
+          <Label htmlFor="email">{dict.login.email}</Label>
           <Input
             id="email"
             type="email"
@@ -47,7 +49,7 @@ export default function LoginPage() {
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="password">Password</Label>
+          <Label htmlFor="password">{dict.login.password}</Label>
           <Input
             id="password"
             type="password"
@@ -62,20 +64,20 @@ export default function LoginPage() {
               checked={form.rememberMe}
               onCheckedChange={(v) => setForm({ ...form, rememberMe: !!v })}
             />
-            Remember me
+            {dict.login.rememberMe}
           </label>
           <Link href="/forgot-password" className="text-gold-400 hover:underline">
-            Forgot password?
+            {dict.login.forgotPassword}
           </Link>
         </div>
         <Button type="submit" className="w-full" disabled={loading}>
-          {loading ? "Logging in..." : "Log In"}
+          {loading ? dict.login.loggingIn : dict.login.logIn}
         </Button>
       </form>
       <p className="mt-6 text-center text-sm text-foreground/60">
-        Don&apos;t have an account?{" "}
+        {dict.login.noAccount}{" "}
         <Link href="/register" className="font-semibold text-gold-400 hover:underline">
-          Create one
+          {dict.login.createOne}
         </Link>
       </p>
     </AuthCard>

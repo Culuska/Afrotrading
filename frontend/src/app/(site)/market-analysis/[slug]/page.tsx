@@ -11,9 +11,11 @@ import type { MarketAnalysis } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { formatDate } from "@/lib/utils";
+import { useI18n } from "@/context/i18n-context";
 
 export default function MarketAnalysisDetailPage() {
   const { slug } = useParams<{ slug: string }>();
+  const { dict } = useI18n();
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["market-analysis", slug],
@@ -33,13 +35,13 @@ export default function MarketAnalysisDetailPage() {
   if (error || !data?.analysis) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-24 text-center sm:px-6 lg:px-8">
-        <h1 className="font-display text-2xl font-bold">Analysis not found</h1>
+        <h1 className="font-display text-2xl font-bold">{dict.marketAnalysisDetail.notFoundTitle}</h1>
         <p className="mt-2 text-foreground/60">
-          {error instanceof ApiError ? error.message : "This analysis may have been removed or unpublished."}
+          {error instanceof ApiError ? error.message : dict.marketAnalysisDetail.notFoundBody}
         </p>
         <Button asChild className="mt-6">
           <Link href="/market-analysis">
-            <ArrowLeft className="h-4 w-4" /> Back to Market Analysis
+            <ArrowLeft className="h-4 w-4" /> {dict.marketAnalysisDetail.backToList}
           </Link>
         </Button>
       </div>
@@ -51,7 +53,7 @@ export default function MarketAnalysisDetailPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
       <Link href="/market-analysis" className="inline-flex items-center gap-1.5 text-sm text-foreground/60 hover:text-foreground">
-        <ArrowLeft className="h-4 w-4" /> Back to Market Analysis
+        <ArrowLeft className="h-4 w-4" /> {dict.marketAnalysisDetail.backToList}
       </Link>
 
       <div className="mt-6 flex flex-wrap items-center gap-2">
@@ -73,12 +75,12 @@ export default function MarketAnalysisDetailPage() {
       {locked ? (
         <div className="mt-8 rounded-2xl border border-gold-500/20 bg-gold-500/5 p-8 text-center">
           <Lock className="mx-auto h-8 w-8 text-gold-400" />
-          <h2 className="mt-4 font-display text-xl font-semibold">This is a VIP-only analysis</h2>
+          <h2 className="mt-4 font-display text-xl font-semibold">{dict.marketAnalysisDetail.vipOnlyTitle}</h2>
           <p className="mt-2 text-foreground/60">
-            Upgrade to VIP membership to read the full breakdown, charts, and trade levels.
+            {dict.marketAnalysisDetail.vipOnlyBody}
           </p>
           <Button asChild className="mt-6">
-            <Link href="/pricing">View VIP Plans</Link>
+            <Link href="/pricing">{dict.marketAnalysisDetail.viewVipPlans}</Link>
           </Button>
         </div>
       ) : (

@@ -11,15 +11,17 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { SignalStatusBadge } from "@/components/signal-status-badge";
 import { formatDate } from "@/lib/utils";
-
-const RANGES = [
-  { value: "weekly", label: "Weekly" },
-  { value: "monthly", label: "Monthly" },
-  { value: "yearly", label: "Yearly" },
-];
+import { useI18n } from "@/context/i18n-context";
 
 export default function SignalHistoryPage() {
+  const { dict } = useI18n();
   const [range, setRange] = useState("monthly");
+
+  const RANGES = [
+    { value: "weekly", label: dict.signalHistory.ranges.weekly },
+    { value: "monthly", label: dict.signalHistory.ranges.monthly },
+    { value: "yearly", label: dict.signalHistory.ranges.yearly },
+  ];
 
   const { data: historyData, isLoading } = useQuery({
     queryKey: ["signals", "history", range],
@@ -37,18 +39,18 @@ export default function SignalHistoryPage() {
     <div className="mx-auto max-w-[90rem] px-4 py-16 sm:px-6 lg:px-8">
       <div className="text-center">
         <h1 className="font-display text-4xl font-bold">
-          Signal <span className="gold-gradient-text">History</span>
+          {dict.signalHistory.titleLine1} <span className="gold-gradient-text">{dict.signalHistory.titleLine2}</span>
         </h1>
         <p className="mx-auto mt-3 max-w-xl text-foreground/60">
-          Complete transparency — every closed trade, with full statistics.
+          {dict.signalHistory.subtitle}
         </p>
       </div>
 
       <div className="mt-10 grid grid-cols-2 gap-4 lg:grid-cols-4">
-        <StatCard label="Win Rate" value={`${stats?.winRate ?? 0}%`} />
-        <StatCard label="Profit Factor" value={`${stats?.profitFactor ?? 0}`} />
-        <StatCard label="Avg. R:R" value={`${stats?.averageRiskReward ?? 0}R`} />
-        <StatCard label="Total Signals" value={`${stats?.totalSignals ?? 0}`} />
+        <StatCard label={dict.signalHistory.stats.winRate} value={`${stats?.winRate ?? 0}%`} />
+        <StatCard label={dict.signalHistory.stats.profitFactor} value={`${stats?.profitFactor ?? 0}`} />
+        <StatCard label={dict.signalHistory.stats.avgRiskReward} value={`${stats?.averageRiskReward ?? 0}R`} />
+        <StatCard label={dict.signalHistory.stats.totalSignals} value={`${stats?.totalSignals ?? 0}`} />
       </div>
 
       <div className="mt-10 flex justify-center">
@@ -67,30 +69,30 @@ export default function SignalHistoryPage() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Date</TableHead>
-              <TableHead>Pair</TableHead>
-              <TableHead>Direction</TableHead>
-              <TableHead>Entry</TableHead>
-              <TableHead>SL</TableHead>
-              <TableHead>TP1</TableHead>
-              <TableHead>Result</TableHead>
-              <TableHead>Pips</TableHead>
-              <TableHead>R:R</TableHead>
-              <TableHead>Chart</TableHead>
+              <TableHead>{dict.signalHistory.table.date}</TableHead>
+              <TableHead>{dict.signalHistory.table.pair}</TableHead>
+              <TableHead>{dict.signalHistory.table.direction}</TableHead>
+              <TableHead>{dict.signalHistory.table.entry}</TableHead>
+              <TableHead>{dict.signalHistory.table.sl}</TableHead>
+              <TableHead>{dict.signalHistory.table.tp1}</TableHead>
+              <TableHead>{dict.signalHistory.table.result}</TableHead>
+              <TableHead>{dict.signalHistory.table.pips}</TableHead>
+              <TableHead>{dict.signalHistory.table.rr}</TableHead>
+              <TableHead>{dict.signalHistory.table.chart}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {isLoading && (
               <TableRow>
                 <TableCell colSpan={10} className="py-8 text-center text-foreground/50">
-                  Loading history...
+                  {dict.signalHistory.loading}
                 </TableCell>
               </TableRow>
             )}
             {!isLoading && signals.length === 0 && (
               <TableRow>
                 <TableCell colSpan={10} className="py-8 text-center text-foreground/50">
-                  No closed signals in this period.
+                  {dict.signalHistory.noResults}
                 </TableCell>
               </TableRow>
             )}

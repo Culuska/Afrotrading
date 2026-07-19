@@ -11,16 +11,18 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { formatDate } from "@/lib/utils";
 import { TradingViewTechnical } from "@/components/marketing/tradingview-technical";
-
-const TIMEFRAMES = [
-  { value: "all", label: "All" },
-  { value: "DAILY", label: "Daily" },
-  { value: "WEEKLY", label: "Weekly" },
-  { value: "MONTHLY", label: "Monthly" },
-];
+import { useI18n } from "@/context/i18n-context";
 
 export default function MarketAnalysisPage() {
+  const { dict } = useI18n();
   const [timeframe, setTimeframe] = useState("all");
+
+  const TIMEFRAMES = [
+    { value: "all", label: dict.marketAnalysis.timeframes.all },
+    { value: "DAILY", label: dict.marketAnalysis.timeframes.daily },
+    { value: "WEEKLY", label: dict.marketAnalysis.timeframes.weekly },
+    { value: "MONTHLY", label: dict.marketAnalysis.timeframes.monthly },
+  ];
 
   const { data, isLoading } = useQuery({
     queryKey: ["market-analysis", timeframe],
@@ -35,10 +37,10 @@ export default function MarketAnalysisPage() {
     <div className="mx-auto max-w-[90rem] px-4 py-16 sm:px-6 lg:px-8">
       <div className="text-center">
         <h1 className="font-display text-4xl font-bold">
-          Market <span className="gold-gradient-text">Analysis</span>
+          {dict.marketAnalysis.titleLine1} <span className="gold-gradient-text">{dict.marketAnalysis.titleLine2}</span>
         </h1>
         <p className="mx-auto mt-3 max-w-xl text-foreground/60">
-          Technical and fundamental gold market analysis, updated daily.
+          {dict.marketAnalysis.subtitle}
         </p>
       </div>
 
@@ -80,7 +82,7 @@ export default function MarketAnalysisPage() {
           </Link>
         ))}
         {data?.analysis.length === 0 && (
-          <p className="col-span-full py-12 text-center text-foreground/50">No analysis published in this timeframe yet.</p>
+          <p className="col-span-full py-12 text-center text-foreground/50">{dict.marketAnalysis.noResults}</p>
         )}
       </div>
     </div>

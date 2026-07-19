@@ -10,19 +10,7 @@ import type { EducationContent, EducationCategory } from "@/lib/types";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
-const CATEGORIES: { value: EducationCategory | "all"; label: string }[] = [
-  { value: "all", label: "All" },
-  { value: "GOLD_ANALYSIS", label: "Gold Analysis" },
-  { value: "FOREX_EDUCATION", label: "Forex Education" },
-  { value: "RISK_MANAGEMENT", label: "Risk Management" },
-  { value: "TRADING_PSYCHOLOGY", label: "Trading Psychology" },
-  { value: "WEEKLY_ANALYSIS", label: "Weekly Analysis" },
-  { value: "VIDEO_LESSONS", label: "Video Lessons" },
-  { value: "ARTICLES", label: "Articles" },
-  { value: "TRADING_JOURNAL", label: "Trading Journal" },
-  { value: "MARKET_ANALYSIS", label: "Market Analysis" },
-];
+import { useI18n } from "@/context/i18n-context";
 
 const TYPE_ICON = {
   VIDEO: PlayCircle,
@@ -33,7 +21,21 @@ const TYPE_ICON = {
 };
 
 export default function EducationPage() {
+  const { dict } = useI18n();
   const [category, setCategory] = useState<string>("all");
+
+  const CATEGORIES: { value: EducationCategory | "all"; label: string }[] = [
+    { value: "all", label: dict.education.categories.all },
+    { value: "GOLD_ANALYSIS", label: dict.education.categories.goldAnalysis },
+    { value: "FOREX_EDUCATION", label: dict.education.categories.forexEducation },
+    { value: "RISK_MANAGEMENT", label: dict.education.categories.riskManagement },
+    { value: "TRADING_PSYCHOLOGY", label: dict.education.categories.tradingPsychology },
+    { value: "WEEKLY_ANALYSIS", label: dict.education.categories.weeklyAnalysis },
+    { value: "VIDEO_LESSONS", label: dict.education.categories.videoLessons },
+    { value: "ARTICLES", label: dict.education.categories.articles },
+    { value: "TRADING_JOURNAL", label: dict.education.categories.tradingJournal },
+    { value: "MARKET_ANALYSIS", label: dict.education.categories.marketAnalysis },
+  ];
 
   const { data, isLoading } = useQuery({
     queryKey: ["education", category],
@@ -48,10 +50,10 @@ export default function EducationPage() {
     <div className="mx-auto max-w-[90rem] px-4 py-16 sm:px-6 lg:px-8">
       <div className="text-center">
         <h1 className="font-display text-4xl font-bold">
-          Education <span className="gold-gradient-text">Center</span>
+          {dict.education.titleLine1} <span className="gold-gradient-text">{dict.education.titleLine2}</span>
         </h1>
         <p className="mx-auto mt-3 max-w-xl text-foreground/60">
-          Videos, articles, and guides to sharpen your gold trading edge.
+          {dict.education.subtitle}
         </p>
       </div>
 
@@ -83,7 +85,7 @@ export default function EducationPage() {
                       <Icon className="h-5 w-5" />
                     </span>
                     <div className="flex gap-2">
-                      {item.featured && <Badge variant="warning">Featured</Badge>}
+                      {item.featured && <Badge variant="warning">{dict.education.featured}</Badge>}
                       {item.vipOnly && (
                         <Badge>
                           <Lock className="h-3 w-3" /> VIP
@@ -102,7 +104,7 @@ export default function EducationPage() {
           );
         })}
         {data?.content.length === 0 && (
-          <p className="col-span-full py-12 text-center text-foreground/50">No content in this category yet.</p>
+          <p className="col-span-full py-12 text-center text-foreground/50">{dict.education.noResults}</p>
         )}
       </div>
     </div>

@@ -10,6 +10,7 @@ import { ArrowLeft, Download, Lock } from "lucide-react";
 
 import { api, ApiError, downloadFile } from "@/lib/api";
 import { useAuth } from "@/context/auth-context";
+import { useI18n } from "@/context/i18n-context";
 import type { EducationContent } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -32,6 +33,7 @@ function toYoutubeEmbedUrl(url: string): string {
 export default function EducationDetailPage() {
   const { slug } = useParams<{ slug: string }>();
   const { user } = useAuth();
+  const { dict } = useI18n();
   const [showRegisterPrompt, setShowRegisterPrompt] = useState(false);
   const [downloading, setDownloading] = useState(false);
 
@@ -49,7 +51,7 @@ export default function EducationDetailPage() {
     try {
       await downloadFile(`/api/education/${slug}/download`);
     } catch (err) {
-      toast.error(err instanceof ApiError ? err.message : "Download failed");
+      toast.error(err instanceof ApiError ? err.message : dict.educationDetail.downloadFailed);
     } finally {
       setDownloading(false);
     }
@@ -68,13 +70,13 @@ export default function EducationDetailPage() {
   if (error || !data?.content) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-24 text-center sm:px-6 lg:px-8">
-        <h1 className="font-display text-2xl font-bold">Content not found</h1>
+        <h1 className="font-display text-2xl font-bold">{dict.educationDetail.notFoundTitle}</h1>
         <p className="mt-2 text-foreground/60">
-          {error instanceof ApiError ? error.message : "This content may have been removed or unpublished."}
+          {error instanceof ApiError ? error.message : dict.educationDetail.notFoundBody}
         </p>
         <Button asChild className="mt-6">
           <Link href="/education">
-            <ArrowLeft className="h-4 w-4" /> Back to Education Center
+            <ArrowLeft className="h-4 w-4" /> {dict.educationDetail.backToCenter}
           </Link>
         </Button>
       </div>
@@ -86,13 +88,13 @@ export default function EducationDetailPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
       <Link href="/education" className="inline-flex items-center gap-1.5 text-sm text-foreground/60 hover:text-foreground">
-        <ArrowLeft className="h-4 w-4" /> Back to Education Center
+        <ArrowLeft className="h-4 w-4" /> {dict.educationDetail.backToCenter}
       </Link>
 
       <div className="mt-6 flex flex-wrap items-center gap-2">
         <Badge variant="neutral">{content.category.replace(/_/g, " ")}</Badge>
         <Badge variant="outline">{content.type}</Badge>
-        {content.featured && <Badge variant="warning">Featured</Badge>}
+        {content.featured && <Badge variant="warning">{dict.educationDetail.featured}</Badge>}
         {content.vipOnly && (
           <Badge>
             <Lock className="h-3 w-3" /> VIP
@@ -106,10 +108,10 @@ export default function EducationDetailPage() {
       {locked ? (
         <div className="mt-8 rounded-2xl border border-gold-500/20 bg-gold-500/5 p-8 text-center">
           <Lock className="mx-auto h-8 w-8 text-gold-400" />
-          <h2 className="mt-4 font-display text-xl font-semibold">This is a VIP-only lesson</h2>
-          <p className="mt-2 text-foreground/60">Upgrade to VIP membership to access the full content.</p>
+          <h2 className="mt-4 font-display text-xl font-semibold">{dict.educationDetail.vipOnlyTitle}</h2>
+          <p className="mt-2 text-foreground/60">{dict.educationDetail.vipOnlyBody}</p>
           <Button asChild className="mt-6">
-            <Link href="/pricing">View VIP Plans</Link>
+            <Link href="/pricing">{dict.educationDetail.viewVipPlans}</Link>
           </Button>
         </div>
       ) : (
@@ -146,7 +148,7 @@ export default function EducationDetailPage() {
 
           {content.type === "PDF" && (
             <Button variant="outline" onClick={handleDownload} disabled={downloading}>
-              <Download className="h-4 w-4" /> {downloading ? "Downloading…" : "Download PDF"}
+              <Download className="h-4 w-4" /> {downloading ? dict.educationDetail.downloading : dict.educationDetail.downloadPdf}
             </Button>
           )}
 
@@ -159,18 +161,18 @@ export default function EducationDetailPage() {
       <Dialog open={showRegisterPrompt} onOpenChange={setShowRegisterPrompt}>
         <DialogContent className="text-center">
           <DialogHeader>
-            <DialogTitle>Create a free account to download</DialogTitle>
+            <DialogTitle>{dict.educationDetail.registerPromptTitle}</DialogTitle>
           </DialogHeader>
           <Lock className="mx-auto h-8 w-8 text-gold-400" />
           <p className="mt-2 text-sm text-foreground/60">
-            Downloading files is available to registered AfroTrading members. It only takes a minute — and it&apos;s free.
+            {dict.educationDetail.registerPromptBody}
           </p>
           <div className="mt-6 flex flex-col gap-3">
             <Button asChild>
-              <Link href="/register">Create Free Account</Link>
+              <Link href="/register">{dict.educationDetail.createFreeAccount}</Link>
             </Button>
             <Button asChild variant="outline">
-              <Link href="/login">Already have an account? Log in</Link>
+              <Link href="/login">{dict.educationDetail.alreadyHaveAccount}</Link>
             </Button>
           </div>
         </DialogContent>
