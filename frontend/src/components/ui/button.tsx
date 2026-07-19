@@ -22,6 +22,13 @@ const buttonVariants = cva(
         icon: "h-10 w-10",
       },
     },
+    compoundVariants: [
+      {
+        variant: "default",
+        size: "lg",
+        className: "font-extrabold uppercase tracking-wide",
+      },
+    ],
     defaultVariants: {
       variant: "default",
       size: "default",

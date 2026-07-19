@@ -1,7 +1,8 @@
 "use client";
 
-import { Target, Eye, Compass, ShieldAlert } from "lucide-react";
+import { Target, Eye, Compass, ShieldAlert, Info } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { PageHeader } from "@/components/marketing/page-header";
 import { useI18n } from "@/context/i18n-context";
 
 export function AboutContent() {
@@ -15,12 +16,14 @@ export function AboutContent() {
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
-      <div className="text-center">
-        <h1 className="font-display text-4xl font-bold">
-          {dict.about.titleLine1} <span className="gold-gradient-text">{dict.about.titleLine2}</span>
-        </h1>
-        <p className="mx-auto mt-4 max-w-2xl text-foreground/60">{dict.about.intro}</p>
-      </div>
+      <PageHeader
+        kicker={dict.nav.links.about}
+        icon={Info}
+        titleLine1={dict.about.titleLine1}
+        titleLine2={dict.about.titleLine2}
+        subtitle={dict.about.intro}
+        subtitleClassName="max-w-2xl mt-4"
+      />
 
       <div className="mt-16 grid gap-6 md:grid-cols-3">
         {VALUES.map((value) => (

@@ -2,13 +2,14 @@
 
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Search } from "lucide-react";
+import { Search, TrendingUp } from "lucide-react";
 
 import { api } from "@/lib/api";
 import type { Signal } from "@/lib/types";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SignalCard } from "@/components/signal-card";
+import { PageHeader } from "@/components/marketing/page-header";
 import { useI18n } from "@/context/i18n-context";
 
 export default function SignalsPage() {
@@ -38,14 +39,13 @@ export default function SignalsPage() {
 
   return (
     <div className="mx-auto max-w-[90rem] px-4 py-16 sm:px-6 lg:px-8">
-      <div className="text-center">
-        <h1 className="font-display text-4xl font-bold">
-          {dict.signals.titleLine1} <span className="gold-gradient-text">{dict.signals.titleLine2}</span>
-        </h1>
-        <p className="mx-auto mt-3 max-w-xl text-foreground/60">
-          {dict.signals.subtitle}
-        </p>
-      </div>
+      <PageHeader
+        kicker={dict.nav.links.signals}
+        icon={TrendingUp}
+        titleLine1={dict.signals.titleLine1}
+        titleLine2={dict.signals.titleLine2}
+        subtitle={dict.signals.subtitle}
+      />
 
       <div className="mt-10 flex flex-col items-center justify-between gap-4 sm:flex-row">
         <Tabs value={filter} onValueChange={setFilter}>

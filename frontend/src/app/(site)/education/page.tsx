@@ -3,13 +3,14 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { PlayCircle, FileText, Image as ImageIcon, BookOpen, Headphones, Lock } from "lucide-react";
+import { PlayCircle, FileText, Image as ImageIcon, BookOpen, Headphones, Lock, GraduationCap } from "lucide-react";
 
 import { api } from "@/lib/api";
 import type { EducationContent, EducationCategory } from "@/lib/types";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { PageHeader } from "@/components/marketing/page-header";
 import { useI18n } from "@/context/i18n-context";
 
 const TYPE_ICON = {
@@ -48,14 +49,13 @@ export default function EducationPage() {
 
   return (
     <div className="mx-auto max-w-[90rem] px-4 py-16 sm:px-6 lg:px-8">
-      <div className="text-center">
-        <h1 className="font-display text-4xl font-bold">
-          {dict.education.titleLine1} <span className="gold-gradient-text">{dict.education.titleLine2}</span>
-        </h1>
-        <p className="mx-auto mt-3 max-w-xl text-foreground/60">
-          {dict.education.subtitle}
-        </p>
-      </div>
+      <PageHeader
+        kicker={dict.nav.links.education}
+        icon={GraduationCap}
+        titleLine1={dict.education.titleLine1}
+        titleLine2={dict.education.titleLine2}
+        subtitle={dict.education.subtitle}
+      />
 
       <div className="mt-10 flex justify-center">
         <Tabs value={category} onValueChange={setCategory}>

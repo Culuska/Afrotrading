@@ -6,6 +6,7 @@ import { ArrowUpRight, Send, ShieldCheck, Users, TrendingUp } from "lucide-react
 
 import { Button } from "@/components/ui/button";
 import { HeroSlideshow } from "@/components/marketing/hero-slideshow";
+import { BrandSeal } from "@/components/marketing/brand-seal";
 import { TELEGRAM_GROUP_URL } from "@/lib/config";
 import { useI18n } from "@/context/i18n-context";
 
@@ -20,10 +21,13 @@ export function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: "easeOut" }}
           >
-            <span className="mb-5 inline-flex items-center gap-2 rounded-full border border-gold-500/30 bg-gold-500/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-gold-400">
-              <TrendingUp className="h-3.5 w-3.5" /> {dict.hero.badge}
-            </span>
-            <h1 className="font-display text-4xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+            <div className="mb-5 flex flex-wrap items-center gap-4">
+              <BrandSeal className="h-20 w-20 sm:h-28 sm:w-28" />
+              <span className="inline-flex items-center gap-2 rounded-full border border-gold-500/30 bg-gold-500/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-gold-400">
+                <TrendingUp className="h-3.5 w-3.5" /> {dict.hero.badge}
+              </span>
+            </div>
+            <h1 className="font-display text-4xl font-extrabold leading-[1.05] tracking-tight text-foreground sm:text-5xl lg:text-6xl">
               {dict.hero.titleLine1} <span className="gold-gradient-text">{dict.hero.titleLine2}</span>
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-8 text-foreground/60">{dict.hero.subtitle}</p>

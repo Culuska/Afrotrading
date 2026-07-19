@@ -12,6 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { FaqAccordion } from "@/components/marketing/faq-accordion";
+import { PageHeader } from "@/components/marketing/page-header";
 import { useI18n } from "@/context/i18n-context";
 import { TELEGRAM_GROUP_URL, WHATSAPP_URL, CONTACT_PHONE_DISPLAY, CONTACT_PHONE_TEL } from "@/lib/config";
 
@@ -37,12 +38,13 @@ export default function ContactPage() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
-      <div className="text-center">
-        <h1 className="font-display text-4xl font-bold">
-          {dict.contact.titleLine1} <span className="gold-gradient-text">{dict.contact.titleLine2}</span>
-        </h1>
-        <p className="mx-auto mt-3 max-w-xl text-foreground/60">{dict.contact.subtitle}</p>
-      </div>
+      <PageHeader
+        kicker={dict.nav.links.support}
+        icon={Mail}
+        titleLine1={dict.contact.titleLine1}
+        titleLine2={dict.contact.titleLine2}
+        subtitle={dict.contact.subtitle}
+      />
 
       <div className="mt-12 grid gap-8 lg:grid-cols-3">
         <div className="space-y-4 lg:col-span-1">

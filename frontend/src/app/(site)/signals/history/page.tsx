@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
+import { History } from "lucide-react";
 
 import { api } from "@/lib/api";
 import type { Signal, PerformanceStats } from "@/lib/types";
@@ -10,6 +11,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { SignalStatusBadge } from "@/components/signal-status-badge";
+import { PageHeader } from "@/components/marketing/page-header";
 import { formatDate } from "@/lib/utils";
 import { useI18n } from "@/context/i18n-context";
 
@@ -37,14 +39,13 @@ export default function SignalHistoryPage() {
 
   return (
     <div className="mx-auto max-w-[90rem] px-4 py-16 sm:px-6 lg:px-8">
-      <div className="text-center">
-        <h1 className="font-display text-4xl font-bold">
-          {dict.signalHistory.titleLine1} <span className="gold-gradient-text">{dict.signalHistory.titleLine2}</span>
-        </h1>
-        <p className="mx-auto mt-3 max-w-xl text-foreground/60">
-          {dict.signalHistory.subtitle}
-        </p>
-      </div>
+      <PageHeader
+        kicker={dict.nav.links.signalHistory}
+        icon={History}
+        titleLine1={dict.signalHistory.titleLine1}
+        titleLine2={dict.signalHistory.titleLine2}
+        subtitle={dict.signalHistory.subtitle}
+      />
 
       <div className="mt-10 grid grid-cols-2 gap-4 lg:grid-cols-4">
         <StatCard label={dict.signalHistory.stats.winRate} value={`${stats?.winRate ?? 0}%`} />

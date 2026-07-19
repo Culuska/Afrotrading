@@ -1,15 +1,18 @@
 "use client";
 
+import { Tag } from "lucide-react";
+import { PageHeader } from "@/components/marketing/page-header";
 import { useI18n } from "@/context/i18n-context";
 
 export function PricingHeader() {
   const { dict } = useI18n();
   return (
-    <div className="text-center">
-      <h1 className="font-display text-4xl font-bold">
-        {dict.pricing.titleLine1} <span className="gold-gradient-text">{dict.pricing.titleLine2}</span>
-      </h1>
-      <p className="mx-auto mt-3 max-w-xl text-foreground/60">{dict.pricing.subtitle}</p>
-    </div>
+    <PageHeader
+      kicker={dict.nav.links.pricing}
+      icon={Tag}
+      titleLine1={dict.pricing.titleLine1}
+      titleLine2={dict.pricing.titleLine2}
+      subtitle={dict.pricing.subtitle}
+    />
   );
 }
