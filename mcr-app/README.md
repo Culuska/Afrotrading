@@ -37,7 +37,7 @@ Needs Node 20+ and PostgreSQL.
 
 ```bash
 cd mcr-app
-cp .env.example .env            # set DATABASE_URL, DIRECT_URL, AUTH_SECRET
+cp .env.example .env            # set DATABASE_URL, DATABASE_URL_UNPOOLED, AUTH_SECRET
 npm install
 npx prisma migrate deploy
 ADMIN_EMAIL=you@example.com ADMIN_PASSWORD='a-strong-password' npm run db:seed
@@ -48,11 +48,9 @@ npm run dev                     # http://localhost:3000
 ## Deploy on Vercel
 
 1. Create a Vercel project from this repo and set **Root Directory** to `mcr-app`.
-2. Add a Postgres database (Vercel Marketplace → Neon or Prisma Postgres) and connect it to the project.
-3. Environment variables:
-   - `DATABASE_URL`: pooled connection string
-   - `DIRECT_URL`: direct (non-pooled) connection string, used for migrations
-   - `AUTH_SECRET`: a long random string (`openssl rand -base64 48`)
+2. In the project's **Storage** tab, create a **Neon** Postgres database and connect it. This sets
+   `DATABASE_URL` (pooled) and `DATABASE_URL_UNPOOLED` (direct, used for migrations) automatically.
+3. Add `AUTH_SECRET`: a long random string (`openssl rand -base64 48`).
 4. Deploy. The build runs `prisma migrate deploy` automatically.
 5. Create the first admin once, from your machine, against the production database:
    ```bash
