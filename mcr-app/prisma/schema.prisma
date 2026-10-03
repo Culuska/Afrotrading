@@ -1,0 +1,296 @@
+// Mogadishu Constructions & Rehabilitation — finance & operations data model.
+// All money is stored as integer US cents to avoid floating-point rounding.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Role {
+  ADMIN
+  FINANCE
+  SITE_MANAGER
+  VIEWER
+}
+
+enum ClientType {
+  GOVERNMENT
+  NGO
+  UN_AGENCY
+  PRIVATE
+}
+
+enum ProjectType {
+  NEW_BUILD
+  REHABILITATION
+  ROADS
+  WATER_SANITATION
+  OTHER
+}
+
+enum ProjectStatus {
+  TENDER
+  ACTIVE
+  ON_HOLD
+  COMPLETED
+  CANCELLED
+}
+
+enum CostCategory {
+  MATERIALS
+  LABOUR
+  EQUIPMENT
+  SUBCONTRACT
+  TRANSPORT
+  SECURITY
+  PERMITS
+  OVERHEAD
+  OTHER
+}
+
+enum PaymentMethod {
+  CASH
+  BANK
+  EVC_PLUS
+  ZAAD
+  SAHAL
+  CHEQUE
+}
+
+enum ExpenseStatus {
+  PENDING
+  APPROVED
+  PAID
+  REJECTED
+}
+
+enum InvoiceStatus {
+  DRAFT
+  ISSUED
+  CANCELLED
+}
+
+enum MovementType {
+  IN
+  OUT
+}
+
+enum EquipmentStatus {
+  AVAILABLE
+  ON_SITE
+  MAINTENANCE
+  RETIRED
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         Role     @default(VIEWER)
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+
+  managedProjects  Project[]     @relation("ProjectManager")
+  expensesCreated  Expense[]     @relation("ExpenseCreatedBy")
+  expensesApproved Expense[]     @relation("ExpenseApprovedBy")
+  dailyReports     DailyReport[]
+}
+
+model Client {
+  id        String     @id @default(cuid())
+  name      String
+  type      ClientType @default(PRIVATE)
+  contact   String?
+  phone     String?
+  email     String?
+  createdAt DateTime   @default(now())
+  projects  Project[]
+}
+
+model Supplier {
+  id        String    @id @default(cuid())
+  name      String
+  category  String?
+  phone     String?
+  createdAt DateTime  @default(now())
+  expenses  Expense[]
+}
+
+model Project {
+  id            String        @id @default(cuid())
+  code          String        @unique
+  name          String
+  clientId      String
+  client        Client        @relation(fields: [clientId], references: [id])
+  managerId     String?
+  manager       User?         @relation("ProjectManager", fields: [managerId], references: [id])
+  location      String
+  type          ProjectType   @default(NEW_BUILD)
+  status        ProjectStatus @default(ACTIVE)
+  contractValue Int           @default(0)
+  retentionPct  Float         @default(0)
+  progressPct   Int           @default(0)
+  startDate     DateTime?
+  endDate       DateTime?
+  notes         String?
+  createdAt     DateTime      @default(now())
+
+  budgetLines    BudgetLine[]
+  expenses       Expense[]
+  invoices       Invoice[]
+  labourEntries  LabourEntry[]
+  workers        Worker[]
+  stockMovements StockMovement[]
+  equipment      Equipment[]
+  dailyReports   DailyReport[]
+}
+
+model BudgetLine {
+  id        String       @id @default(cuid())
+  projectId String
+  project   Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  category  CostCategory
+  amount    Int
+
+  @@unique([projectId, category])
+}
+
+model Expense {
+  id           String        @id @default(cuid())
+  projectId    String?
+  project      Project?      @relation(fields: [projectId], references: [id])
+  supplierId   String?
+  supplier     Supplier?     @relation(fields: [supplierId], references: [id])
+  category     CostCategory
+  description  String
+  amount       Int
+  date         DateTime
+  method       PaymentMethod @default(CASH)
+  reference    String?
+  status       ExpenseStatus @default(PENDING)
+  createdById  String
+  createdBy    User          @relation("ExpenseCreatedBy", fields: [createdById], references: [id])
+  approvedById String?
+  approvedBy   User?         @relation("ExpenseApprovedBy", fields: [approvedById], references: [id])
+  paidAt       DateTime?
+  createdAt    DateTime      @default(now())
+
+  labourEntries  LabourEntry[]
+  stockMovements StockMovement[]
+
+  @@index([projectId, status])
+  @@index([date])
+}
+
+model Invoice {
+  id          String        @id @default(cuid())
+  number      String        @unique
+  projectId   String
+  project     Project       @relation(fields: [projectId], references: [id])
+  description String
+  amount      Int
+  retention   Int           @default(0)
+  issueDate   DateTime
+  dueDate     DateTime
+  status      InvoiceStatus @default(ISSUED)
+  createdAt   DateTime      @default(now())
+  payments    Payment[]
+}
+
+model Payment {
+  id        String        @id @default(cuid())
+  invoiceId String
+  invoice   Invoice       @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  amount    Int
+  date      DateTime
+  method    PaymentMethod @default(BANK)
+  reference String?
+  createdAt DateTime      @default(now())
+}
+
+model Worker {
+  id        String        @id @default(cuid())
+  name      String
+  phone     String?
+  trade     String
+  dailyRate Int
+  active    Boolean       @default(true)
+  projectId String?
+  project   Project?      @relation(fields: [projectId], references: [id])
+  createdAt DateTime      @default(now())
+  entries   LabourEntry[]
+}
+
+model LabourEntry {
+  id        String   @id @default(cuid())
+  workerId  String
+  worker    Worker   @relation(fields: [workerId], references: [id])
+  projectId String
+  project   Project  @relation(fields: [projectId], references: [id])
+  date      DateTime
+  days      Float    @default(1)
+  rate      Int
+  // Set when the entry has been paid out; links to the LABOUR expense that paid it.
+  expenseId String?
+  expense   Expense? @relation(fields: [expenseId], references: [id])
+
+  @@unique([workerId, date])
+}
+
+model Material {
+  id        String          @id @default(cuid())
+  name      String          @unique
+  unit      String
+  minStock  Float           @default(0)
+  createdAt DateTime        @default(now())
+  movements StockMovement[]
+}
+
+model StockMovement {
+  id         String       @id @default(cuid())
+  materialId String
+  material   Material     @relation(fields: [materialId], references: [id])
+  projectId  String
+  project    Project      @relation(fields: [projectId], references: [id])
+  type       MovementType
+  quantity   Float
+  unitCost   Int          @default(0)
+  date       DateTime
+  note       String?
+  expenseId  String?
+  expense    Expense?     @relation(fields: [expenseId], references: [id])
+  createdAt  DateTime     @default(now())
+}
+
+model Equipment {
+  id        String          @id @default(cuid())
+  name      String
+  kind      String
+  owned     Boolean         @default(true)
+  dailyRate Int             @default(0)
+  status    EquipmentStatus @default(AVAILABLE)
+  projectId String?
+  project   Project?        @relation(fields: [projectId], references: [id])
+  notes     String?
+  createdAt DateTime        @default(now())
+}
+
+model DailyReport {
+  id           String   @id @default(cuid())
+  projectId    String
+  project      Project  @relation(fields: [projectId], references: [id])
+  authorId     String
+  author       User     @relation(fields: [authorId], references: [id])
+  date         DateTime
+  weather      String?
+  workersCount Int      @default(0)
+  workDone     String
+  issues       String?
+  createdAt    DateTime @default(now())
+}
